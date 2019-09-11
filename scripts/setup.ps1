@@ -2,6 +2,7 @@
 
 # these are version dependent and may change often
 $URL_7zip_main = "https://www.7-zip.org/a/7z1900-x64.exe"
+$URL_totalcmd = "https://totalcommander.ch/win/tcmd922ax64.exe"
 
 # these are generic and not likely to change
 $URL_7zip_bootstrap = "https://www.7-zip.org/a/7za920.zip"
@@ -61,6 +62,14 @@ function extract {
     7z -y x $archive @args > $null
 }
 
+# create a text file with specific content (if it doesn't exist already)
+function config($filename, $contents="") {
+    if (needed($filename)) {
+        status ("Creating File: " + $filename)
+        New-Item -Name $filename -Value $contents > $null
+    }
+}
+
 ###############################################################################
 
 # populate the bin directory
@@ -81,5 +90,65 @@ if (needed("7z.exe")) {
 
     # now we can download the current version
     extract (download $URL_7zip_main) 7z.dll 7z.exe 7zFM.exe 7zG.exe
-    rm 7za.exe  # we don't need the old standalone version any longer
+    rm "7za.exe"  # we don't need the old standalone version any longer
 }
+
+
+##### Total Commander #####
+
+if (needed("totalcmd64.exe")) {
+    # tcmd's download file is an installer that contains a .cab file
+    # with the actual data; thus we need to extract the .cab first
+    $cab = Join-Path $tempDir "tcmd.cab"
+    if (needed($cab)) {
+        cd $tempDir
+        extract (download $URL_totalcmd) INSTALL.CAB
+        mv INSTALL.CAB $cab
+        cd $binDir
+    }
+
+    # now we can extract the actual files, but we need to turn
+    # their names into lowercase too
+    $tcfiles = @(
+        "TOTALCMD64.EXE", "TOTALCMD64.EXE.MANIFEST",
+        "WCMZIP64.DLL", "UNRAR64.DLL", "TC7Z64.DLL", "TCLZMA64.DLL", "TCUNZL64.DLL",
+        "NOCLOSE64.EXE", "TCMADM64.EXE", "TOTALCMD.INC"
+    )
+    extract $cab @tcfiles
+    foreach ($f in $tcfiles) { mv $f $f.ToLower() }
+}
+config "wincmd.ini" @"
+[Configuration]
+UseIniInProgramDir=7
+UseNewDefFont=1
+FirstTime=0
+FirstTimeIconLib=0
+ShowHiddenSystem=1
+UseTrash=0
+AltSearch=3
+[AllResolutions]
+FontName=Fixedsys
+FontSize=9
+FontWeight=400
+FontNameWindow=Fixedsys
+FontSizeWindow=9
+FontWeightWindow=400
+[Shortcuts]
+F2=cm_RenameSingleFile
+[Colors]
+InverseCursor=1
+ThemedCursor=0
+InverseSelection=0
+BackColor=6316128
+BackColor2=-1
+ForeColor=14737632
+MarkColor=65280
+CursorColor=10526880
+CursorText=16777215
+[right]
+path=$baseDir
+"@
+config "wcx_ftp.ini" @"
+[default]
+pasvmode=1
+"@
