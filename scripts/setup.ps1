@@ -3,6 +3,7 @@
 # these are version dependent and may change often
 $URL_7zip_main = "https://www.7-zip.org/a/7z1900-x64.exe"
 $URL_totalcmd = "https://totalcommander.ch/win/tcmd922ax64.exe"
+$URL_mpc_hc = "https://binaries.mpc-hc.org/MPC%20HomeCinema%20-%20x64/MPC-HC_v1.7.13_x64/MPC-HC.1.7.13.x64.7z"
 
 # these are generic and not likely to change
 $URL_7zip_bootstrap = "https://www.7-zip.org/a/7za920.zip"
@@ -13,7 +14,8 @@ $URL_7zip_bootstrap = "https://www.7-zip.org/a/7za920.zip"
 
 # set up directories
 $baseDir = Split-Path -Parent (Split-Path -Parent $PSCommandPath)
-$tempDir = Join-Path $baseDir "temp"
+$cacheDir = Join-Path $baseDir "temp"
+$tempDir = Join-Path $cacheDir "temp_extract"
 $binDir = Join-Path $baseDir "bin"
 cd $baseDir
 
@@ -40,10 +42,23 @@ function mkdir_s($dir) {
     }
 }
 
+# remove temporary extraction directory again
+function remove_temp {
+    if (Test-Path $tempDir) {
+        rm -Recurse -Force $tempDir > $null
+    }
+}
+
+# get the path of the first subdirectory inside a directory
+function subdir_of($dir) {
+    $sub = Get-ChildItem $dir -Attributes Directory | select -First 1
+    return Join-Path $dir $sub.Name
+}
+
 # download a file into the temp directory and return its path
 function download($url) {
-    mkdir_s $tempDir
-    $filename = Join-Path $tempDir $url.split("?")[0].split("#")[0].trim("/").split("/")[-1]
+    mkdir_s $cacheDir
+    $filename = Join-Path $cacheDir $url.split("?")[0].split("#")[0].trim("/").split("/")[-1]
     if (needed($filename)) {
         status ("Downloading: " + $url)
         (New-Object System.Net.WebClient).DownloadFile($url, $filename)
@@ -60,6 +75,30 @@ function extract {
     )
     status ("Extracting: " + $archive)
     7z -y x $archive @args > $null
+}
+
+# extract an archive into a temporary directory and return its path
+function extract_temp($archive) {
+    remove_temp
+    mkdir $tempDir > $null
+    status ("Extracting: " + $archive)
+    $cwd = pwd
+    cd $tempDir
+    7z -y x $archive > $null
+    cd $cwd.Path
+    return $tempDir
+}
+
+# move a bunch of files from the source directory to the current directory
+function collect($fromDir, $items) {
+    $targetDir = (pwd).Path
+    cd $fromDir
+    foreach ($item in $items) {
+        if (-not (Test-Path (Join-Path $targetDir $item))) {
+            mv $item $targetDir
+        }
+    }
+    cd $targetDir
 }
 
 # create a text file with specific content (if it doesn't exist already)
@@ -99,9 +138,9 @@ if (needed("7z.exe")) {
 if (needed("totalcmd64.exe")) {
     # tcmd's download file is an installer that contains a .cab file
     # with the actual data; thus we need to extract the .cab first
-    $cab = Join-Path $tempDir "tcmd.cab"
+    $cab = Join-Path $cacheDir "tcmd.cab"
     if (needed($cab)) {
-        cd $tempDir
+        cd $cacheDir
         extract (download $URL_totalcmd) INSTALL.CAB
         mv INSTALL.CAB $cab
         cd $binDir
@@ -152,3 +191,40 @@ config "wcx_ftp.ini" @"
 [default]
 pasvmode=1
 "@
+
+
+##### MPC-HC #####
+
+if (needed("mpc-hc64.exe")) {
+    collect (subdir_of (extract_temp (download $URL_mpc_hc))) @(
+        "LAVFilters64", "Shaders",
+        "D3DCompiler_43.dll", "d3dx9_43.dll",
+        "mpc-hc64.exe"
+    )
+    remove_temp
+}
+config "mpc-hc64.ini" @"
+[Settings]
+AfterPlayback=0
+AllowMultipleInstances=0
+ExitFullscreenAtTheEnd=0
+LaunchFullScreen=1
+Loop=0
+LoopMode=1
+LoopNum=0
+MenuLang=0
+ShowOSD=0
+TrayIcon=0
+UpdaterAutoCheck=0
+LogoExt=0
+LogoID2=206
+DSVidRen=13
+DX9Resizer=4
+SynchronizeClock=1
+SynchronizeDisplay=0
+SynchronizeNearest=0
+[Commands2]
+CommandMod0=816 1 51 "" 5 0 0 0
+"@
+# cf. https://www.pouet.net/topic.php?which=11591&page=18#c553418
+
