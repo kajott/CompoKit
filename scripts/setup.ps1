@@ -37,7 +37,7 @@ if (-not ($env:Path).Contains($binDir)) {
 }
 
 # check if a file or directory doesn't already exist
-function needed($obj) {
+function need($obj) {
     return -not (Test-Path $obj)
 }
 
@@ -48,7 +48,7 @@ function status($msg) {
 
 # create a directory if it doesn't exist
 function mkdir_s($dir) {
-    if (needed($dir)) {
+    if (need $dir) {
         status ("Creating Directory: " + $dir)
         mkdir $dir > $null
     }
@@ -79,7 +79,7 @@ function download($url) {
         $filename = $url.split("?")[0].split("#")[0].trim("/").split("/")[-1]
     }
     $filename = Join-Path $cacheDir $filename
-    if (needed($filename)) {
+    if (need $filename) {
         status ("Downloading: " + $url)
         (New-Object System.Net.WebClient).DownloadFile($url, $filename)
     }
@@ -122,7 +122,7 @@ function collect($fromDir, $items) {
 
 # create a text file with specific content (if it doesn't exist already)
 function config($filename, $contents="") {
-    if (needed($filename)) {
+    if (need $filename) {
         status ("Creating File: " + $filename)
         New-Item -Name $filename -Value $contents > $null
     }
@@ -137,7 +137,7 @@ cd $binDir
 
 ##### 7-zip #####
 
-if (needed("7z.exe")) {
+if (need "7z.exe") {
     # bootstrapping: download the old 9.20 x86 executable first;
     # it's the only one that comes in .zip format and can be extracted
     # by PowerShell itself
@@ -154,11 +154,11 @@ if (needed("7z.exe")) {
 
 ##### Total Commander #####
 
-if (needed("totalcmd64.exe")) {
+if (need "totalcmd64.exe") {
     # tcmd's download file is an installer that contains a .cab file
     # with the actual data; thus we need to extract the .cab first
     $cab = Join-Path $cacheDir "tcmd.cab"
-    if (needed($cab)) {
+    if (need $cab) {
         cd $cacheDir
         extract (download $URL_totalcmd) INSTALL.CAB
         mv INSTALL.CAB $cab
@@ -214,7 +214,7 @@ pasvmode=1
 
 ##### MPC-HC #####
 
-if (needed("mpc-hc64.exe")) {
+if (need "mpc-hc64.exe") {
     collect (subdir_of (extract_temp (download $URL_mpc_hc))) @(
         "LAVFilters64", "Shaders",
         "D3DCompiler_43.dll", "d3dx9_43.dll",
@@ -250,19 +250,19 @@ CommandMod0=816 1 51 "" 5 0 0 0
 
 ##### XMPlay #####
 
-if (needed("xmplay.exe")) {
+if (need "xmplay.exe") {
     extract (download $URL_xmplay) xmplay.exe xmp-zip.dll xmp-wma.dll
 }
-if (needed("xmp-openmpt.dll")) {
+if (need "xmp-openmpt.dll") {
     extract (download $URL_libopenmpt) XMPlay/openmpt-mpg123.dll XMPlay/xmp-openmpt.dll
 }
-if (needed("xmp-sid.dll")) {
+if (need "xmp-sid.dll") {
     extract (download $URL_xmp_sid) xmp-sid.dll
 }
-if (needed("xmp-ahx.dll")) {
+if (need "xmp-ahx.dll") {
     extract (download $URL_xmp_ahx) xmp-ahx.dll
 }
-if (needed("xmp-ym.dll")) {
+if (need "xmp-ym.dll") {
     extract (download $URL_xmp_ym) xmp-ym.dll
 }
 config "xmplay.ini" @"
@@ -278,7 +278,7 @@ config=00FF70FF7F095000002C018813B80B1932
 
 ##### XnView #####
 
-if (needed("xnview.exe")) {
+if (need "xnview.exe") {
     extract (download $URL_xnview) XnView/xnview.exe XnView/xnview.exe.manifest
 }
 config "xnview.ini" @"
@@ -335,9 +335,9 @@ LosslessBak=0
 
 ##### CompoView, GLISS #####
 
-if (needed("compoview_64.exe")) {
+if (need "compoview_64.exe") {
     extract (download $URL_compoview) compoview/compoview_64.exe
 }
-if (needed("gliss.exe")) {
+if (need "gliss.exe") {
     mv (download $URL_gliss) .
 }
