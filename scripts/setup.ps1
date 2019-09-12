@@ -4,9 +4,18 @@
 $URL_7zip_main = "https://www.7-zip.org/a/7z1900-x64.exe"
 $URL_totalcmd = "https://totalcommander.ch/win/tcmd922ax64.exe"
 $URL_mpc_hc = "https://binaries.mpc-hc.org/MPC%20HomeCinema%20-%20x64/MPC-HC_v1.7.13_x64/MPC-HC.1.7.13.x64.7z"
+$URL_xmplay = "http://uk.un4seen.com/files/xmplay38.zip"
+$URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.4.6+release.bin.win.zip"
 
 # these are generic and not likely to change
 $URL_7zip_bootstrap = "https://www.7-zip.org/a/7za920.zip"
+$URL_xmp_sid = "https://bitbucket.org/ssz/public-files/downloads/xmp-sid.zip"
+$URL_xmp_ahx = "https://bitbucket.org/ssz/public-files/downloads/xmp-ahx.zip"
+$URL_xmp_ym = "https://www.un4seen.com/stuff/xmp-ym.zip"
+
+# a note about the URLs above:
+# if a suitable download file name isn't derivable from the URL,
+# it can be specified manually by appending it after a pipe sign ('|')
 
 ###############################################################################
 
@@ -58,7 +67,15 @@ function subdir_of($dir) {
 # download a file into the temp directory and return its path
 function download($url) {
     mkdir_s $cacheDir
-    $filename = Join-Path $cacheDir $url.split("?")[0].split("#")[0].trim("/").split("/")[-1]
+    $parts = $url.split("|")
+    if ($parts.Count -gt 1) {
+        $url = $parts[0]
+        $filename = $parts[-1]
+    }
+    else {
+        $filename = $url.split("?")[0].split("#")[0].trim("/").split("/")[-1]
+    }
+    $filename = Join-Path $cacheDir $filename
     if (needed($filename)) {
         status ("Downloading: " + $url)
         (New-Object System.Net.WebClient).DownloadFile($url, $filename)
@@ -66,15 +83,14 @@ function download($url) {
     return $filename
 }
 
-# extract (specific files from) an archive
+# extract (specific files from) an archive, disregarding paths
 function extract {
     Param(
-        [string]$archive,
-        [parameter(ValueFromRemainingArguments = $true)]
-        [string[]]$args
+        [string] $archive,
+        [parameter(ValueFromRemainingArguments=$true)] [string[]] $args
     )
     status ("Extracting: " + $archive)
-    7z -y x $archive @args > $null
+    7z -y e $archive @args > $null
 }
 
 # extract an archive into a temporary directory and return its path
@@ -228,3 +244,30 @@ CommandMod0=816 1 51 "" 5 0 0 0
 "@
 # cf. https://www.pouet.net/topic.php?which=11591&page=18#c553418
 
+
+##### XMPlay #####
+
+if (needed("xmplay.exe")) {
+    extract (download $URL_xmplay) xmplay.exe xmp-zip.dll xmp-wma.dll
+}
+if (needed("xmp-openmpt.dll")) {
+    extract (download $URL_libopenmpt) XMPlay/openmpt-mpg123.dll XMPlay/xmp-openmpt.dll
+}
+if (needed("xmp-sid.dll")) {
+    extract (download $URL_xmp_sid) xmp-sid.dll
+}
+if (needed("xmp-ahx.dll")) {
+    extract (download $URL_xmp_ahx) xmp-ahx.dll
+}
+if (needed("xmp-ym.dll")) {
+    extract (download $URL_xmp_ym) xmp-ym.dll
+}
+config "xmplay.ini" @"
+[XMPlay]
+PluginTypes=786D702D6F70656E6D70742E646C6C006D6F6420786D20697400
+MODmode=2
+InfoTextSize=3
+Info=-2147220736
+[SID_27]
+config=00FF70FF7F095000002C018813B80B1932
+"@
