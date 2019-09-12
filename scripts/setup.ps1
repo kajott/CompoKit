@@ -12,6 +12,9 @@ $URL_7zip_bootstrap = "https://www.7-zip.org/a/7za920.zip"
 $URL_xmp_sid = "https://bitbucket.org/ssz/public-files/downloads/xmp-sid.zip"
 $URL_xmp_ahx = "https://bitbucket.org/ssz/public-files/downloads/xmp-ahx.zip"
 $URL_xmp_ym = "https://www.un4seen.com/stuff/xmp-ym.zip"
+$URL_xnview = "https://download.xnview.com/XnView-win-small.zip"
+$URL_compoview = "https://files.scene.org/get:nl-http/resources/graphics/compoview_v1_02b.zip"
+$URL_gliss = "https://www.emphy.de/~mfie/foo/gliss_new.exe|gliss.exe"
 
 # a note about the URLs above:
 # if a suitable download file name isn't derivable from the URL,
@@ -271,3 +274,70 @@ Info=-2147220736
 [SID_27]
 config=00FF70FF7F095000002C018813B80B1932
 "@
+
+
+##### XnView #####
+
+if (needed("xnview.exe")) {
+    extract (download $URL_xnview) XnView/xnview.exe XnView/xnview.exe.manifest
+}
+config "xnview.ini" @"
+[Cache]
+SavingMode=1
+[Start]
+ParamsSavingMode=1
+SavingMode=1
+BToolBar=0
+VToolBar=0
+TabBar=0
+LaunchTimes=1
+ShowAgain=268435423
+ENTER=0
+MMB=2
+Only1ESC=0
+Filter0=65
+Filter1=65
+Filter2=64
+Filter3=1
+[Browser]
+AutoPlay=0
+ShowPreview=0
+UseFileDB=0
+UseShadow=0
+FlatStyle=1
+Spacing=2
+IconHeight=128
+IconWidth=192
+IconInfo=0
+UseColor=0
+UseBackgroundColor=1
+BackgroundColor=6316128
+PreviewColor=6316128
+TextBackColor=6316128
+TextColor=14737632
+ThumbConfig=11
+[View]
+PlayMovie=0
+PlaySound=0
+BackgroundColor=6316128
+OneViewMultiple=1
+OnlyOneView=1
+RightButtonFlag=1
+ShowText=0
+[Cache]
+IsActive=0
+[Full]
+UseDelay=0
+[File]
+LosslessBak=0
+"@
+
+
+##### CompoView, GLISS #####
+
+if (needed("compoview_64.exe")) {
+    extract (download $URL_compoview) compoview/compoview_64.exe
+}
+if (needed("gliss.exe")) {
+    mv (download $URL_gliss) .
+}

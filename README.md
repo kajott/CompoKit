@@ -9,7 +9,7 @@ A CompoKit installation mainly consists of third-party tools:
 - File Management: [Total Commander](https://www.ghisler.com/index.htm), [7-Zip](https://www.7-zip.org/)
 - Video Player: [MPC-HC](https://mpc-hc.org/)
 - Audio Player: [XMPlay](https://www.un4seen.com/xmplay.html) with [OpenMPT Plugin](https://lib.openmpt.org/libopenmpt/) and additional plugins for SID, AHX and YM
-- Image Viewer: [XnView](https://www.xnview.com/en/), [CompoView](https://www.pouet.net/prod.php?which=56934), [GLISS](http://svn.emphy.de/scripts/trunk/gliss.cpp) **(TODO)**
+- Image Viewer: [XnView](https://www.xnview.com/en/), [CompoView](https://www.pouet.net/prod.php?which=56934), [GLISS](http://svn.emphy.de/scripts/trunk/gliss.cpp)
 - ANSI Viewer: [ACiDView](https://sourceforge.net/projects/acidview6-win32/) and [Sahli](https://github.com/m0qui/Sahli) **(TODO)**
 - DOS Emulator: [DOSBox](https://www.dosbox.com/) and [DOSBox-X](https://dosbox-x.com/) **(TODO)**
 - Graphics compo background music: a selection of nice, not too "aggressive" demoscene music **(TODO)**
@@ -27,8 +27,7 @@ A CompoKit installation mainly consists of third-party tools:
 Some of the tools are pre-configured in non-standard ways:
 
 - Total Commander
-  - medium-contrast "dark" color scheme
-  - Fixedsys font
+  - medium-contrast "dark" color scheme with Fixedsys font
   - search files in the current directory by simply typing letters (no Ctrl or Alt required)
   - F2 key renames files
   - Passive FTP by default
@@ -43,3 +42,9 @@ Some of the tools are pre-configured in non-standard ways:
   - OpenMPT pattern visualization is configured with maximum font size
   - interpolation and stereo separation is **not** configured; you need to switch to mono without filtering manually when playing proper MOD files!
   - SID is configured for Mono output with 8580 digi boost enabled
+- XnView
+  - medium-contrast "dark" color scheme
+  - show only image files in browser, nothing else
+  - disable all toolbars except menu and status bar
+  - Enter key goes directly to fullscreen mode
+  - no image info overlays on thumbnails or in fullscreen mode
