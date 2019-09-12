@@ -10,11 +10,12 @@ A CompoKit installation mainly consists of third-party tools:
 - Video Player: [MPC-HC](https://mpc-hc.org/)
 - Audio Player: [XMPlay](https://www.un4seen.com/xmplay.html) with [OpenMPT Plugin](https://lib.openmpt.org/libopenmpt/) and additional plugins for SID, AHX and YM
 - Image Viewer: [XnView](https://www.xnview.com/en/), [CompoView](https://www.pouet.net/prod.php?which=56934), [GLISS](http://svn.emphy.de/scripts/trunk/gliss.cpp)
-- ANSI Viewer: [ACiDView](https://sourceforge.net/projects/acidview6-win32/) and [Sahli](https://github.com/m0qui/Sahli) **(TODO)**
+- ANSI Viewer: [ACiDView](https://sourceforge.net/projects/acidview6-win32/) and [Sahli](https://github.com/m0qui/Sahli)
 - DOS Emulator: [DOSBox](https://www.dosbox.com/) and [DOSBox-X](https://dosbox-x.com/) **(TODO)**
 - Graphics compo background music: a selection of nice, not too "aggressive" demoscene music **(TODO)**
 - Launcher: `CKLaunch`, a custom launcher tailored for running compos **(TODO)**
-- an installation of Google Chrome or Mozilla Firefox is required, but **not** included
+- an installation of Google Chrome is required, but **not** included
+  - there is, however, a script that calls Chrome with `--allow-file-access-from-files` where stuff can simply dragged and dropped onto
 
 ## Features
 

@@ -15,6 +15,8 @@ $URL_xmp_ym = "https://www.un4seen.com/stuff/xmp-ym.zip"
 $URL_xnview = "https://download.xnview.com/XnView-win-small.zip"
 $URL_compoview = "https://files.scene.org/get:nl-http/resources/graphics/compoview_v1_02b.zip"
 $URL_gliss = "https://www.emphy.de/~mfie/foo/gliss_new.exe|gliss.exe"
+$URL_acidview = "https://sourceforge.net/projects/acidview6-win32/files/acidview6-win32/6.10/avw-610.zip/download|avw-610.zip"
+$URL_sahli = "https://github.com/m0qui/Sahli/archive/master.zip|Sahli-master.zip"
 
 # a note about the URLs above:
 # if a suitable download file name isn't derivable from the URL,
@@ -333,7 +335,7 @@ LosslessBak=0
 "@
 
 
-##### CompoView, GLISS #####
+##### CompoView, GLISS, ACiDview #####
 
 if (need "compoview_64.exe") {
     extract (download $URL_compoview) compoview/compoview_64.exe
@@ -341,3 +343,23 @@ if (need "compoview_64.exe") {
 if (need "gliss.exe") {
     mv (download $URL_gliss) .
 }
+if (need "ACiDview.exe") {
+    extract (download $URL_acidview) ACiDview.exe
+}
+
+
+##### Sahli, Chrome #####
+
+cd $baseDir
+if (need "Sahli") {
+    mv (subdir_of (extract_temp (download $URL_sahli))) "Sahli"
+    remove_temp
+}
+config "Sahli/_run.cmd" @"
+@"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --allow-file-access-from-files "file://%~dp0/index.html"
+"@
+
+cd $binDir
+config "Chrome.cmd" @"
+@"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --allow-file-access-from-files "%1"
+"@
