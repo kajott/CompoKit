@@ -7,12 +7,13 @@ CompoKit is an all-inclusive environment with (almost) all tools required for ho
 A CompoKit installation mainly consists of third-party tools:
 
 - **File Manager:** [Total Commander](https://www.ghisler.com/index.htm), [7-Zip](https://www.7-zip.org/) and [CKLaunch](src/cklaunch), a custom launcher tailored for running compos
-- **Text Editor:** [Notepad++](https://notepad-plus-plus.org/)
 - **Video Player:** [MPC-HC](https://mpc-hc.org/)
 - **Audio Player:** [XMPlay](https://www.un4seen.com/xmplay.html) with [OpenMPT Plugin](https://lib.openmpt.org/libopenmpt/) and additional plugins for SID, AHX and YM
 - **Image Viewer:** [XnView](https://www.xnview.com/en/), [CompoView](https://www.pouet.net/prod.php?which=56934), [GLISS](http://svn.emphy.de/scripts/trunk/gliss.cpp)
 - **ANSI Viewer:** [ACiDView](https://sourceforge.net/projects/acidview6-win32/) and [Sahli](https://github.com/m0qui/Sahli)
 - **DOS Emulator:** [DOSBox](https://www.dosbox.com/) and [DOSBox-X](https://dosbox-x.com/) **(TODO)**
+- **Text Editor:** [Notepad++](https://notepad-plus-plus.org/)
+- **PDF Viewer:** [SumatraPDF](https://www.sumatrapdfreader.org/)
 - Graphics compo background music: a selection of nice, not too "aggressive" demoscene music **(TODO)**
 - an installation of Google Chrome is required for some features, but **not** included
   - there is, however, a script that calls Chrome with `--allow-file-access-from-files` where JavaScript demos can simply be dragged and dropped onto
@@ -55,3 +56,6 @@ Some of the tools are pre-configured in non-standard ways:
   - no image info overlays on thumbnails or in fullscreen mode
 - Sahli
   - a little script `_run.cmd` is put into the Sahli directory that launches Sahli in Chrome
+- SumatraPDF
+  - English language
+  - page layout set to "single page, don't save for every document"
