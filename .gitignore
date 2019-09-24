@@ -1,2 +1,5 @@
 temp 
 Sahli
+bin/*
+!bin/cklaunch.exe
+!bin/cklaunch.ini

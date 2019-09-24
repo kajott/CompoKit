@@ -6,7 +6,7 @@ CompoKit is an all-inclusive environment with (almost) all tools required for ho
 
 A CompoKit installation mainly consists of third-party tools:
 
-- **File Manager:** [Total Commander](https://www.ghisler.com/index.htm), [7-Zip](https://www.7-zip.org/) and `CKLaunch`, a custom launcher tailored for running compos **(TODO)**
+- **File Manager:** [Total Commander](https://www.ghisler.com/index.htm), [7-Zip](https://www.7-zip.org/) and [CKLaunch](src/cklaunch), a custom launcher tailored for running compos
 - **Video Player:** [MPC-HC](https://mpc-hc.org/)
 - **Audio Player:** [XMPlay](https://www.un4seen.com/xmplay.html) with [OpenMPT Plugin](https://lib.openmpt.org/libopenmpt/) and additional plugins for SID, AHX and YM
 - **Image Viewer:** [XnView](https://www.xnview.com/en/), [CompoView](https://www.pouet.net/prod.php?which=56934), [GLISS](http://svn.emphy.de/scripts/trunk/gliss.cpp)
