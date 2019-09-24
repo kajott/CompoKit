@@ -183,16 +183,19 @@ UseIniInProgramDir=7
 UseNewDefFont=1
 FirstTime=0
 FirstTimeIconLib=0
+onlyonce=1
 ShowHiddenSystem=1
 UseTrash=0
 AltSearch=3
 [AllResolutions]
-FontName=Fixedsys
-FontSize=9
+FontName=Segoe UI
+FontSize=10
 FontWeight=400
-FontNameWindow=Fixedsys
-FontSizeWindow=9
+FontNameWindow=Segoe UI
+FontSizeWindow=10
 FontWeightWindow=400
+FontNameDialog=Segoe UI
+FontSizeDialog=9
 [Shortcuts]
 F2=cm_RenameSingleFile
 [Colors]
@@ -294,9 +297,10 @@ VToolBar=0
 TabBar=0
 LaunchTimes=1
 ShowAgain=268435423
+InFullscreen=1
+Only1ESC=1
 ENTER=0
 MMB=2
-Only1ESC=0
 Filter0=65
 Filter1=65
 Filter2=64

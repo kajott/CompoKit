@@ -31,7 +31,7 @@ Just run `scripts/setup.cmd`. This will download and unpack everything.
 Some of the tools are pre-configured in non-standard ways:
 
 - Total Commander
-  - medium-contrast "dark" color scheme with Fixedsys font
+  - medium-contrast "dark" color scheme with Segoe UI font
   - search files in the current directory by simply typing letters (no Ctrl or Alt required)
   - F2 key renames files
   - Passive FTP by default
