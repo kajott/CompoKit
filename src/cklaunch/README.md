@@ -52,6 +52,7 @@ With the following fields:
   - Quoting has to be done properly to allow paths with spaces to work.
   - Dollar signs ('`$`') are replaced by the full path to the file that is to be opened.
   - If the command line doesn't explicitly contain a dollar sign, the file path is automatically added as a last argument.
+  - Ampersands ('`&`') are replaced by the path of the directory where the viewer program has been found. This can be useful if e.g. config files need to be specified with full paths.
   - If not specified, the `.exe` suffix is implied for `command`.
   - If a matching `command.exe` exists in the directory of `cklaunch.exe`, this is used; otherwise, the `PATH` environment variable is searched.
   - Environment variables are expanded, e.g. "`%OS%`" becomes "`Windows_NT`".

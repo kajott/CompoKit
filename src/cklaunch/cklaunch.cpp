@@ -560,8 +560,8 @@ string GetTool(const string& tool_) {
         tool.append(".exe");
     }
 
-    // shortcut: prefer tool from current directory or absolute path
-    if (FileExists(tool)) { return tool; }
+    // shortcut: prefer absolute path
+    if (IsAbsolutePath(tool) && FileExists(tool)) { return tool; }
 
     // load from cache
     auto it = toolMap.find(tool);
@@ -583,7 +583,6 @@ string GetTool(const string& tool_) {
                 searchDirs.push_back(dir);
             }
         }
-//for(const auto&x:searchDirs)printf("- '%s'\n",x.c_str());
     }
 
     // search all directories for the file in question    
@@ -1108,6 +1107,7 @@ void EnterItem() {
         // look up the program to launch
         string cmdline(GetTool(ft->cmd));
         if (cmdline.empty()) { return; }
+        string cmdDir(DirName(cmdline));
 
         // quote the program name if necessary
         if (cmdline.find(' ') != string::npos) {
@@ -1117,7 +1117,7 @@ void EnterItem() {
 
         // add the remaining arguments
         cmdline.push_back(' ');
-        cmdline.append(StringReplace(ft->args, "$", path));
+        cmdline.append(StringReplace(StringReplace(ft->args, "$", path), "&", cmdDir));
         #ifdef _DEBUG
             printf("+ %s\n", cmdline.c_str());
         #endif
@@ -1132,6 +1132,8 @@ void EnterItem() {
         if (!CreateProcess(nullptr, (LPSTR) cmdline.c_str(), nullptr, nullptr, FALSE, 0, nullptr, currDir.c_str(), &si, &pi)) {
             MessageBox(hWnd, "Failed to run the application associated with this file.", WINDOW_TITLE, MB_ICONERROR);
         }
+        CloseHandle(pi.hThread);
+        CloseHandle(pi.hProcess);
         return;
     }
 

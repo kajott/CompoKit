@@ -1,3 +1,11 @@
+# CompoKit setup script
+#
+# Run this script, lean back, and see how the bin/ directory of CompoKit gets
+# populated with lots of software and some configuration files.
+# 
+
+###############################################################################
+
 # download URLs
 
 # these are version dependent and may change often
@@ -8,6 +16,8 @@ $URL_sumatra = "https://www.sumatrapdfreader.org/dl/SumatraPDF-3.1.2-64.zip"
 $URL_mpc_hc = "https://binaries.mpc-hc.org/MPC%20HomeCinema%20-%20x64/MPC-HC_v1.7.13_x64/MPC-HC.1.7.13.x64.7z"
 $URL_xmplay = "http://uk.un4seen.com/files/xmplay38.zip"
 $URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.4.6+release.bin.win.zip"
+$URL_dosbox_vanilla = "https://sourceforge.net/projects/dosbox/files/dosbox/0.74-3/DOSBox0.74-3-win32-installer.exe/download|DOSBox0.74-3-win32-installer.exe"
+$URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v0.82.21/dosbox-x-windows-20190831-142118-windows.zip"
 
 # these are generic and not likely to change
 $URL_7zip_bootstrap = "https://www.7-zip.org/a/7za920.zip"
@@ -389,3 +399,34 @@ cd $binDir
 config "Chrome.cmd" @"
 @"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --allow-file-access-from-files "%1"
 "@
+
+
+##### DOSBox(-X) #####
+
+if (need "dosbox.exe") {
+    extract (download $URL_dosbox_vanilla) DOSBox.exe SDL.dll SDL_net.dll
+}
+config "dosbox.conf" @"
+[sdl]
+fullscreen=true
+fullresolution=desktop
+output=ddraw
+[render]
+aspect=true
+[cpu]
+cycles=max
+[mixer]
+rate=48000
+[sblaster]
+oplrate=48000
+[gus]
+gus=true
+gusrate=48000
+[speaker]
+pcrate=48000
+tandyrate=48000
+disney=true
+"@
+if (need "dosbox-x.exe") {
+    extract (download $URL_dosbox_x) bin/x64/Release/dosbox-x.exe
+}
