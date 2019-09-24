@@ -3,6 +3,7 @@
 # these are version dependent and may change often
 $URL_7zip_main = "https://www.7-zip.org/a/7z1900-x64.exe"
 $URL_totalcmd = "https://totalcommander.ch/win/tcmd922ax64.exe"
+$URL_npp = "https://notepad-plus-plus.org/repository/7.x/7.7.1/npp.7.7.1.bin.minimalist.7z"
 $URL_mpc_hc = "https://binaries.mpc-hc.org/MPC%20HomeCinema%20-%20x64/MPC-HC_v1.7.13_x64/MPC-HC.1.7.13.x64.7z"
 $URL_xmplay = "http://uk.un4seen.com/files/xmplay38.zip"
 $URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.4.6+release.bin.win.zip"
@@ -187,6 +188,7 @@ onlyonce=1
 ShowHiddenSystem=1
 UseTrash=0
 AltSearch=3
+Editor=notepad++.exe "%1"
 [AllResolutions]
 FontName=Segoe UI
 FontSize=10
@@ -215,6 +217,15 @@ config "wcx_ftp.ini" @"
 [default]
 pasvmode=1
 "@
+
+
+##### Notepad++ #####
+
+if (need "notepad++.exe") {
+    extract (download $URL_npp) notepad++.exe SciLexer.dll doLocalConf.xml langs.model.xml stylers.model.xml
+    if (need langs.xml)   { mv langs.model.xml   langs.xml   >$null }
+    if (need stylers.xml) { mv stylers.model.xml stylers.xml >$null }
+}
 
 
 ##### MPC-HC #####
