@@ -147,6 +147,7 @@ function config($filename, $contents="") {
 # populate the bin directory
 mkdir_s $binDir
 cd $binDir
+$hadTemp = Test-Path $tempDir
 
 
 ##### 7-zip #####
@@ -429,4 +430,12 @@ disney=true
 "@
 if (need "dosbox-x.exe") {
     extract (download $URL_dosbox_x) bin/x64/Release/dosbox-x.exe
+}
+
+
+##### Done! #####
+
+if ((-not $hadTemp) -and (Test-Path $tempDir)) {
+    Write-Host -ForegroundColor Green "Everything set up. You can now delete the temp directory if you like:"
+    Write-Host -ForegroundColor Green "   rmdir /s /q $tempDir"
 }
