@@ -1,1 +1,2 @@
-@powershell -ExecutionPolicy Unrestricted -File setup.ps1
+@powershell -ExecutionPolicy Unrestricted -File "%~dp0\setup.ps1"
+@pause
