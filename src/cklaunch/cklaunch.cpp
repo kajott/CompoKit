@@ -1297,7 +1297,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     vector<string> argv = StringSplit(GetCommandLine());
     execDir = DirName(NormalizePath(argv[0]));
     string binDir(NormalizePath(JoinPath(execDir, "..\\..\\bin")));
-    if (IsDir(binDir)) {
+    if (IsDir(binDir) && IsDir(JoinPath(binDir, "..\\src\\cklaunch"))) {
         // when developing in the CompoKit source tree,
         // act as if the program had been started from the bin/ directory as usual
         execDir = binDir;
