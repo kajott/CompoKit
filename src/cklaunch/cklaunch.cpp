@@ -1315,6 +1315,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     wc.cbClsExtra = 0;
     wc.cbWndExtra = 0;
     wc.hInstance = hInstance;
+    wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(1337));
     wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wc.lpszClassName = CLASS_NAME;
     if (!RegisterClass(&wc)) {
