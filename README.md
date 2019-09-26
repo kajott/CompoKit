@@ -14,7 +14,9 @@ A CompoKit installation mainly consists of third-party tools:
 - **DOS Emulator:** [DOSBox](https://www.dosbox.com/) and [DOSBox-X](https://dosbox-x.com/)
 - **Text Editor:** [Notepad++](https://notepad-plus-plus.org/)
 - **PDF Viewer:** [SumatraPDF](https://www.sumatrapdfreader.org/)
-- Graphics compo background music: a selection of nice, not too "aggressive" demoscene music **(TODO)**
+- Graphics compo background music
+  - a selection of nice, not too bombastic demoscene music *(not included in the repository)*
+  - a script ("`play_shuffled.cmd`") to generate shuffled playlists of whole directories and play them back, using the [Balanced Shuffle](https://keyj.emphy.de/balanced-shuffle/) algorithm
 - an installation of Google Chrome is required for some features, but **not** included
   - there is, however, a script that calls Chrome with `--allow-file-access-from-files` where JavaScript demos can simply be dragged and dropped onto
 
@@ -32,6 +34,9 @@ Just run `scripts/setup.cmd`. This will download and unpack everything.
 
 Some of the tools are pre-configured in non-standard ways:
 
+- CKLaunch
+  - medium-contrast "dark" color scheme with Segoe UI font
+  - file associations pre-configured to use all the tools CompoKit provides
 - Total Commander
   - medium-contrast "dark" color scheme with Segoe UI font
   - search files in the current directory by simply typing letters (no Ctrl or Alt required)
@@ -61,4 +66,3 @@ Some of the tools are pre-configured in non-standard ways:
   - page layout set to "single page, don't save for every document"
 - DOSBox
   - provided config file `dosbox.conf` sets fullscreen with correct aspect ratio, maximum speed (`cycles=max`) and 48000 Hz sample rate from all audio sources (including GUS and Covox)
-  

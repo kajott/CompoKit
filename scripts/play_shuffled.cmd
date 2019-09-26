@@ -1,0 +1,1 @@
+@powershell -ExecutionPolicy Unrestricted -File "%~dp0\balanced_shuffle.ps1" -Play %*
