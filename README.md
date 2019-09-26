@@ -42,6 +42,7 @@ Some of the tools are pre-configured in non-standard ways:
   - search files in the current directory by simply typing letters (no Ctrl or Alt required)
   - F2 key renames files
   - Passive FTP by default
+  - single-instance mode
 - MPC-HC
   - starts in fullscreen mode
   - starts paused (press Space to start playback)
@@ -53,6 +54,7 @@ Some of the tools are pre-configured in non-standard ways:
   - OpenMPT pattern visualization is configured with maximum font size
   - interpolation and stereo separation is **not** configured; you need to switch to mono without filtering manually when playing proper MOD files!
   - SID is configured for Mono output with 8580 digi boost enabled
+  - single-instance mode
 - XnView
   - medium-contrast "dark" color scheme
   - shows only image files in browser, nothing else
