@@ -21,6 +21,8 @@ $URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/do
 
 # these are generic and not likely to change
 $URL_7zip_bootstrap = "https://www.7-zip.org/a/7za920.zip"
+$URL_xmp_flac = "http://uk.un4seen.com/files/xmp-flac.zip"
+$URL_xmp_opus = "http://uk.un4seen.com/files/xmp-opus.zip"
 $URL_xmp_sid = "https://bitbucket.org/ssz/public-files/downloads/xmp-sid.zip"
 $URL_xmp_ahx = "https://bitbucket.org/ssz/public-files/downloads/xmp-ahx.zip"
 $URL_xmp_ym = "https://www.un4seen.com/stuff/xmp-ym.zip"
@@ -311,6 +313,12 @@ if (need "xmplay.exe") {
 }
 if (need "xmp-openmpt.dll") {
     extract (download $URL_libopenmpt) XMPlay/openmpt-mpg123.dll XMPlay/xmp-openmpt.dll
+}
+if (need "xmp-flac.dll") {
+    extract (download $URL_xmp_flac) xmp-flac.dll
+}
+if (need "xmp-opus.dll") {
+    extract (download $URL_xmp_opus) xmp-opus.dll
 }
 if (need "xmp-sid.dll") {
     extract (download $URL_xmp_sid) xmp-sid.dll
