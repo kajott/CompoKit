@@ -50,9 +50,10 @@ Some of the tools are pre-configured in non-standard ways:
   - Q key quits (instead of Alt+X)
   - uses the Sync Renderer to minimize framedrops and judder
 - XMPlay
-  - OpenMPT plugin is used by default for MOD, XM and IT formats
+  - OpenMPT plugin is used by default for MOD, S3M, XM and IT formats
+    - MOD files use 20% stereo separation and Amiga low-pass filter instead of interpolation
+    - S3M, XM, IT use 100% stereo separation and 8-tap interpolation
   - OpenMPT pattern visualization is configured with maximum font size
-  - interpolation and stereo separation is **not** configured; you need to switch to mono without filtering manually when playing proper MOD files!
   - SID is configured for Mono output with 8580 digi boost enabled
   - single-instance mode
 - XnView

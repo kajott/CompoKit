@@ -331,14 +331,31 @@ if (need "xmp-ym.dll") {
 }
 config "xmplay.ini" @"
 [XMPlay]
-PluginTypes=786D702D6F70656E6D70742E646C6C006D6F6420786D20697400
+PluginTypes=786D702D6F70656E6D70742E646C6C006D6F642073336D20786D20697400
 MODmode=2
 InfoTextSize=3
 Info=-2147220736
 MultiInstance=0
+AutoSet=1
 [SID_27]
 config=00FF70FF7F095000002C018813B80B1932
+[OpenMPT]
+UseAmigaResampler=1
 "@
+if (need "xmplay.set") {
+    # XMPlay's preset file is an ugly binary blob :(
+    status ("Creating File: xmplay.set")
+    $data = [byte[]] @()
+    foreach ($spec in @("IT:8:100", "MOD:1:20", "S3M:8:100", "XM:8:100")) {
+        $fmt, $interpol, $stereo = $spec.Split(":")
+        $cfg = "xmp-openmpt.dll`0<settings InterpolationFilterLength=`"$interpol`" StereoSeparation_Percent=`"$stereo`"/>`0"
+        $item = [System.Text.Encoding]::UTF8.GetBytes($fmt)
+        $item += [byte[]] @(0, ($cfg.Length + 2), 0,0,0, $cfg.Length, 0)
+        $item += [System.Text.Encoding]::UTF8.GetBytes($cfg)
+        $data += [byte[]] @(($item.Count + 4), 0, 3, 0x20) + $item
+    }
+    $data | Set-Content -Path "xmplay.set" -Encoding Byte
+}
 
 
 ##### XnView #####
