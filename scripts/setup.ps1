@@ -2,24 +2,55 @@
 #
 # Run this script, lean back, and see how the bin/ directory of CompoKit gets
 # populated with lots of software and some configuration files.
-# 
 
 ###############################################################################
 
-# download URLs
+##### download URLs #####
 
-# these are version dependent and may change often
+# some special syntax options are supported in these URLs:
+# - a download filename can be specified explicitly by appending it after
+#   a pipe sign ('|') [the default is to derive the download filename from
+#   the last path component of the URL]
+# - SourceForge downloads (which usually have unwieldy URLs ending in
+#   "/download" instead of a proper filename) can be written as
+#   "SourceForge:projectname/path/to/file.zip"
+
+
+# the following URLs are version dependent and may change often;
+# below every link, there's another (version independent) URL from which
+# the actual download link can be found
+
 $URL_7zip_main = "https://www.7-zip.org/a/7z1900-x64.exe"
+# https://www.7-zip.org/ -> latest stable version, .exe 64-bit x64
+
 $URL_totalcmd = "https://totalcommander.ch/win/tcmd922ax64.exe"
-$URL_npp = "http://notepad-plus-plus.org/repository/7.x/7.7.1/npp.7.7.1.bin.minimalist.7z"
+# https://www.ghisler.com/download.htm -> 64-bit only
+
+$URL_npp = "http://download.notepad-plus-plus.org/repository/7.x/7.8/npp.7.8.bin.minimalist.7z"
+# http://notepad-plus-plus.org/downloads/ -> latest release -> minimalist 7z
+
 $URL_sumatra = "https://www.sumatrapdfreader.org/dl/SumatraPDF-3.1.2-64.zip"
+# https://www.sumatrapdfreader.org/download-free-pdf-viewer.html -> 64-bit builds, portable version
+
 $URL_mpc_hc = "https://binaries.mpc-hc.org/MPC%20HomeCinema%20-%20x64/MPC-HC_v1.7.13_x64/MPC-HC.1.7.13.x64.7z"
+# https://mpc-hc.org/downloads/ -> for 64-bit Windows, 7z
+
 $URL_xmplay = "http://uk.un4seen.com/files/xmplay38.zip"
-$URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.4.6+release.bin.win.zip"
-$URL_dosbox_vanilla = "https://sourceforge.net/projects/dosbox/files/dosbox/0.74-3/DOSBox0.74-3-win32-installer.exe/download|DOSBox0.74-3-win32-installer.exe"
-$URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v0.82.21/dosbox-x-windows-20190831-142118-windows.zip"
+# https://www.un4seen.com/xmplay.html -> small download button (top center)
+
+$URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.4.9+release.bin.win.zip"
+# https://lib.openmpt.org/libopenmpt/download/ -> xmp-openmpt for Windows 7+ (x86 + SSE2)
+
+$URL_dosbox_vanilla = "SourceForge:dosbox/0.74-3/DOSBox0.74-3-win32-installer.exe"
+# https://sourceforge.net/projects/dosbox/files/dosbox/ -> latest version -> Win32 installer
+
+$URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v0.82.22/dosbox-x-windows-20190930-175141-windows.zip"
+# https://github.com/joncampbell123/dosbox-x/releases -> latest dosbox-x-windows-*-windows.zip
+
 
 # these are generic and not likely to change
+# (either because they always point to the latest version,
+# or because the software hasn't been changed in years)
 $URL_7zip_bootstrap = "https://www.7-zip.org/a/7za920.zip"
 $URL_xmp_flac = "http://uk.un4seen.com/files/xmp-flac.zip"
 $URL_xmp_opus = "http://uk.un4seen.com/files/xmp-opus.zip"
@@ -29,13 +60,9 @@ $URL_xmp_ym = "https://www.un4seen.com/stuff/xmp-ym.zip"
 $URL_xnview = "https://download.xnview.com/XnView-win-small.zip"
 $URL_compoview = "https://files.scene.org/get:nl-http/resources/graphics/compoview_v1_02b.zip"
 $URL_gliss = "https://www.emphy.de/~mfie/foo/gliss_new.exe|gliss.exe"
-$URL_acidview = "https://sourceforge.net/projects/acidview6-win32/files/acidview6-win32/6.10/avw-610.zip/download|avw-610.zip"
+$URL_acidview = "SourceForge:acidview6-win32/6.10/avw-610.zip"
 $URL_sahli = "https://github.com/m0qui/Sahli/archive/master.zip|Sahli-master.zip"
 $URL_ffmpeg = "http://keyj.emphy.de/ffmpeg_win32_builds/ffmpeg_win32_build_latest.7z"
-
-# a note about the URLs above:
-# if a suitable download file name isn't derivable from the URL,
-# it can be specified manually by appending it after a pipe sign ('|')
 
 ###############################################################################
 
@@ -89,9 +116,9 @@ function subdir_of($dir) {
     return Join-Path $dir $sub.Name
 }
 
-# download a file into the temp directory and return its path
-function download($url) {
-    mkdir_s $cacheDir
+# split a URL into a (URL, filename) tuple
+function parse_url($url) {
+    # check for filename override
     $parts = $url.split("|")
     if ($parts.Count -gt 1) {
         $url = $parts[0]
@@ -100,6 +127,21 @@ function download($url) {
     else {
         $filename = $url.split("?")[0].split("#")[0].trim("/").split("/")[-1]
     }
+
+    # check for SourceForge pseudo-URL
+    if ($url.ToLower().StartsWith("sourceforge:")) {
+        $url = $url.split(":")[-1]
+        $project = $url.split("/")[0]
+        $url = "https://sourceforge.net/projects/$project/files/$url/download"
+    }
+
+    return @($url, $filename)
+}
+
+# download a file into the temp directory and return its path
+function download($url) {
+    $url, $filename = parse_url $url
+    mkdir_s $cacheDir
     $filename = Join-Path $cacheDir $filename
     if (need $filename) {
         status ("Downloading: " + $url)

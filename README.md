@@ -37,6 +37,8 @@ The following applications are **not** included for bloat or licensing reasons, 
 
 Just run `scripts/setup.cmd`. This will download and unpack everything.
 
+You may also have a look at `scripts/setup.ps1` before and update the version-dependent download URLs to the newest releases of the various programs, if you like.
+
 ## Special Configuration Options
 
 Some of the tools are pre-configured in non-standard ways:
