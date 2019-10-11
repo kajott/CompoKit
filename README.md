@@ -14,10 +14,10 @@ A CompoKit installation mainly consists of third-party tools:
 - **DOS Emulator:** [DOSBox](https://www.dosbox.com/) and [DOSBox-X](https://dosbox-x.com/)
 - **Text Editor:** [Notepad++](https://notepad-plus-plus.org/)
 - **PDF Viewer:** [SumatraPDF](https://www.sumatrapdfreader.org/)
+- **Audio/Video Transcoder:** [FFmpeg](http://ffmpeg.org/)
 - Graphics compo background music
   - a selection of nice, not too bombastic demoscene music *(not included in the repository)*
   - a script ("`play_shuffled.cmd`") to generate shuffled playlists of whole directories and play them back, using the [Balanced Shuffle](https://keyj.emphy.de/balanced-shuffle/) algorithm
-- Other tools: [FFmpeg](http://ffmpeg.org/) (for quick editing or transcoding of media files, should the need arise)
 
 The following applications are **not** included for bloat or licensing reasons, but may be required for full functionality:
 - Google Chrome (for WebGL demos and Sahli)
@@ -88,4 +88,4 @@ Some of the tools are pre-configured in non-standard ways:
       whatever.com
       ```
 - Chrome
-  - CKLaunch, the `bin/Chrome.cmd` and `Sahli/_run.cmd` scripts run Chrome in fullscreen mode with the `--allow-file-acces-from-files` parameter 
+  - CKLaunch, the `bin/Chrome.cmd` and `Sahli/_run.cmd` scripts run Chrome in fullscreen mode with the `--allow-file-acces-from-files` parameter and with a private profile directory that should not interfere with the system-wide installation

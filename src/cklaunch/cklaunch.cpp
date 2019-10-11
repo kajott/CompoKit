@@ -1117,7 +1117,7 @@ void EnterItem() {
 
         // add the remaining arguments
         cmdline.push_back(' ');
-        cmdline.append(StringReplace(StringReplace(ft->args, "$", path), "&", cmdDir));
+        cmdline.append(StringReplace(StringReplace(StringReplace(ft->args, "$", path), "&", cmdDir), "?", execDir));
         #ifdef _DEBUG
             printf("+ %s\n", cmdline.c_str());
         #endif
