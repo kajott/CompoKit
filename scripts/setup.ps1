@@ -31,6 +31,7 @@ $URL_compoview = "https://files.scene.org/get:nl-http/resources/graphics/compovi
 $URL_gliss = "https://www.emphy.de/~mfie/foo/gliss_new.exe|gliss.exe"
 $URL_acidview = "https://sourceforge.net/projects/acidview6-win32/files/acidview6-win32/6.10/avw-610.zip/download|avw-610.zip"
 $URL_sahli = "https://github.com/m0qui/Sahli/archive/master.zip|Sahli-master.zip"
+$URL_ffmpeg = "http://keyj.emphy.de/ffmpeg_win32_builds/ffmpeg_win32_build_latest.7z"
 
 # a note about the URLs above:
 # if a suitable download file name isn't derivable from the URL,
@@ -476,6 +477,17 @@ disney=true
 if (need "dosbox-x.exe") {
     extract (download $URL_dosbox_x) bin/x64/Release/dosbox-x.exe
 }
+
+
+##### FFmpeg and some other multimedia stuff #####
+
+if (need "ffmpeg.exe") {
+	extract (download $URL_ffmpeg) bin64/ffmpeg.exe bin64/ffprobe.exe bin64/ffplay.exe bin64/lame.exe
+}
+config "setpath.cmd" @"
+@set PATH=%~dp0;%PATH%
+@echo CompoKit binary directory has been added to the PATH.
+"@
 
 
 ##### Done! #####

@@ -17,6 +17,7 @@ A CompoKit installation mainly consists of third-party tools:
 - Graphics compo background music
   - a selection of nice, not too bombastic demoscene music *(not included in the repository)*
   - a script ("`play_shuffled.cmd`") to generate shuffled playlists of whole directories and play them back, using the [Balanced Shuffle](https://keyj.emphy.de/balanced-shuffle/) algorithm
+- Other tools: [FFmpeg](http://ffmpeg.org/) (for quick editing or transcoding of media files, should the need arise)
 
 The following applications are **not** included for bloat or licensing reasons, but may be required for full functionality:
 - Google Chrome (for WebGL demos and Sahli)
@@ -30,6 +31,7 @@ The following applications are **not** included for bloat or licensing reasons, 
 - Most programs and their configuration files are contained in a single directory, `bin`.
 - As far as possible, the programs are set up in a "portable" mode that eliminates or minimizes interference with possible pre-existing system-wide installations of the same programs.
 - All tools are automatically downloaded and unpacked using a PowerShell script. No special software needs to be pre-installed.
+- The script `setpath.cmd` can be used to add CompoKit's `bin` directory to the `PATH` in command-line sessions.
 
 ## Installation
 
