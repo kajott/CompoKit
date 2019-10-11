@@ -137,7 +137,7 @@ vector<FileType*> fileTypes;
 HWND hWnd;
 HDC hDC;
 HFONT hFont;
-int winWidth = 512, winHeight = 640;
+int winWidth = 290, winHeight = 379;
 int winPosX = CW_USEDEFAULT, winPosY = CW_USEDEFAULT;
 int scrollOffset = 0;
 int selectIndex = 0;
@@ -1160,7 +1160,9 @@ void EnterSiblingDir(int delta) {
         return;  // current directory not found in parent, WTF?
     }
     index += delta;
-    if ((index >= 0) && (index < int(parentContents.size())) && (parentContents[index].name != "..")) {
+    if ((index >= 0) && (index < int(parentContents.size()))
+    && (parentContents[index].name != "..")
+    &&  parentContents[index].isDir) {
         EnterDir(JoinPath(parentName, parentContents[index].name));
     }
 }
@@ -1321,6 +1323,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     if (!RegisterClass(&wc)) {
         MessageBox(nullptr, "Failed to register the window class.", WINDOW_TITLE, MB_ICONERROR);
         return 1;
+    }
+
+    // set default window position to lower-left screen corner
+    if ((winPosX == CW_USEDEFAULT) || (winPosY == CW_USEDEFAULT)) {
+        RECT r;
+        if (SystemParametersInfo(SPI_GETWORKAREA, 0, (PVOID)&r, 0)) {
+            winPosX = r.left;
+            winPosY = r.bottom - winHeight;
+        }
     }
 
     // sanitize window coordinates (i.e. ensure that the window is visible,
