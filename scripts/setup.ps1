@@ -437,12 +437,12 @@ if (need "Sahli") {
     remove_temp
 }
 config "Sahli/_run.cmd" @"
-@"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --allow-file-access-from-files "file://%~dp0/index.html"
+@"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --allow-file-access-from-files --start-fullscreen "file://%~dp0/index.html"
 "@
 
 cd $binDir
 config "Chrome.cmd" @"
-@"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --allow-file-access-from-files "%1"
+@"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --allow-file-access-from-files --start-fullscreen "%1"
 "@
 
 
