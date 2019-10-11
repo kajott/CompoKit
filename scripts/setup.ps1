@@ -373,7 +373,7 @@ BToolBar=0
 VToolBar=0
 TabBar=0
 LaunchTimes=1
-ShowAgain=268435423
+ShowAgain=268435422
 InFullscreen=1
 Only1ESC=1
 ENTER=0
@@ -407,6 +407,7 @@ OneViewMultiple=1
 OnlyOneView=1
 RightButtonFlag=1
 ShowText=0
+DirKeyVFlag=1
 [Cache]
 IsActive=0
 [Full]

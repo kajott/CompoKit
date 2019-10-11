@@ -64,11 +64,12 @@ Some of the tools are pre-configured in non-standard ways:
   - single-instance mode
 - XnView
   - medium-contrast "dark" color scheme
-  - starts in fullscreen mode, exit with Esc
   - shows only image files in browser, nothing else
   - all toolbars except menu and status bar disabled
-  - toggle fullscreen with Enter key
   - no image info overlays on thumbnails or in fullscreen mode
+  - starts in fullscreen mode, exit with Esc
+  - toggle fullscreen with Enter key
+  - Cursor Up/Down keys change frames/pages in multi-page documents (pages in TIFF, layers in PSD, ...)
 - Sahli
   - a little script `_run.cmd` is put into the Sahli directory that launches Sahli in Chrome
 - SumatraPDF
