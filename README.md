@@ -32,6 +32,7 @@ The following applications are **not** included for bloat or licensing reasons, 
 - As far as possible, the programs are set up in a "portable" mode that eliminates or minimizes interference with possible pre-existing system-wide installations of the same programs.
 - All tools are automatically downloaded and unpacked using a PowerShell script. No special software needs to be pre-installed.
 - The script `setpath.cmd` can be used to add CompoKit's `bin` directory to the `PATH` in command-line sessions.
+- Contains a tool to control Lightware and Extron DVI/HDMI crossbar switches ("matrices") with macro support, running on e.g. a Raspberry Pi with a numeric keypad: [dvi_matrix_control](src/dvi_matrix_control)
 
 ## Installation
 
