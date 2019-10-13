@@ -380,6 +380,8 @@ InfoTextSize=3
 Info=-2147220736
 MultiInstance=0
 AutoSet=1
+Bubbles=1
+TitleTray=0
 [SID_27]
 config=00FF70FF7F095000002C018813B80B1932
 [OpenMPT]

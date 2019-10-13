@@ -66,6 +66,7 @@ Some of the tools are pre-configured in non-standard ways:
   - OpenMPT pattern visualization is configured with maximum font size
   - SID is configured for Mono output with 8580 digi boost enabled
   - single-instance mode
+  - no title information bubbles in fullscreen mode
 - XnView
   - medium-contrast "dark" color scheme
   - shows only image files in browser, nothing else
