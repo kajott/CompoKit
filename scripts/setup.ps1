@@ -505,6 +505,7 @@ output=ddraw
 [render]
 aspect=true
 [cpu]
+core=dynamic
 cycles=max
 [mixer]
 rate=48000
@@ -517,6 +518,8 @@ gusrate=48000
 pcrate=48000
 tandyrate=48000
 disney=true
+[midi]
+mpu401=uart
 "@
 if (need "dosbox-x.exe") {
     extract (download $URL_dosbox_x) bin/x64/Release/dosbox-x.exe
