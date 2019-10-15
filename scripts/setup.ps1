@@ -1,9 +1,12 @@
 # CompoKit setup script
 #
-# Run this script, lean back, and see how the bin/ directory of CompoKit gets
-# populated with lots of software and some configuration files.
+# Run this script, lean back, and see how the 'bin' and 'music' directories
+# of CompoKit get populated with lots of software and music,
+# and some configuration files.
+
 
 ###############################################################################
+
 
 ##### download URLs #####
 
@@ -63,8 +66,15 @@ $URL_gliss = "https://www.emphy.de/~mfie/foo/gliss_new.exe|gliss.exe"
 $URL_acidview = "SourceForge:acidview6-win32/6.10/avw-610.zip"
 $URL_sahli = "https://github.com/m0qui/Sahli/archive/master.zip|Sahli-master.zip"
 $URL_ffmpeg = "http://keyj.emphy.de/ffmpeg_win32_builds/ffmpeg_win32_build_latest.7z"
+$URL_youtube_dl = "https://yt-dl.org/downloads/latest/youtube-dl.exe"
+
+
+# list of file extensions which are recognized as playable music files
+$musicFileTypes = "mp3 mp2 m4a aac ogg oga wma asf wav aif aiff opus flac mod xm stm s3m it".Split()
+
 
 ###############################################################################
+
 
 # setup and helper functions
 
@@ -73,6 +83,7 @@ $baseDir = Split-Path -Parent (Split-Path -Parent $PSCommandPath)
 $cacheDir = Join-Path $baseDir "temp"
 $tempDir = Join-Path $cacheDir "temp_extract"
 $binDir = Join-Path $baseDir "bin"
+$musicDir = Join-Path $baseDir "music"
 cd $baseDir
 
 # add the bin directory to the PATH while we're working on it
@@ -82,7 +93,7 @@ if (-not ($env:Path).Contains($binDir)) {
 
 # check if a file or directory doesn't already exist
 function need($obj) {
-    return -not (Test-Path $obj)
+    return -not (Test-Path -LiteralPath $obj)
 }
 
 # write a status message
@@ -116,6 +127,20 @@ function subdir_of($dir) {
     return Join-Path $dir $sub.Name
 }
 
+# extract the extension from a file name
+function get_ext($path) {
+    $x = ([string]$path).Replace("\", "/").Split("/")[-1].Split(".")
+    if ($x.Count -gt 1) { return $x[-1].ToLower() }
+}
+
+# check wheter a file is a music file
+function is_music($path) {
+    $f = ([string]$path).Replace("\", "/").Split("/")[-1].ToLower()
+    if ($f.StartsWith("mod.")) { return $true }  # old Amiga .mod syntax
+    $f = $f.Split(".")
+    return ($f.Count -gt 1 -and $musicFileTypes -Contains $f[-1])
+}
+
 # split a URL into a (URL, filename) tuple
 function parse_url($url) {
     # check for filename override
@@ -141,12 +166,12 @@ function parse_url($url) {
 # download a file into the temp directory and return its path
 function download($url) {
     $url, $filename = parse_url $url
-    mkdir_s $cacheDir
     $filename = Join-Path $cacheDir $filename
     if (need $filename) {
         status ("Downloading: " + $url)
+        mkdir_s $cacheDir
         $tempfile = $filename + ".part"
-        if (Test-Path $tempfile) { rm $tempfile >$null }
+        if (Test-Path -LiteralPath $tempfile) { rm $tempfile >$null }
         try {
             (New-Object System.Net.WebClient).DownloadFile($url, $tempfile)
         }
@@ -154,7 +179,7 @@ function download($url) {
             error ("failed to download " + $url + "`n(this may cause some subsequent errors, which may be ignored)")
             return ""
         }
-        mv $tempfile $filename >$null
+        mv -LiteralPath $tempfile $filename >$null
     }
     return $filename
 }
@@ -168,6 +193,11 @@ function extract {
     if (-not $archive) { return }
     status ("Extracting: " + $archive)
     7z -y e $archive @args > $null
+}
+
+# get a list of all files in an archive
+function archive_contents($archive) {
+    7z l -slt -ba $archive | Select-String -Pattern "Path =" | % { ([string]$_).Split("=")[-1].Trim() }
 }
 
 # extract an archive into a temporary directory and return its path
@@ -188,8 +218,8 @@ function collect($fromDir, $items) {
     $targetDir = (pwd).Path
     cd $fromDir
     foreach ($item in $items) {
-        if (-not (Test-Path (Join-Path $targetDir $item))) {
-            mv $item $targetDir
+        if (-not (Test-Path -LiteralPath (Join-Path $targetDir $item))) {
+            mv -LiteralPath $item $targetDir
         }
     }
     cd $targetDir
@@ -311,6 +341,10 @@ CheckForUpdates = false
 RememberStatePerDocument = false
 DefaultDisplayMode = single page
 "@
+
+
+##### YouTube-DL #####
+
 
 
 ##### MPC-HC #####
@@ -529,12 +563,128 @@ if (need "dosbox-x.exe") {
 ##### FFmpeg and some other multimedia stuff #####
 
 if (need "ffmpeg.exe") {
-	extract (download $URL_ffmpeg) bin64/ffmpeg.exe bin64/ffprobe.exe bin64/ffplay.exe bin64/lame.exe
+    extract (download $URL_ffmpeg) bin64/ffmpeg.exe bin64/ffprobe.exe bin64/ffplay.exe bin64/lame.exe
 }
 config "setpath.cmd" @"
 @set PATH=%~dp0;%PATH%
 @echo CompoKit binary directory has been added to the PATH.
 "@
+if (need "youtube-dl.exe") {
+    mv (download $URL_youtube_dl) "youtube-dl.exe"
+}
+
+
+##### Background Music #####
+
+mkdir_s $musicDir
+$targetDir = $musicDir
+foreach ($line in (Get-Content (Join-Path $musicDir "download.txt"))) {
+    # pre-parse the line
+    $line = $line.Trim()
+    if ((-not $line) -or $line.StartsWith("#") -or $line.StartsWith(";")) {
+        continue  # empty line or comment
+    }
+
+    # subdirectory header?
+    if ($line.StartsWith("[") -and $line.EndsWith("]")) {
+        $targetDir = Join-Path $musicDir ($line.Substring(1, $line.Length - 2))
+        mkdir_s $targetDir
+        continue
+    }
+
+    # split line into "URL -> targetFile" tuple
+    $x = $line -split "->" | % { $_.Trim() }
+    if ($x.Count -gt 1) {
+        $url, $targetFile = $x
+    } else {
+        $url = $line
+        $targetFile = $null
+    }
+
+    # URLs may be relative to scene.org's party directory tree
+    if (-not $url.Contains("://")) {
+        $url = "http://archive.scene.org/pub/parties/" + $url
+    }
+    $dummy, $downloadFile = parse_url $url
+
+    # perform special handling for SoundCloud links
+    $ytdl = $false
+    if ($url.Contains("soundcloud.com/")) { $ytdl = $true; $downloadFile += ".mp3" }
+    
+    # is the target already a music file?
+    $archive = -not (is_music $downloadFile)
+    if ((-not $archive) -and (-not $targetFile)) {
+        $targetFile = $downloadFile
+    }
+
+    # is the target file already present?
+    if ($targetFile -and (Test-Path -LiteralPath (Join-Path $targetDir $targetFile))) {
+        continue
+    }
+
+    # not there yet -> download it
+    if ($ytdl) {
+        status ("Downloading: " + $url)
+        $downloadFile = Join-Path $cacheDir $downloadFile
+        youtube-dl -f bestaudio -q -o $downloadFile $url
+    } else {
+        $downloadFile = download $url
+    }
+    if (-not $downloadFile) { continue }
+
+    # if it's a music file, move it where it belongs and be done with it
+    if (-not $archive) {
+        mv -LiteralPath $downloadFile (Join-Path $targetDir $targetFile)
+        continue
+    }
+
+    # otherwise, search the archive
+    $contents = archive_contents $downloadFile
+    if (-not $contents) {
+        error ("could not list contents of archive file " + $downloadFile)
+        continue
+    }
+
+    # does anything there match the target file name?
+    if ($targetFile) {
+        $m = $targetFile.ToLower().Replace("\", "/")
+        $extractFile = $contents | where { $_.ToLower().Replace("\", "/").Contains($m) } | select -First 1
+    } else {
+        $extractFile = $null
+    }
+
+    # no target file name match -> use any music file that matches
+    if (-not $extractFile) {
+       $extractFile = $contents | where { is_music $_ } | select -First 1
+    }
+    if (-not $extractFile) {
+        error ($downloadFile + " does not contain any music files")
+        continue
+    }
+
+    # build final file name
+    $extractBase = Split-Path -Leaf $extractFile
+    if (-not $targetFile) {
+        $targetFile = $extractBase
+    }
+    $targetPath = Join-Path $targetDir $targetFile
+
+    # final check: does the target already exist?
+    if (Test-Path -LiteralPath $targetPath) {
+        continue
+    }
+    
+    # extract temporary file and move it into place
+    status ("Extracting: " + $downloadFile + " -> " + $targetFile)
+    7z -y e "-o$cacheDir" $downloadFile $extractFile > $null
+    $extractPath = Join-Path $cacheDir $extractBase
+    if (-not (Test-Path -LiteralPath $extractPath)) {
+        error ("could not extract " + $extractFile + " from " + $downloadFile)
+        continue
+    }
+    mv -LiteralPath $extractPath $targetPath
+
+}
 
 
 ##### Done! #####

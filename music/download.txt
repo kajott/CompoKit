@@ -1,0 +1,118 @@
+# This file contains a list of music files to be downloaded
+# to populate CompoKit's music directory.
+#
+# Every line contains a single URL, optionally followed by
+# an ASCII arrow ("->") and the name of the downloaded file.
+# If the downloaded file name is omitted, it will be inferred
+# from the URL, or from the archive contents if the URL points
+# to an archive file.
+#
+# In case of archives, it's recommended to explicitly specify
+# the name of the file in the archive, so that the presence of
+# the extracted file can be checked without examining (or even
+# downloading!) the source archive first.
+#
+# URLs pointing to the "parties" tree of archive.scene.org
+# can be abbreviated: only the year, party name, compo and
+# file name are required in this case.
+#
+# Music can be put into subdirectories using INI-like
+# "[section]" headers with the desired directory name.
+#
+# The default set is split into the following categories:
+# - calm   = calm and relaxing tracks,
+#            though not necessarily downtempo
+# - retro  = everything that sounds chiptune-ish,
+#            and 80's synthwave
+# - trance = four to the floor, synth pads, 303s,
+#            and mellow melodies
+# - other  = everything that doesn't fit into the other
+#            categories
+# Admittedly, there's a very thin line between the "calm"
+# and "other" categories. Consequently, there are two "calm"
+# sections in here: The first with tracks that may as well
+# go into "other", and the second with tracks that can very
+# clearly be described as "calm". Just comment out the
+# heading of the first (contended) "calm" section to merge
+# it into "other".
+
+
+[retro]
+2006/assembly06/music/instrumental/sade_by_asiamies_lorkki.zip -> Sade_by_Asiamies_Lorkki.ogg
+http://cd.textfiles.com/bitjam/music/Awesome A - Unforgettable Times.mp3
+2017/revision17/streaming_music/chaser_-_neon_daydreams.mp3
+2019/assembly19/listening_music/affliction.wav
+https://soundcloud.com/h0ffman/hoffman-freerunner
+https://soundcloud.com/h0ffman/hoffman-makeshift
+https://soundcloud.com/h0ffman/hoffman-parallax-original-by-martin-galway
+2014/assembly14/music_listening/miami_spice_by_mice___buzzer___brainstorm.mp3
+2008/buenzli17/mp3_ogg/saga_musix_-_late-night_compo_(buenzli_edit).zip -> saga_musix_-_late-night_compo_(buenzli_edit).ogg
+2018/assembly18/dance_music/dancing_halogens.mp3
+2006/assembly06/music/instrumental/yesterday_s_journey_by_signal.zip -> Yesterday_s_Journey_by_Signal.ogg
+
+
+[trance]
+2019/thegathering19/freestyle_music/airon__winter_is_not_coming_by_einar_aka_airon.wav
+2019/assembly19/dance_music/delight__08.mp3
+2017/outline17/newschool_music/bacter_&_saga_musix-florescence.ogg
+2019/assembly19/dance_music/soul_sorrow.wav
+https://soundcloud.com/pegasus_music2/design8-hummingbird-original-mixpegasus-music
+2018/assembly18/dance_music/eolian.wav
+https://soundcloud.com/malmen/enfold-original-mix
+2019/evoke19/mp3_ogg/malmen_-_lustrous_radio_edit_.mp3
+2006/tum06/music/mp3_ogg/puryx_-_forever_again_(short_edit).zip -> puryx_-_forever_again_(short_edit).mp3
+2015/evoke15/mp3_ogg/saga_musix_-_cloudsurfing.ogg
+
+
+[other]
+# "Generic" stuff here. Not retro, not Trance.
+2017/riverwash17/music_streaming/streamingmsx_aceman.zip -> AceMan - ...and yet..mp3
+2015/assembly15/dance_music/runaway_a.i._by_byproduct___scenesat.flac
+2014/thegathering14/music_freestyle/through-time-by-capox.zip -> Through Time - Short Edit.mp3
+2013/outline13/music_newschool_streaming/cyrex_-_bagel_delight.zip -> c13-014__Cyrex_-_Bagel_Delight[o_55].mp3
+2014/riverwash14/music_streaming/dakota-low_frequency_flow.zip -> Low Frequency Flow.mp3
+2011/thegathering11/music_freestyle/edzes-eternal_limbo.mp3
+https://soundcloud.com/gargaj/case-in-point
+2009/assembly09/music/saw_by_glxblt.mp3
+https://soundcloud.com/h0ffman/hoffman-pingit-1984-soundtrack
+2014/revision14/music_streaming/hoffman_savannah_-_scroller.mp3
+2006/tum06/music/mp3_ogg/jco_-_false_message.zip -> jco_-_false_message.mp3
+2013/thegathering13/music_freestyle/016-prexhausted.mp3
+2019/assembly19/listening_music/gunpowder.wav
+2012/atparty12/freestyle_music/kepler-compact.zip -> Kepler - Compact.mp3
+http://cd.textfiles.com/bitjam/music/Little Bitchard & Mel Funktion - Kitey3 (Bitchard's Chordophonic Bit rmx).mp3
+2012/birdie12/mp3_ogg/malmen_-_bakemono.zip -> Malmen_-_Bakemono.mp3
+2014/demodays14/music/malmen_-_glowstick.mp3
+https://archive.scene.org/pub/demos/groups/haujobb/hjb-prototype1-soundtrack.zip -> muffler-melodrama.mp3
+2006/tum06/music/executable/payne_people_over_process.zip -> payne_people_over_process.ogg
+2016/assembly16/listening_music/gouraud_by_roz_fit_byterapers_rno.flac
+2017/revision17/tracked_music/saga_musix_-_disassembly_final_version.zip -> saga musix - disassembly.it
+2019/assembly19/listening_music/dogfighter.wav
+
+
+[calm]
+# This section can be counted as "calm" or as "other"; YMMV.
+# Just comment the section heading to merge them into "other".
+2015/riverwash15/music_streaming/streaming_msx_dakota_of_futuris_disappearing_horizon.zip -> Disappearing Horizon.mp3
+2014/revision14/music_streaming/liquid_impact_by_dakota.zip -> Liquid impact by Dakota.mp3
+https://soundcloud.com/logicomacorp/rise-and-shine
+https://soundcloud.com/gargaj/distant-sweet-horizon
+https://soundcloud.com/gargaj/everything-repeats
+https://soundcloud.com/h0ffman/hoffman-elysian-soundtrack
+2016/thegathering16/freestyle_music/the_beauty_of_noise_by_joakim_skurk.wav
+2016/assembly16/listening_music/noah_s_urk_by_paokala.mp3
+2007/tum07/music/streamed/payne_useless.zip -> payne_useless.ogg
+https://soundcloud.com/gargaj/soluslunes-endless-space-gargaj-remix
+2010/breakpoint10/mp3_ogg/subdream-mesmerized_edit.mp3
+2016/solskogen16/music_newschool/t-101_-_escape.zip -> T-101_-_Escape.mp3
+2019/revision19/streaming-music/wright_and_bastard_-_the_fat_dandy_butterfly_slims.zip -> Wright_And_Bastard_-_The_Fat_Dandy_Butterfly_Slims_(MP3).mp3
+http://archive.scene.org/pub/music/disks/va-moleman_2_soundtrack__2012_.zip -> 32_-_ziona_-_positive_injection.mp3
+
+
+[calm]
+# Now the really calm tracks:
+http://seppjo.de/pouet/rise.zip -> rise.xm
+http://archive.scene.org/pub/music/disks/va-moleman_2_soundtrack__2012_.zip -> 33_-_echolith_-_diversity.mp3
+https://soundcloud.com/gargaj/colorstar-falling-gargaj-remix
+2018/nova18/mixed_genre_streaming_music/hoffman_-_half_of_the_time.mp3
+http://www.welfare.be/music/ley/red-waiting_for_that_special_random_bitch.mp3

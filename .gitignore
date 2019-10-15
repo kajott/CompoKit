@@ -4,3 +4,5 @@ bin/*
 !bin/cklaunch.exe
 !bin/cklaunch.ini
 scripts/shuffle.m3u
+music/*
+!music/download.txt

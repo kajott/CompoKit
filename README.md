@@ -14,9 +14,10 @@ A CompoKit installation mainly consists of third-party tools:
 - **DOS Emulator:** [DOSBox](https://www.dosbox.com/) and [DOSBox-X](https://dosbox-x.com/)
 - **Text Editor:** [Notepad++](https://notepad-plus-plus.org/)
 - **PDF Viewer:** [SumatraPDF](https://www.sumatrapdfreader.org/)
-- **Audio/Video Transcoder:** [FFmpeg](http://ffmpeg.org/)
-- Graphics compo background music
-  - a selection of nice, not too bombastic demoscene music *(not included in the repository)*
+- **Audio/Video Tools:** [FFmpeg](http://ffmpeg.org/), [youtube-dl](https://ytdl-org.github.io/youtube-dl/)
+- **Background music:**
+  - a selection of nice, not too bombastic demoscene music, downloaded from scene.org archives and (where necessary) SoundCloud
+    - see [music/download.txt](music/download.txt) - suggestions or pull requests to extend or improve the list are highly welcome!
   - a script ("`play_shuffled.cmd`") to generate shuffled playlists of whole directories and play them back, using the [Balanced Shuffle](https://keyj.emphy.de/balanced-shuffle/) algorithm
 
 The following applications are **not** included for bloat or licensing reasons, but may be required for full functionality:
