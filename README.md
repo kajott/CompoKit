@@ -60,8 +60,9 @@ Some of the tools are pre-configured in non-standard ways:
   - doesn't leave fullscreen mode when playback is complete
   - Q key quits (instead of Alt+X)
   - uses the Sync Renderer to minimize framedrops and judder
-  - no Direct3D exclusive fullscreen mode (questionable if it would have any benefits on Windows 10; may become extremely problematic when codec errors occur)
+  - *no* Direct3D exclusive fullscreen mode (questionable if it would have any benefits on Windows 10; may become extremely problematic when codec errors occur)
 - XMPlay
+  - starts paused (press P to start playback)
   - OpenMPT plugin is used by default for MOD, S3M, XM and IT formats
     - MOD files use 20% stereo separation and Amiga low-pass filter instead of interpolation
     - S3M, XM, IT use 100% stereo separation and 8-tap interpolation
