@@ -388,6 +388,12 @@ CommandMod0=816 1 51 "" 5 0 0 0
 if (need "xmplay.exe") {
     extract (download $URL_xmplay) xmplay.exe xmp-zip.dll xmp-wma.dll
 }
+if (need "xmp-wma.dll") {
+    # These DLLs are normally included in the XMPlay download archive,
+    # but as long as we're shipping an unreleased custom build of xmplay.exe,
+    # we need to extract them from the archive to be feature-complete.
+    extract (download $URL_xmplay) xmp-zip.dll xmp-wma.dll
+}
 if (need "xmp-openmpt.dll") {
     extract (download $URL_libopenmpt) XMPlay/openmpt-mpg123.dll XMPlay/xmp-openmpt.dll
 }
