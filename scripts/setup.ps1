@@ -1,9 +1,33 @@
-# CompoKit setup script
-#
-# Run this script, lean back, and see how the 'bin' and 'music' directories
-# of CompoKit get populated with lots of software and music,
-# and some configuration files.
+<#
+.synopsis
+    CompoKit setup script
+.description
+    This script installs all components of CompoKit.
+    By default, only the required programs are downloaded and installed into
+    the 'bin' directory; optionally, additional programs and music files
+    can be installed too.
+.parameter Packages
+    One or more "packages" to be installed. A package can either be a
+    program name, or "all" for all essential programs, or "music" for
+    the background music files. The default is "all".
+.parameter List
+    Don't install anything, just print a list of installable packages.
+.parameter Reconfigure
+    Force re-writing the selected packages' configuration files.
+    Note that all former contents of these files (i.e. any configuration
+    settings the user has performed) are lost!
+.parameter Reinstall
+    Force redownloading, reinstallation and reconfiguration of the
+    selected packages.
+#>
 
+param(
+    [switch] $List,
+    [switch] $Reconfigure,
+    [switch] $Reinstall,
+    [parameter(ValueFromRemainingArguments=$true)] [string[]] $Packages
+)
+if (-not $Packages.Count) { $Packages = @("all") }
 
 ###############################################################################
 
@@ -79,6 +103,7 @@ $musicFileTypes = "mp3 mp2 m4a aac ogg oga wma asf wav aif aiff opus flac mod xm
 # setup and helper functions
 
 # set up directories
+$global:_pkgstatuses = @()
 $baseDir = Split-Path -Parent (Split-Path -Parent $PSCommandPath)
 $cacheDir = Join-Path $baseDir "temp"
 $tempDir = Join-Path $cacheDir "temp_extract"
@@ -91,11 +116,6 @@ if (-not ($env:Path).Contains($binDir)) {
     Set-Item -Path Env:Path -Value ($binDir + ";" + $Env:Path)
 }
 
-# check if a file or directory doesn't already exist
-function need($obj) {
-    return -not (Test-Path -LiteralPath $obj)
-}
-
 # write a status message
 function status($msg) {
     Write-Host -ForegroundColor DarkCyan $msg
@@ -106,12 +126,50 @@ function error($msg) {
     Write-Host -ForegroundColor Yellow -BackgroundColor DarkRed ("ERROR: " + $msg)
 }
 
+# write a package status message
+function pkgstatus($msg) {
+    if ($global:_pkgstatuses -contains $msg) { return }
+    $global:_pkgstatuses += , $msg
+    Write-Host -ForegroundColor Magenta $msg
+}
+
+# check if a file or directory doesn't already exist
+function need {
+    param([string] $File, [string[]] $For, [switch] $Config, [switch] $NoOverwrite)
+
+    # is the package this check is for being processed at all?
+    if ($For -and -not ($For | where { $Packages -contains $_})) {
+        return $false
+    }
+
+    # check whether this file needs to be produced
+    $needed = ((-not (Test-Path -LiteralPath $File)) `
+           -or ($Reinstall -and -not $NoOverwrite) `
+           -or ($Config -and $Reconfigure))
+
+    # generate status message
+    if ($needed -and $For) {
+        $status = if ($Config) {"Configuring: "} else {"Installing: "}
+        pkgstatus ($status + $For[0])
+    }
+
+    return $needed
+}
+
 # create a directory if it doesn't exist
 function mkdir_s($dir) {
-    if (need $dir) {
+    if (-not (Test-Path $dir)) {
         status ("Creating Directory: " + $dir)
         mkdir $dir > $null
     }
+}
+
+# move a file to its target location; remove the target first if necessary
+function mv_f($src, $dest) {
+    if (Test-Path -LiteralPath $dest) {
+        rm -LiteralPath $dest -ErrorAction SilentlyContinue > $null
+    }
+    mv -LiteralPath $src $dest > $null
 }
 
 # remove temporary extraction directory again
@@ -167,7 +225,7 @@ function parse_url($url) {
 function download($url) {
     $url, $filename = parse_url $url
     $filename = Join-Path $cacheDir $filename
-    if (need $filename) {
+    if ($Reinstall -or -not (Test-Path $filename)) {
         status ("Downloading: " + $url)
         mkdir_s $cacheDir
         $tempfile = $filename + ".part"
@@ -179,7 +237,7 @@ function download($url) {
             error ("failed to download " + $url + "`n(this may cause some subsequent errors, which may be ignored)")
             return ""
         }
-        mv -LiteralPath $tempfile $filename >$null
+        mv_f $tempfile $filename
     }
     return $filename
 }
@@ -219,21 +277,48 @@ function collect($fromDir, $items) {
     cd $fromDir
     foreach ($item in $items) {
         if (-not (Test-Path -LiteralPath (Join-Path $targetDir $item))) {
-            mv -LiteralPath $item $targetDir
+            mv_f $item $targetDir
         }
     }
     cd $targetDir
 }
 
 # create a text file with specific content (if it doesn't exist already)
-function config($filename, $contents="") {
-    if (need $filename) {
-        status ("Creating File: " + $filename)
-        New-Item -Name $filename -Value $contents > $null
+function config() {
+    param([string] $File, [string] $Contents, [string[]] $For)
+    if (need $File -For $For -Config) {
+        status ("Creating File: " + $File)
+        New-Item -Name $File -Force -Value $Contents > $null
     }
 }
 
 ###############################################################################
+
+
+# -List mode
+if ($List) {
+    $all = @()
+    $others = @()
+    Get-Content -LiteralPath $PSCommandPath | % {
+        if ($_ -match '-for ([a-z0-9,+-]+)') {
+            $pkgs = $matches[1] -split ","
+            if ($pkgs -contains "all") {
+                $all += $pkgs
+            } else {
+                $others += $pkgs
+            }
+        }
+    }
+    Write-Host -ForegroundColor Yellow "Packages that are installed by default (part of metapackage 'all'):"
+    Write-Host ("  " + ($all | sort | ? { $_ -ne "all" } | select -Unique))
+    Write-Host -ForegroundColor Yellow "Packages that must be installed explicitly:"
+    Write-Host ("  " + ($others | sort | select -Unique))
+    exit
+}
+
+
+###############################################################################
+
 
 # populate the bin directory
 mkdir_s $binDir
@@ -243,7 +328,7 @@ $hadCache = Test-Path $cacheDir
 
 ##### 7-zip #####
 
-if (need "7z.exe") {
+if (need "7z.exe" -for 7zip,all,music) {
     # bootstrapping: download the old 9.20 x86 executable first;
     # it's the only one that comes in .zip format and can be extracted
     # by PowerShell itself
@@ -262,14 +347,14 @@ if (need "7z.exe") {
 
 ##### Total Commander #####
 
-if (need "totalcmd64.exe") {
+if (need "totalcmd64.exe" -for totalcmd,all) {
     # tcmd's download file is an installer that contains a .cab file
     # with the actual data; thus we need to extract the .cab first
     $cab = Join-Path $cacheDir "tcmd.cab"
     if (need $cab) {
         cd $cacheDir
         extract (download $URL_totalcmd) INSTALL.CAB
-        mv INSTALL.CAB $cab
+        mv_f INSTALL.CAB $cab
         cd $binDir
     }
 
@@ -281,9 +366,9 @@ if (need "totalcmd64.exe") {
         "NOCLOSE64.EXE", "TCMADM64.EXE", "TOTALCMD.INC"
     )
     extract $cab @tcfiles
-    foreach ($f in $tcfiles) { mv $f $f.ToLower() }
+    foreach ($f in $tcfiles) { mv_f $f $f.ToLower() }
 }
-config "wincmd.ini" @"
+config "wincmd.ini" -for totalcmd,all @"
 [Configuration]
 UseIniInProgramDir=7
 UseNewDefFont=1
@@ -318,7 +403,7 @@ CursorText=16777215
 [right]
 path=$baseDir
 "@
-config "wcx_ftp.ini" @"
+config "wcx_ftp.ini" -for totalcmd,all @"
 [default]
 pasvmode=1
 "@
@@ -326,16 +411,16 @@ pasvmode=1
 
 ##### Notepad++, SumatraPDF #####
 
-if (need "notepad++.exe") {
+if (need "notepad++.exe" -for notepad++,all) {
     extract (download $URL_npp) notepad++.exe SciLexer.dll doLocalConf.xml langs.model.xml stylers.model.xml
-    if (need langs.xml)   { mv langs.model.xml   langs.xml   >$null }
-    if (need stylers.xml) { mv stylers.model.xml stylers.xml >$null }
+    if (-not (Test-Path langs.xml)) { mv_f langs.model.xml   langs.xml   >$null }
+    if (-not (Test-Path langs.xml)) { mv_f stylers.model.xml stylers.xml >$null }
 }
 
-if (need "SumatraPDF.exe") {
+if (need "SumatraPDF.exe" -for sumatrapdf,all) {
     extract (download $URL_sumatra) SumatraPDF.exe
 }
-config "SumatraPDF-settings.txt" @"
+config "SumatraPDF-settings.txt" -for sumatrapdf,all @"
 UiLanguage = en
 CheckForUpdates = false
 RememberStatePerDocument = false
@@ -343,13 +428,9 @@ DefaultDisplayMode = single page
 "@
 
 
-##### YouTube-DL #####
-
-
-
 ##### MPC-HC #####
 
-if (need "mpc-hc64.exe") {
+if (need "mpc-hc64.exe" -for mpc-hc,all) {
     collect (subdir_of (extract_temp (download $URL_mpc_hc))) @(
         "LAVFilters64", "Shaders",
         "D3DCompiler_43.dll", "d3dx9_43.dll",
@@ -357,7 +438,7 @@ if (need "mpc-hc64.exe") {
     )
     remove_temp
 }
-config "mpc-hc64.ini" @"
+config "mpc-hc64.ini" -for mpc-hc,all @"
 [Settings]
 AfterPlayback=0
 AllowMultipleInstances=0
@@ -385,34 +466,34 @@ CommandMod0=816 1 51 "" 5 0 0 0
 
 ##### XMPlay #####
 
-if (need "xmplay.exe") {
+if (need "xmplay.exe" -for xmplay,all -NoOverwrite) {
     extract (download $URL_xmplay) xmplay.exe xmp-zip.dll xmp-wma.dll
 }
-if (need "xmp-wma.dll") {
+if (need "xmp-wma.dll" -for xmplay,all) {
     # These DLLs are normally included in the XMPlay download archive,
     # but as long as we're shipping an unreleased custom build of xmplay.exe,
     # we need to extract them from the archive to be feature-complete.
     extract (download $URL_xmplay) xmp-zip.dll xmp-wma.dll
 }
-if (need "xmp-openmpt.dll") {
+if (need "xmp-openmpt.dll" -for xmplay,all) {
     extract (download $URL_libopenmpt) XMPlay/openmpt-mpg123.dll XMPlay/xmp-openmpt.dll
 }
-if (need "xmp-flac.dll") {
+if (need "xmp-flac.dll" -for xmplay,all) {
     extract (download $URL_xmp_flac) xmp-flac.dll
 }
-if (need "xmp-opus.dll") {
+if (need "xmp-opus.dll" -for xmplay,all) {
     extract (download $URL_xmp_opus) xmp-opus.dll
 }
-if (need "xmp-sid.dll") {
+if (need "xmp-sid.dll" -for xmplay,all) {
     extract (download $URL_xmp_sid) xmp-sid.dll
 }
-if (need "xmp-ahx.dll") {
+if (need "xmp-ahx.dll" -for xmplay,all) {
     extract (download $URL_xmp_ahx) xmp-ahx.dll
 }
-if (need "xmp-ym.dll") {
+if (need "xmp-ym.dll" -for xmplay,all) {
     extract (download $URL_xmp_ym) xmp-ym.dll
 }
-config "xmplay.ini" @"
+config "xmplay.ini" -for xmplay,all @"
 [XMPlay]
 PluginTypes=786D702D6F70656E6D70742E646C6C006D6F642073336D20786D20697400
 MODmode=2
@@ -427,7 +508,7 @@ config=00FF70FF7F095000002C018813B80B1932
 [OpenMPT]
 UseAmigaResampler=1
 "@
-if (need "xmplay.set") {
+if (need -config "xmplay.set" -for xmplay,all) {
     # XMPlay's preset file is an ugly binary blob :(
     status ("Creating File: xmplay.set")
     $data = [byte[]] @()
@@ -445,10 +526,10 @@ if (need "xmplay.set") {
 
 ##### XnView #####
 
-if (need "xnview.exe") {
+if (need "xnview.exe" -for xnview,all) {
     extract (download $URL_xnview) XnView/xnview.exe XnView/xnview.exe.manifest
 }
-config "xnview.ini" @"
+config "xnview.ini" -for xnview,all @"
 [Cache]
 SavingMode=1
 [Start]
@@ -504,13 +585,13 @@ LosslessBak=0
 
 ##### CompoView, GLISS, ACiDview #####
 
-if (need "compoview_64.exe") {
+if (need "compoview_64.exe" -for compoview,all) {
     extract (download $URL_compoview) compoview/compoview_64.exe
 }
-if (need "gliss.exe") {
-    mv (download $URL_gliss) .
+if (need "gliss.exe" -for gliss,all) {
+    mv_f (download $URL_gliss) .
 }
-if (need "ACiDview.exe") {
+if (need "ACiDview.exe" -for acidview,all) {
     extract (download $URL_acidview) ACiDview.exe
 }
 
@@ -518,26 +599,26 @@ if (need "ACiDview.exe") {
 ##### Sahli, Chrome #####
 
 cd $baseDir
-if (need "Sahli") {
-    mv (subdir_of (extract_temp (download $URL_sahli))) "Sahli"
+if (need "Sahli" -for sahli,all) {
+    mv_f (subdir_of (extract_temp (download $URL_sahli))) "Sahli"
     remove_temp
 }
-config "Sahli/_run.cmd" @"
+config "Sahli/_run.cmd" -for sahli,all @"
 @"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --user-data-dir="%~dp0\..\temp\chrome" --allow-file-access-from-files --start-fullscreen "file://%~dp0/index.html"
 "@
 
 cd $binDir
-config "Chrome.cmd" @"
+config "Chrome.cmd" -for utils,all @"
 @"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --user-data-dir="%~dp0\..\temp\chrome" --allow-file-access-from-files --start-fullscreen "%1"
 "@
 
 
 ##### DOSBox(-X) #####
 
-if (need "dosbox.exe") {
+if (need "dosbox.exe" -for dosbox,all) {
     extract (download $URL_dosbox_vanilla) DOSBox.exe SDL.dll SDL_net.dll
 }
-config "dosbox.conf" @"
+config "dosbox.conf" -for dosbox,all @"
 [sdl]
 fullscreen=true
 fullresolution=desktop
@@ -561,141 +642,146 @@ disney=true
 [midi]
 mpu401=uart
 "@
-if (need "dosbox-x.exe") {
+if (need "dosbox-x.exe" -for dosbox-x,all) {
     extract (download $URL_dosbox_x) bin/x64/Release/dosbox-x.exe
 }
 
 
 ##### FFmpeg and some other multimedia stuff #####
 
-if (need "ffmpeg.exe") {
+if (need "ffmpeg.exe" -for ffmpeg) {
     extract (download $URL_ffmpeg) bin64/ffmpeg.exe bin64/ffprobe.exe bin64/ffplay.exe bin64/lame.exe
 }
-config "setpath.cmd" @"
+config "setpath.cmd" -for utils,ffmpeg,all @"
 @set PATH=%~dp0;%PATH%
 @echo CompoKit binary directory has been added to the PATH.
 "@
-if (need "youtube-dl.exe") {
-    mv (download $URL_youtube_dl) "youtube-dl.exe"
+if (need "youtube-dl.exe" -for youtube-dl,music) {
+    mv_f (download $URL_youtube_dl) .
 }
 
 
 ##### Background Music #####
 
-mkdir_s $musicDir
-$targetDir = $musicDir
-foreach ($line in (Get-Content (Join-Path $musicDir "download.txt"))) {
-    # pre-parse the line
-    $line = $line.Trim()
-    if ((-not $line) -or $line.StartsWith("#") -or $line.StartsWith(";")) {
-        continue  # empty line or comment
-    }
+if ($Packages -contains "music") {
+    mkdir_s $musicDir
+    $targetDir = $musicDir
+    foreach ($line in (Get-Content (Join-Path $musicDir "download.txt"))) {
+        # pre-parse the line
+        $line = $line.Trim()
+        if ((-not $line) -or $line.StartsWith("#") -or $line.StartsWith(";")) {
+            continue  # empty line or comment
+        }
 
-    # subdirectory header?
-    if ($line.StartsWith("[") -and $line.EndsWith("]")) {
-        $targetDir = Join-Path $musicDir ($line.Substring(1, $line.Length - 2))
-        mkdir_s $targetDir
-        continue
-    }
+        # subdirectory header?
+        if ($line.StartsWith("[") -and $line.EndsWith("]")) {
+            $targetDir = Join-Path $musicDir ($line.Substring(1, $line.Length - 2))
+            mkdir_s $targetDir
+            continue
+        }
 
-    # split line into "URL -> targetFile" tuple
-    $x = $line -split "->" | % { $_.Trim() }
-    if ($x.Count -gt 1) {
-        $url, $targetFile = $x
-    } else {
-        $url = $line
-        $targetFile = $null
-    }
+        # split line into "URL -> targetFile" tuple
+        $x = $line -split "->" | % { $_.Trim() }
+        if ($x.Count -gt 1) {
+            $url, $targetFile = $x
+        } else {
+            $url = $line
+            $targetFile = $null
+        }
 
-    # URLs may be relative to scene.org's party directory tree
-    if (-not $url.Contains("://")) {
-        $url = "http://archive.scene.org/pub/parties/" + $url
-    }
-    $dummy, $downloadFile = parse_url $url
+        # URLs may be relative to scene.org's party directory tree
+        if (-not $url.Contains("://")) {
+            $url = "http://archive.scene.org/pub/parties/" + $url
+        }
+        $dummy, $downloadFile = parse_url $url
 
-    # perform special handling for SoundCloud links
-    $ytdl = $false
-    if ($url.Contains("soundcloud.com/")) { $ytdl = $true; $downloadFile += ".mp3" }
+        # perform special handling for SoundCloud links
+        $ytdl = $false
+        if ($url.Contains("soundcloud.com/")) { $ytdl = $true; $downloadFile += ".mp3" }
     
-    # is the target already a music file?
-    $archive = -not (is_music $downloadFile)
-    if ((-not $archive) -and (-not $targetFile)) {
-        $targetFile = $downloadFile
-    }
+        # is the target already a music file?
+        $archive = -not (is_music $downloadFile)
+        if ((-not $archive) -and (-not $targetFile)) {
+            $targetFile = $downloadFile
+        }
 
-    # is the target file already present?
-    if ($targetFile -and (Test-Path -LiteralPath (Join-Path $targetDir $targetFile))) {
-        continue
-    }
+        # is the target file already present?
+        if ($targetFile -and (Test-Path -LiteralPath (Join-Path $targetDir $targetFile))) {
+            continue
+        }
 
-    # not there yet -> download it
-    if ($ytdl) {
-        status ("Downloading: " + $url)
-        $downloadFile = Join-Path $cacheDir $downloadFile
-        youtube-dl -f bestaudio -q -o $downloadFile $url
-    } else {
-        $downloadFile = download $url
-    }
-    if (-not $downloadFile) { continue }
+        # not there yet -> download it
+        pkgstatus "Downloading music ..."
+        if ($ytdl) {
+            status ("Downloading: " + $url)
+            $downloadFile = Join-Path $cacheDir $downloadFile
+            youtube-dl -f bestaudio -q -o $downloadFile $url
+        } else {
+            $downloadFile = download $url
+        }
+        if (-not $downloadFile) { continue }
 
-    # if it's a music file, move it where it belongs and be done with it
-    if (-not $archive) {
-        mv -LiteralPath $downloadFile (Join-Path $targetDir $targetFile)
-        continue
-    }
+        # if it's a music file, move it where it belongs and be done with it
+        if (-not $archive) {
+            mv_f $downloadFile (Join-Path $targetDir $targetFile)
+            continue
+        }
 
-    # otherwise, search the archive
-    $contents = archive_contents $downloadFile
-    if (-not $contents) {
-        error ("could not list contents of archive file " + $downloadFile)
-        continue
-    }
+        # otherwise, search the archive
+        $contents = archive_contents $downloadFile
+        if (-not $contents) {
+            error ("could not list contents of archive file " + $downloadFile)
+            continue
+        }
 
-    # does anything there match the target file name?
-    if ($targetFile) {
-        $m = $targetFile.ToLower().Replace("\", "/")
-        $extractFile = $contents | where { $_.ToLower().Replace("\", "/").Contains($m) } | select -First 1
-    } else {
-        $extractFile = $null
-    }
+        # does anything there match the target file name?
+        if ($targetFile) {
+            $m = $targetFile.ToLower().Replace("\", "/")
+            $extractFile = $contents | where { $_.ToLower().Replace("\", "/").Contains($m) } | select -First 1
+        } else {
+            $extractFile = $null
+        }
 
-    # no target file name match -> use any music file that matches
-    if (-not $extractFile) {
-       $extractFile = $contents | where { is_music $_ } | select -First 1
-    }
-    if (-not $extractFile) {
-        error ($downloadFile + " does not contain any music files")
-        continue
-    }
+        # no target file name match -> use any music file that matches
+        if (-not $extractFile) {
+           $extractFile = $contents | where { is_music $_ } | select -First 1
+        }
+        if (-not $extractFile) {
+            error ($downloadFile + " does not contain any music files")
+            continue
+        }
 
-    # build final file name
-    $extractBase = Split-Path -Leaf $extractFile
-    if (-not $targetFile) {
-        $targetFile = $extractBase
-    }
-    $targetPath = Join-Path $targetDir $targetFile
+        # build final file name
+        $extractBase = Split-Path -Leaf $extractFile
+        if (-not $targetFile) {
+            $targetFile = $extractBase
+        }
+        $targetPath = Join-Path $targetDir $targetFile
 
-    # final check: does the target already exist?
-    if (Test-Path -LiteralPath $targetPath) {
-        continue
-    }
+        # final check: does the target already exist?
+        if (Test-Path -LiteralPath $targetPath) {
+            continue
+        }
     
-    # extract temporary file and move it into place
-    status ("Extracting: " + $downloadFile + " -> " + $targetFile)
-    7z -y e "-o$cacheDir" $downloadFile $extractFile > $null
-    $extractPath = Join-Path $cacheDir $extractBase
-    if (-not (Test-Path -LiteralPath $extractPath)) {
-        error ("could not extract " + $extractFile + " from " + $downloadFile)
-        continue
-    }
-    mv -LiteralPath $extractPath $targetPath
-
-}
+        # extract temporary file and move it into place
+        status ("Extracting: " + $downloadFile + " -> " + $targetFile)
+        7z -y e "-o$cacheDir" $downloadFile $extractFile > $null
+        $extractPath = Join-Path $cacheDir $extractBase
+        if (-not (Test-Path -LiteralPath $extractPath)) {
+            error ("could not extract " + $extractFile + " from " + $downloadFile)
+            continue
+        }
+        mv_f $extractPath $targetPath
+    }   # end of music loop
+}   # end of if ($Packages -contains music)
 
 
 ##### Done! #####
 
-if ((-not $hadCache) -and (Test-Path $cacheDir)) {
+cd $baseDir
+if (-not $global:_pkgstatuses) {
+    Write-Host -ForegroundColor DarkGreen "Nothing to do."
+} elseif ((-not $hadCache) -and (Test-Path $cacheDir)) {
     Write-Host -ForegroundColor Green "Everything set up. You can now delete the temp directory if you like:"
     Write-Host -ForegroundColor Green "   rmdir /s /q $cacheDir"
 }

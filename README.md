@@ -14,11 +14,9 @@ A CompoKit installation mainly consists of third-party tools:
 - **DOS Emulator:** [DOSBox](https://www.dosbox.com/) and [DOSBox-X](https://dosbox-x.com/)
 - **Text Editor:** [Notepad++](https://notepad-plus-plus.org/)
 - **PDF Viewer:** [SumatraPDF](https://www.sumatrapdfreader.org/)
-- **Audio/Video Tools:** [FFmpeg](http://ffmpeg.org/), [youtube-dl](https://ytdl-org.github.io/youtube-dl/)
-- **Background music:**
-  - a selection of nice, not too bombastic demoscene music, downloaded from scene.org archives and (where necessary) SoundCloud
-    - see [music/download.txt](music/download.txt) - suggestions or pull requests to extend or improve the list are highly welcome!
-  - a script ("`play_shuffled.cmd`") to generate shuffled playlists of whole directories and play them back, using the [Balanced Shuffle](https://keyj.emphy.de/balanced-shuffle/) algorithm
+- **Audio/Video Tools:** [FFmpeg](http://ffmpeg.org/), [youtube-dl](https://ytdl-org.github.io/youtube-dl/) *(only installed on demand)*
+- **Background music:** a selection of nice, not too bombastic demoscene music, downloaded from scene.org archives and (where necessary) SoundCloud
+  - see [music/download.txt](music/download.txt) - suggestions or pull requests to extend or improve the list are highly welcome!
 
 The following applications are **not** included for bloat or licensing reasons, but may be required for full functionality:
 - Google Chrome (for WebGL demos and Sahli)
@@ -31,15 +29,20 @@ The following applications are **not** included for bloat or licensing reasons, 
 
 - Most programs and their configuration files are contained in a single directory, `bin`.
 - As far as possible, the programs are set up in a "portable" mode that eliminates or minimizes interference with possible pre-existing system-wide installations of the same programs.
+- Where applicable, the tools are preconfigured for use in compos. For example, images and videos open in fullscreen mode, and media files don't start playback until a key has been pressed (so that the video source for the bigscreen can be switched in the meantime).
 - All tools are automatically downloaded and unpacked using a PowerShell script. No special software needs to be pre-installed.
+  - This script, `setup.ps1` (and its batch wrapper, `setup.cmd`) works like a small package manager, including "`-reconfigure`" and "`-reinstall`" options.
 - The script `setpath.cmd` can be used to add CompoKit's `bin` directory to the `PATH` in command-line sessions.
+- Contains a script (`play_shuffled.cmd`) to generate shuffled playlists of whole directories and play them back, using the [Balanced Shuffle](https://keyj.emphy.de/balanced-shuffle/) algorithm.
 - Contains a tool to control Lightware and Extron DVI/HDMI crossbar switches ("matrices") with macro support, running on e.g. a Raspberry Pi with a numeric keypad: [dvi_matrix_control](src/dvi_matrix_control)
 
 ## Installation
 
-Just run `scripts/setup.cmd`. This will download and unpack everything.
+Just run `scripts/setup.cmd`. This will download and unpack all essential programs (except FFmpeg and youtube-dl) into the `bin` directory.
 
-You may also have a look at `scripts/setup.ps1` before and update the version-dependent download URLs to the newest releases of the various programs, if you like.
+You may also have a look at `scripts/setup.ps1` before and update the version-dependent download URLs to the newest releases of the various programs.
+
+To get all the music files (i.e. populate the `music` directory with all the stuff listed in `music/download.txt`), run `scripts/download_music.cmd`.
 
 ## Special Configuration Options
 

@@ -1,5 +1,7 @@
 # This file contains a list of music files to be downloaded
 # to populate CompoKit's music directory.
+# To actually download the files listed here, call
+#     <CompoKit base directory>\scripts\download_music.cmd
 #
 # Every line contains a single URL, optionally followed by
 # an ASCII arrow ("->") and the name of the downloaded file.
