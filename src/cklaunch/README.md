@@ -21,12 +21,13 @@ The CompoKit Launcher is a small Win32 application for navigating directories, s
 | Left / Right | Navigate to the previous or next sibling directory (in lexicographic order, case-insensitive).
 | Enter | Run the currently selected file. If an application has been configured for the file's extension in the `[Actions]` section of the configuration file, the configured application is run. Otherwise, the system's default operation is performed, just as if the file was double-clicked in Explorer.
 | Ctrl+Enter, Shift+Enter, Alt+Enter | If configured in the configuration file, open the currently selected file in an alternate application, independent of its extension.
-| Space | Mark the currently selected file (or subdirectory) as the default for this directory. When re-entering the directory later, the marked file is automatically selected instead of the parent directory (`[..]`). A star (`*`) is shown right of the name of the default file. Press Space on the `[..]` entry to remove the default mark for this directory.
+| Space | Mark the currently selected file (or subdirectory) as the default for this directory. When re-entering the directory later, the marked file is automatically selected instead of the parent directory (`[..]`). A star (`*`) is shown right of the name of the default file. Press Space on the `[..]` entry to remove the default mark for a directory.
 | Esc | Exit the program, but only after being pressed **twice**.
 | Ctrl+Q | Exit the program immediately.
 | Ctrl+C | Copy the selected file's full path into the clipboard; if the `[..]` entry is selected, copy the current directory's name.
 | Ctrl+V | Navigate to the file or directory name that's currently in the clipboard.
 | drag&drop | Dragging a file or directory from another file manager into the CompoKit Launcher window navigates to the dropped directory or selects the dropped file.
+| F2 | Rename the currently selected item. If it's a directory, default file markings for it and its child directories are preserved.
 | F5 | Reload the configuration file and refresh the current directory listing.
 | alphanumeric keys | Quick navigation in the current directory, like in Explorer.
 

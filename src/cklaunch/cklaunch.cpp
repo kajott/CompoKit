@@ -74,9 +74,9 @@ unordered_map<string, FileType*> fileTypeMap;
 
 struct DirItem {
     bool isDir;
-    string name;
-    string display;
-    string sortKey;
+    string name;     // original name of the file
+    string display;  // display name: directory name enclosed in [brackets]
+    string sortKey;  // lower-case copy, used for sorting and searching
     FileType* fileType;
     inline bool operator<(const DirItem& other) {
         if (isDir && !other.isDir) { return true; }
@@ -134,7 +134,8 @@ unordered_map<string, string> defaults;
 unordered_map<string, string> toolMap;
 vector<FileType*> fileTypes;
 
-HWND hWnd;
+HINSTANCE hInstance;
+HWND hWnd, hEdit = nullptr;
 HDC hDC;
 HFONT hFont;
 int winWidth = 290, winHeight = 379;
@@ -326,7 +327,7 @@ string GetClipboard() {
     HGLOBAL data = GetClipboardData(CF_TEXT);
     if (data) {
         void* ptr = GlobalLock(data);
-        res = (const char*) ptr;
+        if (ptr) { res = (const char*) ptr; }
         GlobalUnlock(data);
     }
     CloseClipboard();
@@ -1067,10 +1068,12 @@ bool EnterDir(const string& path, const string& select="", bool forceReload=fals
     return true;
 }
 
-void Reload() {
+void Reload(bool withConfig=true) {
     int oldScroll = scrollOffset;
-    LoadConfig();
-    InitFont();
+    if (withConfig) {
+        LoadConfig();
+        InitFont();
+    }
     EnterDir(currDir, IsValidSelectIndex() ? items[selectIndex].name : "", true);
     scrollOffset = oldScroll;
     GoTo(selectIndex);
@@ -1181,33 +1184,6 @@ void SetDefaultIndex(int index) {
     Invalidate();
 }
 
-void HandleKey(int vk) {
-    static bool escape = false;
-    static bool wantEnter = false;
-    if ((vk < 0) && (vk != -VK_ESCAPE)) { escape = false; }
-    switch (vk) {
-        case  VK_UP:     GoTo(selectIndex - 1); break;
-        case  VK_DOWN:   GoTo(selectIndex + 1); break;
-        case  VK_LEFT:   EnterSiblingDir(-1); break;
-        case  VK_RIGHT:  EnterSiblingDir(+1); break;
-        case  VK_PRIOR:  GoTo(selectIndex - GetVisibleLines() + 1); break;
-        case  VK_NEXT:   GoTo(selectIndex + GetVisibleLines() - 1); break;
-        case  VK_HOME:   GoTo(0); break;
-        case  VK_END:    GoTo(int(items.size()) - 1); break;
-        case  VK_BACK:   EnterDir(DirName(currDir)); break;
-        case  VK_F5:     Reload(); break;
-        case  VK_SPACE:  SetDefaultIndex(selectIndex); break;
-        case  'C':       if (GetKeyState(VK_CONTROL) & 0x8000) { SetClipboard(GetCurrentItem()); } break;
-        case  'V':       if (GetKeyState(VK_CONTROL) & 0x8000) { string path(GetClipboard()); if (!path.empty()) { EnterDir(path); } } break;
-        case  'Q':       if (GetKeyState(VK_CONTROL) & 0x8000) { PostQuitMessage(0); } break;
-        case -VK_ESCAPE: if (!escape) { escape = true; }
-                                 else { PostQuitMessage(0); } break;
-        case  VK_RETURN: wantEnter = true; break;
-        case -VK_RETURN: if (wantEnter) { wantEnter = false; EnterItem(); } break;
-        default: break;
-    }
-}
-
 void QuickSearch(int c) {
     static string term;
     static DWORD timeout = 0;
@@ -1233,6 +1209,127 @@ void QuickSearch(int c) {
     } while (searchIndex != selectIndex);
 }
 
+bool IsRenameable() {
+    return (IsValidSelectIndex() && (items[selectIndex].name != "..") && !currDir.empty());
+}
+
+void CancelEdit(bool confirm=false) {
+    string newName;
+    if (!hEdit) { return; }
+    if (confirm && IsRenameable()) {
+        newName.resize(GetWindowTextLength(hEdit));
+        newName.resize(GetWindowText(hEdit, &newName[0], int(newName.capacity())));
+    }
+    DestroyWindow(hEdit);
+    hEdit = nullptr;
+    SetFocus(hWnd);
+    if (newName.empty() || (newName == items[selectIndex].name)) {
+        return;  // no new name, empty new name, or name not changed
+    }
+    string oldPath(JoinPath(currDir, items[selectIndex].name));
+    string newPath(JoinPath(currDir, newName));
+    if (!MoveFile(oldPath.c_str(), newPath.c_str())) {
+        MessageBox(hWnd, "Could not rename the item.", "CompoKit Launcher", MB_ICONERROR);
+        return;
+    }
+    items[selectIndex].name = newName;
+    if (items[selectIndex].isDir) {
+        // directory renamed -> re-assign all defaults below that directory
+        oldPath = StrToLower(oldPath);
+        newPath = StrToLower(newPath);
+        bool changed, anything = false;
+        do {
+            // outer loop -- we reenter this everytime we touch anything
+            // in the map, just to be on the safe side, even though this
+            // might degrade performance to O(n^2) in the worst case
+            changed = false;
+            for (auto& it : defaults) {
+                // check if the key matches the old path exactly,
+                // or is a prefix of the old path, followed by a path separator
+                if ((it.first.compare(0, oldPath.size(), oldPath) == 0)
+                && (    (it.first.size() == oldPath.size())
+                     || (ispathsep(it.first[oldPath.size()]))))
+                {
+                    // save the old entry and remove it
+                    string key(it.first);
+                    string value(it.second);
+                    defaults.erase(key);
+                    // modify the key to point to the new name
+                    key.erase(0, oldPath.size());
+                    key.insert(0, newPath);
+                    // create a new entry and iterate again
+                    defaults[key] = value;
+                    changed = anything = true;
+                    break;
+                }
+            }
+        } while (changed);
+        if (anything) { SaveState(true); }
+    }
+    Reload(false);
+}
+
+static WNDPROC defEditWndProc = nullptr;
+LRESULT CALLBACK EditWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+    switch (msg) {
+        case WM_KEYDOWN:
+            switch (wParam) {
+                case VK_TAB:
+                case VK_RETURN: CancelEdit(true);  break;
+                case VK_ESCAPE: CancelEdit(false); break;
+                default: break;
+            }
+            /* fall-through */
+        default:
+            return defEditWndProc(hWnd, msg, wParam, lParam);
+    }
+    return 0;
+}
+
+void RenameItem() {
+    if (!IsRenameable()) { return; }
+    hEdit = CreateWindow(
+            "EDIT", nullptr,
+            WS_CHILD | WS_VISIBLE,
+            0, (selectIndex - scrollOffset + 1) * lineHeight,
+            winWidth, lineHeight,
+            hWnd, nullptr, nullptr, nullptr);
+    if (!hEdit) { return; }
+    SendMessage(hEdit, WM_SETFONT, WPARAM(hFont), TRUE);
+    SetWindowText(hEdit, items[selectIndex].name.c_str());
+    SendMessage(hEdit, EM_SETSEL, 0, LPARAM(-1));
+    defEditWndProc = WNDPROC(SetWindowLongPtr(hEdit, GWLP_WNDPROC, LONG_PTR(EditWndProc)));
+    SetFocus(hEdit);
+}
+
+void HandleKey(int vk) {
+    static bool escape = false;
+    static bool wantEnter = false;
+    if ((vk < 0) && (vk != -VK_ESCAPE)) { escape = false; }
+    switch (vk) {
+        case  VK_UP:     GoTo(selectIndex - 1); break;
+        case  VK_DOWN:   GoTo(selectIndex + 1); break;
+        case  VK_LEFT:   EnterSiblingDir(-1); break;
+        case  VK_RIGHT:  EnterSiblingDir(+1); break;
+        case  VK_PRIOR:  GoTo(selectIndex - GetVisibleLines() + 1); break;
+        case  VK_NEXT:   GoTo(selectIndex + GetVisibleLines() - 1); break;
+        case  VK_HOME:   GoTo(0); break;
+        case  VK_END:    GoTo(int(items.size()) - 1); break;
+        case  VK_BACK:   EnterDir(DirName(currDir)); break;
+        case  VK_F2:     RenameItem(); escape = false; break;
+        case  VK_F5:     Reload(); break;
+        case  VK_SPACE:  SetDefaultIndex(selectIndex); break;
+        case  'C':       if (GetKeyState(VK_CONTROL) & 0x8000) { SetClipboard(GetCurrentItem()); } break;
+        case  'V':       if (GetKeyState(VK_CONTROL) & 0x8000) { string path(GetClipboard()); if (!path.empty()) { EnterDir(path); } } break;
+        case  'Q':       if (GetKeyState(VK_CONTROL) & 0x8000) { PostQuitMessage(0); } break;
+        case -VK_ESCAPE: if (!escape) { escape = true; }
+                                 else { PostQuitMessage(0); } break;
+        case  VK_RETURN: wantEnter = true; break;
+        case -VK_RETURN: if (wantEnter) { wantEnter = false; EnterItem(); } break;
+        default: break;
+    }
+}
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
         case WM_PAINT: {
@@ -1242,6 +1339,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             EndPaint(hWnd, &ps);
             break; }
         case WM_SIZE:
+            CancelEdit(false);
             winWidth = LOWORD(lParam);
             winHeight = HIWORD(lParam);
             GoTo(selectIndex);
@@ -1260,17 +1358,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             QuickSearch(int(wParam));
             break;
         case WM_LBUTTONDOWN: {
+            CancelEdit(true);
             int index = scrollOffset + (GET_Y_LPARAM(lParam) / lineHeight) - 1;
             if (index >= scrollOffset) { GoTo(index); }
             break; }
         case WM_LBUTTONDBLCLK: {
+            CancelEdit(true);
             int index = scrollOffset + (GET_Y_LPARAM(lParam) / lineHeight) - 1;
             if (index == selectIndex) { EnterItem(); }
             break; }
         case WM_MOUSEWHEEL:
+            CancelEdit(true);
             ScrollTo(scrollOffset - GET_WHEEL_DELTA_WPARAM(wParam) / 40);
             break;
         case WM_DROPFILES: {
+            CancelEdit(false);
             HDROP drop = (HDROP) wParam;
             UINT size = DragQueryFile(drop, 0, NULL, 0);
             string path(size + 1, '\0');
@@ -1291,7 +1393,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 // MAIN PROGRAM                                                              //
 ///////////////////////////////////////////////////////////////////////////////
 
-int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+int APIENTRY WinMain(HINSTANCE hInst_, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+    hInstance = hInst_;
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
