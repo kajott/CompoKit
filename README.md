@@ -87,7 +87,7 @@ Some of the tools are pre-configured in non-standard ways:
   - English language (regardless of system locale)
   - page layout set to "single page, don't save for every document"
 - DOSBox
-  - provided config file `dosbox.conf` sets fullscreen with correct aspect ratio, maximum speed (`cycles=max`) and 48000 Hz sample rate from all audio sources (including GUS and Covox)
+  - provided config file `dosbox.conf` sets fullscreen with correct aspect ratio, maximum speed (`core=dynamic`, `cycles=max`), 48000 Hz sample rate from all audio sources (including GUS and Covox), and UART mode for the MPU-401 MIDI interface
   - CKLaunch is configured to interpret `.dosbox` files as DOSBox configuration files and runs them with the `dosbox -conf` option
     - This can be used to provide an entry-specific DOSBox configuration: Rename the `.conf` file to `.dosbox` and make sure the entry is auto-started:
       ```

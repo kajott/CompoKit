@@ -618,30 +618,6 @@ config "Chrome.cmd" -for utils,all @"
 if (need "dosbox.exe" -for dosbox,all) {
     extract (download $URL_dosbox_vanilla) DOSBox.exe SDL.dll SDL_net.dll
 }
-config "dosbox.conf" -for dosbox,all @"
-[sdl]
-fullscreen=true
-fullresolution=desktop
-output=ddraw
-[render]
-aspect=true
-[cpu]
-core=dynamic
-cycles=max
-[mixer]
-rate=48000
-[sblaster]
-oplrate=48000
-[gus]
-gus=true
-gusrate=48000
-[speaker]
-pcrate=48000
-tandyrate=48000
-disney=true
-[midi]
-mpu401=uart
-"@
 if (need "dosbox-x.exe" -for dosbox-x,all) {
     extract (download $URL_dosbox_x) bin/x64/Release/dosbox-x.exe
 }

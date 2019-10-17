@@ -3,6 +3,7 @@ Sahli
 bin/*
 !bin/cklaunch.exe
 !bin/cklaunch.ini
+!bin/dosbox.conf
 scripts/shuffle.m3u
 music/*
 !music/download.txt
