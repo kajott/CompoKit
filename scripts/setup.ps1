@@ -246,11 +246,11 @@ function download($url) {
 function extract {
     Param(
         [string] $archive,
-        [parameter(ValueFromRemainingArguments=$true)] [string[]] $args
+        [parameter(ValueFromRemainingArguments=$true)] [string[]] $items
     )
     if (-not $archive) { return }
     status ("Extracting: " + $archive)
-    7z -y e $archive @args > $null
+    7z -y e $archive @items > $null
 }
 
 # get a list of all files in an archive
@@ -276,9 +276,7 @@ function collect($fromDir, $items) {
     $targetDir = (pwd).Path
     cd $fromDir
     foreach ($item in $items) {
-        if (-not (Test-Path -LiteralPath (Join-Path $targetDir $item))) {
-            mv_f $item $targetDir
-        }
+        mv_f $item (Join-Path $targetDir $item)
     }
     cd $targetDir
 }
@@ -351,7 +349,7 @@ if (need "totalcmd64.exe" -for totalcmd,all) {
     # tcmd's download file is an installer that contains a .cab file
     # with the actual data; thus we need to extract the .cab first
     $cab = Join-Path $cacheDir "tcmd.cab"
-    if (need $cab) {
+    if (-not (Test-Path $cab)) {
         cd $cacheDir
         extract (download $URL_totalcmd) INSTALL.CAB
         mv_f INSTALL.CAB $cab
@@ -366,7 +364,9 @@ if (need "totalcmd64.exe" -for totalcmd,all) {
         "NOCLOSE64.EXE", "TCMADM64.EXE", "TOTALCMD.INC"
     )
     extract $cab @tcfiles
-    foreach ($f in $tcfiles) { mv_f $f $f.ToLower() }
+    foreach ($f in $tcfiles) {
+        mv $f $f.ToLower() -ErrorAction SilentlyContinue > $null
+    }
 }
 config "wincmd.ini" -for totalcmd,all @"
 [Configuration]
@@ -413,8 +413,8 @@ pasvmode=1
 
 if (need "notepad++.exe" -for notepad++,all) {
     extract (download $URL_npp) notepad++.exe SciLexer.dll doLocalConf.xml langs.model.xml stylers.model.xml
-    if (-not (Test-Path langs.xml)) { mv_f langs.model.xml   langs.xml   >$null }
-    if (-not (Test-Path langs.xml)) { mv_f stylers.model.xml stylers.xml >$null }
+    mv_f langs.model.xml   langs.xml
+    mv_f stylers.model.xml stylers.xml
 }
 
 if (need "SumatraPDF.exe" -for sumatrapdf,all) {
