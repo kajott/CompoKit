@@ -91,6 +91,7 @@ $URL_acidview = "https://sourceforge.net/projects/acidview6-win32/files/acidview
 $URL_sahli = "https://github.com/m0qui/Sahli/archive/master.zip|Sahli-master.zip"
 $URL_ffmpeg = "http://keyj.emphy.de/ffmpeg_win32_builds/ffmpeg_win32_build_latest.7z"
 $URL_youtube_dl = "https://yt-dl.org/downloads/latest/youtube-dl.exe"
+$URL_vice = "https://sourceforge.net/projects/vice-emu/files/releases/binaries/windows/WinVICE-3.1-x64.7z/download"
 
 
 # list of file extensions which are recognized as playable music files
@@ -600,13 +601,13 @@ if (need "Sahli" -for sahli,all) {
     mv_f (subdir_of (extract_temp (download $URL_sahli))) "Sahli"
     remove_temp
 }
-cd $binDir
 config "Sahli/_run.cmd" -for sahli,all @"
 @"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --user-data-dir="%TEMP%\compokit_chrome_profile" --allow-file-access-from-files --start-fullscreen "file://%~dp0/index.html"
 "@
+cd $binDir
 
 
-##### DOSBox(-X) #####
+##### DOSBox(-X), VICE #####
 
 if (need "dosbox.exe" -for dosbox,all) {
     extract (download $URL_dosbox_vanilla) DOSBox.exe SDL.dll SDL_net.dll
@@ -614,6 +615,40 @@ if (need "dosbox.exe" -for dosbox,all) {
 if (need "dosbox-x.exe" -for dosbox-x,all) {
     extract (download $URL_dosbox_x) bin/x64/Release/dosbox-x.exe
 }
+if (need "VICE/x64.exe" -for vice,all) {
+    mv_f (subdir_of (extract_temp (download $URL_vice))) "VICE"
+    remove_temp
+}
+config "VICE/vice.ini" -for vice,all @"
+[C64]
+FullscreenWidth=1920
+FullscreenHeight=1080
+FullscreenRefreshRate=50
+ConfirmOnExit=0
+VICIIColorBrightness=750
+VICIIFilter=0
+[C64SC]
+FullscreenWidth=1920
+FullscreenHeight=1080
+FullscreenRefreshRate=50
+ConfirmOnExit=0
+VICIIColorBrightness=750
+VICIIFilter=0
+[PLUS4]
+FullscreenWidth=1920
+FullscreenHeight=1080
+FullscreenRefreshRate=50
+ConfirmOnExit=0
+TEDColorBrightness=750
+TEDFilter=0
+[VIC20]
+FullscreenWidth=1920
+FullscreenHeight=1080
+FullscreenRefreshRate=50
+ConfirmOnExit=0
+VICColorBrightness=750
+VICFilter=0
+"@
 
 
 ##### FFmpeg and some other multimedia stuff #####

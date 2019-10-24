@@ -12,6 +12,7 @@ A CompoKit installation mainly consists of third-party tools:
 - **Image Viewer:** [XnView](https://www.xnview.com/en/), [CompoView](https://www.pouet.net/prod.php?which=56934), [GLISS](http://svn.emphy.de/scripts/trunk/gliss.cpp)
 - **ANSI Viewer:** [ACiDView](https://sourceforge.net/projects/acidview6-win32/) and [Sahli](https://github.com/m0qui/Sahli)
 - **DOS Emulator:** [DOSBox](https://www.dosbox.com/) and [DOSBox-X](https://dosbox-x.com/)
+- **C64 Emulator:** [WinVICE](http://vice-emu.sourceforge.net/)
 - **Text Editor:** [Notepad++](https://notepad-plus-plus.org/)
 - **PDF Viewer:** [SumatraPDF](https://www.sumatrapdfreader.org/)
 - **Audio/Video Tools:** [FFmpeg](http://ffmpeg.org/), [youtube-dl](https://ytdl-org.github.io/youtube-dl/) *(only installed on demand)*
@@ -96,6 +97,11 @@ Some of the tools are pre-configured in non-standard ways:
       C:
       whatever.com
       ```
+- WinVICE (C64, VIC-20, Plus/4 only)
+  - version 3.1 is used, because it's the last non-bloated pure Win32 version
+  - scanlines disabled, brightness adjusted to compensate
+  - fullscreen mode set to 1080p50 (make sure that mode exists before using Alt+D!)
+  - no confirmation on exit
 - Chrome: special settings when run through `bin/Chrome.cmd` and `Sahli/_run.cmd` scripts and CKLaunch's default configuration
   - fullscreen mode
   - `--allow-file-acces-from-files`
