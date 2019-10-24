@@ -4,6 +4,8 @@ bin/*
 !bin/cklaunch.exe
 !bin/cklaunch.ini
 !bin/dosbox.conf
+!bin/Chrome.cmd
+!bin/Firefox.cmd
 scripts/shuffle.m3u
 music/*
 !music/download.txt

@@ -326,7 +326,7 @@ $hadCache = Test-Path $cacheDir
 
 ##### 7-zip #####
 
-if (need "7z.exe" -for 7zip,all,music) {
+if (need "7z.exe") {
     # bootstrapping: download the old 9.20 x86 executable first;
     # it's the only one that comes in .zip format and can be extracted
     # by PowerShell itself
@@ -596,7 +596,7 @@ if (need "ACiDview.exe" -for acidview,all) {
 }
 
 
-##### Sahli, Chrome #####
+##### Sahli #####
 
 cd $baseDir
 if (need "Sahli" -for sahli,all) {
@@ -604,12 +604,7 @@ if (need "Sahli" -for sahli,all) {
     remove_temp
 }
 config "Sahli/_run.cmd" -for sahli,all @"
-@"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --user-data-dir="%~dp0\..\temp\chrome" --allow-file-access-from-files --start-fullscreen "file://%~dp0/index.html"
-"@
-
-cd $binDir
-config "Chrome.cmd" -for utils,all @"
-@"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --user-data-dir="%~dp0\..\temp\chrome" --allow-file-access-from-files --start-fullscreen "%1"
+@"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --user-data-dir="%TEMP%\compokit_chrome_profile" --allow-file-access-from-files --start-fullscreen "file://%~dp0/index.html"
 "@
 
 

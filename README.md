@@ -96,5 +96,14 @@ Some of the tools are pre-configured in non-standard ways:
       C:
       whatever.com
       ```
-- Chrome
-  - CKLaunch, the `bin/Chrome.cmd` and `Sahli/_run.cmd` scripts run Chrome in fullscreen mode with the `--allow-file-acces-from-files` parameter and with a private profile directory that should not interfere with the system-wide installation
+- Chrome: special settings when run through `bin/Chrome.cmd` and `Sahli/_run.cmd` scripts and CKLaunch's default configuration
+  - fullscreen mode
+  - `--allow-file-acces-from-files`
+  - uses private profile directory (`%TEMP%\cklaunch_chrome_profile`)
+    - clean "freshly installed" profile, no user misconfiguration possible
+    - forces new instance if Chrome is already running with the default profile
+- Firefox: special settings when run through `bin/Firefox.cmd` script
+  - uses private profile directory (`%TEMP%\cklaunch_firefox_profile`)
+    - clean "freshly installed" profile, no user misconfiguration possible
+    - forces new instance if Firefox is already running with the default profile
+  - if no filename is specified, opens the `about:config` page with the setting that needs to be disabled to allow file-based demos to run
