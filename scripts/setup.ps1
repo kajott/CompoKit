@@ -68,7 +68,7 @@ $URL_xmplay = "http://uk.un4seen.com/files/xmplay38.zip"
 $URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.4.9+release.bin.win.zip"
 # https://lib.openmpt.org/libopenmpt/download/ -> xmp-openmpt for Windows 7+ (x86 + SSE2)
 
-$URL_dosbox_vanilla = "SourceForge:dosbox/0.74-3/DOSBox0.74-3-win32-installer.exe"
+$URL_dosbox_vanilla = "https://sourceforge.net/projects/dosbox/files/dosbox/0.74-3/DOSBox0.74-3-win32-installer.exe/download"
 # https://sourceforge.net/projects/dosbox/files/dosbox/ -> latest version -> Win32 installer
 
 $URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v0.82.22/dosbox-x-windows-20190930-175141-windows.zip"
@@ -87,7 +87,7 @@ $URL_xmp_ym = "https://www.un4seen.com/stuff/xmp-ym.zip"
 $URL_xnview = "https://download.xnview.com/XnView-win-small.zip"
 $URL_compoview = "https://files.scene.org/get:nl-http/resources/graphics/compoview_v1_02b.zip"
 $URL_gliss = "https://www.emphy.de/~mfie/foo/gliss_new.exe|gliss.exe"
-$URL_acidview = "SourceForge:acidview6-win32/6.10/avw-610.zip"
+$URL_acidview = "https://sourceforge.net/projects/acidview6-win32/files/acidview6-win32/6.10/avw-610.zip/download"
 $URL_sahli = "https://github.com/m0qui/Sahli/archive/master.zip|Sahli-master.zip"
 $URL_ffmpeg = "http://keyj.emphy.de/ffmpeg_win32_builds/ffmpeg_win32_build_latest.7z"
 $URL_youtube_dl = "https://yt-dl.org/downloads/latest/youtube-dl.exe"
@@ -207,17 +207,14 @@ function parse_url($url) {
         $url = $parts[0]
         $filename = $parts[-1]
     }
+    elseif ($url.ToLower().EndsWith("/download")) {
+        # SourceForge-style URL that ends with "/download"
+        $filename = $url.Split("/")[-2]
+    }
     else {
-        $filename = $url.split("?")[0].split("#")[0].trim("/").split("/")[-1]
+        # normal URL
+        $filename = $url.Split("?")[0].Split("#")[0].Trim("/").Split("/")[-1]
     }
-
-    # check for SourceForge pseudo-URL
-    if ($url.ToLower().StartsWith("sourceforge:")) {
-        $url = $url.split(":")[-1]
-        $project = $url.split("/")[0]
-        $url = "https://sourceforge.net/projects/$project/files/$url/download"
-    }
-
     return @($url, $filename)
 }
 
@@ -603,6 +600,7 @@ if (need "Sahli" -for sahli,all) {
     mv_f (subdir_of (extract_temp (download $URL_sahli))) "Sahli"
     remove_temp
 }
+cd $binDir
 config "Sahli/_run.cmd" -for sahli,all @"
 @"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --user-data-dir="%TEMP%\compokit_chrome_profile" --allow-file-access-from-files --start-fullscreen "file://%~dp0/index.html"
 "@
