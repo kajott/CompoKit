@@ -1,6 +1,6 @@
 # CompoKit
 
-CompoKit is an all-inclusive environment with (almost) all tools required for hosting PC demoscene competitions.
+CompoKit is an all-inclusive environment with (almost) all tools required for hosting PC [demoscene](https://en.wikipedia.org/wiki/Demoscene) competitions.
 
 ## Contents
 
@@ -18,6 +18,7 @@ A CompoKit installation mainly consists of third-party tools:
 - **Audio/Video Tools:** [FFmpeg](http://ffmpeg.org/), [youtube-dl](https://ytdl-org.github.io/youtube-dl/) *(only installed on demand)*
 - **Background music:** a selection of nice, not too bombastic demoscene music, downloaded from scene.org archives and (where necessary) SoundCloud
   - see [music/download.txt](music/download.txt) - suggestions or pull requests to extend or improve the list are highly welcome!
+- **Manual:** a comprehensive [document](Compo-HOWTO.md) that describes everything a compo organizer has to do
 
 The following applications are **not** included for bloat or licensing reasons, but may be required for full functionality:
 - Google Chrome (for WebGL demos and Sahli)
@@ -84,6 +85,7 @@ Some of the tools are pre-configured in non-standard ways:
   - Cursor Up/Down keys change frames/pages in multi-page documents (pages in TIFF, layers in PSD, ...)
 - Sahli
   - a little script `_run.cmd` is put into the Sahli directory that launches Sahli in Chrome
+  - a [manual](Sahli-HOWTO.md) is provided
 - SumatraPDF
   - English language (regardless of system locale)
   - page layout set to "single page, don't save for every document"
