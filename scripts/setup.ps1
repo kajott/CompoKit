@@ -89,6 +89,7 @@ $URL_compoview = "https://files.scene.org/get:nl-http/resources/graphics/compovi
 $URL_gliss = "https://www.emphy.de/~mfie/foo/gliss_new.exe|gliss.exe"
 $URL_acidview = "https://sourceforge.net/projects/acidview6-win32/files/acidview6-win32/6.10/avw-610.zip/download"
 $URL_sahli = "https://github.com/m0qui/Sahli/archive/master.zip|Sahli-master.zip"
+$URL_typr = "https://github.com/mog/typr/archive/master.zip|typr-master.zip"
 $URL_ffmpeg = "http://keyj.emphy.de/ffmpeg_win32_builds/ffmpeg_win32_build_latest.7z"
 $URL_youtube_dl = "https://yt-dl.org/downloads/latest/youtube-dl.exe"
 $URL_vice = "https://sourceforge.net/projects/vice-emu/files/releases/binaries/windows/WinVICE-3.1-x64.7z/download"
@@ -594,9 +595,10 @@ if (need "ACiDview.exe" -for acidview,all) {
 }
 
 
-##### Sahli #####
+##### Sahli, typr #####
 
 cd $baseDir
+
 if (need "Sahli" -for sahli,all) {
     mv_f (subdir_of (extract_temp (download $URL_sahli))) "Sahli"
     remove_temp
@@ -604,6 +606,15 @@ if (need "Sahli" -for sahli,all) {
 config "Sahli/_run.cmd" -for sahli,all @"
 @"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --user-data-dir="%TEMP%\compokit_chrome_profile" --allow-file-access-from-files --start-fullscreen "file://%~dp0/index.html"
 "@
+
+if (need "typr" -for typr,all) {
+    mv_f (subdir_of (extract_temp (download $URL_typr))) "typr"
+    remove_temp
+}
+config "typr/_run.cmd" -for typr,all @"
+@"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --user-data-dir="%TEMP%\compokit_chrome_profile" --allow-file-access-from-files --start-fullscreen "file://%~dp0/index.html"
+"@
+
 cd $binDir
 
 
