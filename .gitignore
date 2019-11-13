@@ -4,9 +4,10 @@ typr
 bin/*
 !bin/cklaunch.exe
 !bin/cklaunch.ini
-!bin/dosbox.conf
 !bin/Chrome.cmd
 !bin/Firefox.cmd
+!bin/dosbox.conf
+!bin/a500.uae
 scripts/shuffle.m3u
 music/*
 !music/download.txt

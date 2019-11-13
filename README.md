@@ -11,8 +11,10 @@ A CompoKit installation mainly consists of third-party tools:
 - **Audio Player:** [XMPlay](https://www.un4seen.com/xmplay.html) with [OpenMPT Plugin](https://lib.openmpt.org/libopenmpt/) and additional plugins for SID, AHX and YM
 - **Image Viewer:** [XnView](https://www.xnview.com/en/), [CompoView](https://www.pouet.net/prod.php?which=56934), [GLISS](http://svn.emphy.de/scripts/trunk/gliss.cpp)
 - **ANSI Viewer:** [ACiDView](https://sourceforge.net/projects/acidview6-win32/) and [Sahli](https://github.com/m0qui/Sahli)
-- **DOS Emulator:** [DOSBox](https://www.dosbox.com/) and [DOSBox-X](https://dosbox-x.com/)
-- **C64 Emulator:** [WinVICE](http://vice-emu.sourceforge.net/)
+- **Emulators:**
+  - **DOS:** [DOSBox](https://www.dosbox.com/) and [DOSBox-X](https://dosbox-x.com/)
+  - **C64:** [WinVICE](http://vice-emu.sourceforge.net/)
+  - **Amiga:** [WinUAE](http://www.winuae.net/)
 - **Text Editor:** [Notepad++](https://notepad-plus-plus.org/)
 - **PDF Viewer:** [SumatraPDF](https://www.sumatrapdfreader.org/)
 - **Audio/Video Tools:** [FFmpeg](http://ffmpeg.org/), [youtube-dl](https://ytdl-org.github.io/youtube-dl/) *(only installed on demand)*
@@ -107,6 +109,14 @@ Some of the tools are pre-configured in non-standard ways:
   - scanlines disabled, brightness adjusted to compensate
   - fullscreen mode set to 1080p50 (make sure that mode exists before using Alt+D!)
   - no confirmation on exit
+- WinUAE
+  - installed in "portable mode"
+  - comes with `kickstart13.rom`
+  - configuration file `a500.uae` is provided with
+    - all settings for maximum Amiga 500 compatibility (with 512k slow RAM expansion)
+    - 20% stereo separation
+    - launch in fullscreen mode with aspect ratio correction, no GUI
+    - exit with Ctrl+F11 enabled
 - Chrome: special settings when run through `bin/Chrome.cmd` and `Sahli/_run.cmd` scripts and CKLaunch's default configuration
   - fullscreen mode
   - `--allow-file-acces-from-files`

@@ -77,6 +77,9 @@ $URL_dosbox_vanilla = "https://sourceforge.net/projects/dosbox/files/dosbox/0.74
 $URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v0.82.22/dosbox-x-windows-20190930-175141-windows.zip"
 # https://github.com/joncampbell123/dosbox-x/releases -> latest dosbox-x-windows-*-windows.zip
 
+$URL_winuae = "http://download.abime.net/winuae/releases/WinUAE4210_x64.zip"
+# http://www.winuae.net/download/ -> zip-archive (64 bit)
+
 
 # these are generic and not likely to change
 # (either because they always point to the latest version,
@@ -96,6 +99,7 @@ $URL_typr = "https://github.com/mog/typr/archive/master.zip|typr-master.zip"
 $URL_ffmpeg = "http://keyj.emphy.de/ffmpeg_win32_builds/ffmpeg_win32_build_latest.7z"
 $URL_youtube_dl = "https://yt-dl.org/downloads/latest/youtube-dl.exe"
 $URL_vice = "https://sourceforge.net/projects/vice-emu/files/releases/binaries/windows/WinVICE-3.1-x64.7z/download"
+$URL_a500rom = "https://www.ikod.se/wp-content/uploads/files/Kickstart-v1.3-rev34.5-1987-Commodore-A500-A1000-A2000-CDTV.rom"
 
 
 # list of file extensions which are recognized as playable music files
@@ -629,7 +633,7 @@ config "typr/_run.cmd" -for typr,all @"
 cd $binDir
 
 
-##### DOSBox(-X), VICE #####
+##### DOSBox(-X) #####
 
 if (need "dosbox.exe" -for dosbox,all) {
     extract (download $URL_dosbox_vanilla) DOSBox.exe SDL.dll SDL_net.dll
@@ -637,6 +641,10 @@ if (need "dosbox.exe" -for dosbox,all) {
 if (need "dosbox-x.exe" -for dosbox-x,all) {
     extract (download $URL_dosbox_x) bin/x64/Release/dosbox-x.exe
 }
+
+
+##### VICE #####
+
 if (need "VICE/x64.exe" -for vice,all) {
     mv_f (subdir_of (extract_temp (download $URL_vice))) "VICE"
     remove_temp
@@ -670,6 +678,22 @@ FullscreenRefreshRate=50
 ConfirmOnExit=0
 VICColorBrightness=750
 VICFilter=0
+"@
+
+
+##### WinUAE #####
+
+if (need "winuae64.exe" -for winuae,all) {
+    extract (download $URL_winuae) winuae64.exe
+}
+if (need "kickstart13.rom" -for winuae,all) {
+    mv_f (download $URL_a500rom) kickstart13.rom
+}
+config "winuae.ini" -for winuae,all @"
+[WinUAE]
+ConfigFileFolder=
+PathMode=WinUAE
+RelativePaths=1
 "@
 
 
