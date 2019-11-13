@@ -117,6 +117,8 @@ Some of the tools are pre-configured in non-standard ways:
     - 20% stereo separation
     - launch in fullscreen mode with aspect ratio correction, no GUI
     - exit with Ctrl+F11 enabled
+  - wrapper script `runa500.cmd` provided to run a single Amiga executable ("onefiler") by preparing a `dh0:` directory with a suitable `startup-sequence` and running it
+    - CKLaunch is configured to run `.a500` and `.amiga` files through that, so simply renaming Amiga 500 4k/64k intros from `.exe` (or whatever) to `.a500` makes them runnable
 - Chrome: special settings when run through `bin/Chrome.cmd` and `Sahli/_run.cmd` scripts and CKLaunch's default configuration
   - fullscreen mode
   - `--allow-file-acces-from-files`
