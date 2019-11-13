@@ -6,12 +6,14 @@
     By default, only the required programs are downloaded and installed into
     the 'bin' directory; optionally, additional programs and music files
     can be installed too.
+.parameter Help
+    Display this help text and exit.
+.parameter List
+    Don't install anything, just print a list of installable packages.
 .parameter Packages
     One or more "packages" to be installed. A package can either be a
     program name, or "all" for all essential programs, or "music" for
     the background music files. The default is "all".
-.parameter List
-    Don't install anything, just print a list of installable packages.
 .parameter Reconfigure
     Force re-writing the selected packages' configuration files.
     Note that all former contents of these files (i.e. any configuration
@@ -22,9 +24,10 @@
 #>
 
 param(
-    [switch] $List,
-    [switch] $Reconfigure,
-    [switch] $Reinstall,
+    [switch] [Alias("h")] $Help,
+    [switch] [Alias("l")] $List,
+    [switch] [Alias("c")] $Reconfigure,
+    [switch] [Alias("u")] $Reinstall,
     [parameter(ValueFromRemainingArguments=$true)] [string[]] $Packages
 )
 if (-not $Packages.Count) { $Packages = @("all") }
@@ -292,7 +295,11 @@ function config() {
 ###############################################################################
 
 
-# -List mode
+# -Help and -List modes
+if ($Help) {
+    Get-Help $PSCommandPath -Detailed
+    exit
+}
 if ($List) {
     $all = @()
     $others = @()
