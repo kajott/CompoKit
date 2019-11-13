@@ -89,7 +89,7 @@ $URL_xmp_ahx = "https://bitbucket.org/ssz/public-files/downloads/xmp-ahx.zip"
 $URL_xmp_ym = "https://www.un4seen.com/stuff/xmp-ym.zip"
 $URL_xnview = "https://download.xnview.com/XnView-win-small.zip"
 $URL_compoview = "https://files.scene.org/get:nl-http/resources/graphics/compoview_v1_02b.zip"
-$URL_gliss = "https://www.emphy.de/~mfie/foo/gliss_new.exe|gliss.exe"
+$URL_gliss = "https://www.emphy.de/~mfie/foo/gliss.exe"
 $URL_acidview = "https://sourceforge.net/projects/acidview6-win32/files/acidview6-win32/6.10/avw-610.zip/download"
 $URL_sahli = "https://github.com/m0qui/Sahli/archive/master.zip|Sahli-master.zip"
 $URL_typr = "https://github.com/mog/typr/archive/master.zip|typr-master.zip"
@@ -172,6 +172,9 @@ function mkdir_s($dir) {
 
 # move a file to its target location; remove the target first if necessary
 function mv_f($src, $dest) {
+    if ((Get-Item $dest -ErrorAction SilentlyContinue) -is [System.IO.DirectoryInfo]) {
+        $dest = Join-Path $dest (Split-Path -Leaf $src)
+    }
     if (Test-Path -LiteralPath $dest) {
         rm -LiteralPath $dest -ErrorAction SilentlyContinue > $null
     }
