@@ -12,7 +12,7 @@ Now that we have that out of our way, let's get started, shall we?
 
 ## Installation and startup
 
-Simply clone the GitHub repository https://github.com/m0qui/Sahli, or download [a ZIP archive](https://github.com/m0qui/Sahli/archive/master.zip) from it. If you're using CompoKit, this will already be set up for you by running `scripts/setup.cmd`.
+Simply clone the GitHub repository https://github.com/m0qui/Sahli, or download [a ZIP archive](https://github.com/m0qui/Sahli/archive/master.zip) from it. If you're using CompoKit, this will already be set up for you by running `setup.cmd`.
 
 Sahli runs in a browser; Firefox and Chrome have been tested and work fine. Simply double-clicking `index.html` may work, but only if JavaScript is allowed to access local files, which is normally isn't. If a message with the text "SAHLI READY TO GO" pops up when opening the page, everything  is fine; if it doesn't, open the `about:config` page in Firefox and set `security.fileuri.strict_origin_policy` to `false`, or run Chrome with the `--allow-file-access-from-files` option.
 

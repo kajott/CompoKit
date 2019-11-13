@@ -2,13 +2,12 @@ temp
 Sahli
 typr
 bin/*
+!bin/*.ps1
+!bin/*.cmd
 !bin/cklaunch.exe
 !bin/cklaunch.ini
-!bin/Chrome.cmd
-!bin/Firefox.cmd
 !bin/dosbox.conf
 !bin/a500.uae
-!bin/runa500.cmd
 scripts/shuffle.m3u
 music/*
 !music/download.txt

@@ -702,10 +702,6 @@ RelativePaths=1
 if (need "ffmpeg.exe" -for ffmpeg) {
     extract (download $URL_ffmpeg) bin64/ffmpeg.exe bin64/ffprobe.exe bin64/ffplay.exe bin64/lame.exe
 }
-config "setpath.cmd" -for utils,ffmpeg,all @"
-@set PATH=%~dp0;%PATH%
-@echo CompoKit binary directory has been added to the PATH.
-"@
 if (need "youtube-dl.exe" -for youtube-dl,music) {
     mv_f (download $URL_youtube_dl) .
 }

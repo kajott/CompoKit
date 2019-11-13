@@ -43,11 +43,11 @@ The following applications are **not** included for bloat or licensing reasons, 
 
 ## Installation
 
-Just run `scripts/setup.cmd`. This will download and unpack all essential programs (except FFmpeg and youtube-dl) into the `bin` directory.
+Just run `setup.cmd`. This will download and unpack all essential programs (except FFmpeg and youtube-dl) into the `bin` directory.
 
-You may also have a look at `scripts/setup.ps1` before and update the version-dependent download URLs to the newest releases of the various programs.
+You may also have a look at `bin/setup.ps1` before and update the version-dependent download URLs to the newest releases of the various programs.
 
-To get all the music files (i.e. populate the `music` directory with all the stuff listed in `music/download.txt`), run `scripts/download_music.cmd`.
+To get all the music files (i.e. populate the `music` directory with all the stuff listed in `music/download.txt`), run `bin/download_music.cmd`.
 
 ## Special Configuration Options
 

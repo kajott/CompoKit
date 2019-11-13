@@ -9,9 +9,12 @@
 # I'm pretty sure that there are more efficient ways to implement this,
 # but it does its job well for smaller collections.
 
+[CmdletBinding(PositionalBinding=$false)]
 param(
     [parameter(ValueFromRemainingArguments=$true)] [string[]] $Sources,
-    [switch] $Play
+    [string] [Alias("o")] $Output,
+    [switch] [Alias("p")] $Play,
+    [string] $Player
 )
 
 #Get-Random -SetSeed 0x13375EED >$null  # useful for debugging
@@ -136,14 +139,22 @@ foreach ($f in $Sources) {
 }
 
 $myDir = Split-Path -Parent $PSCommandPath
-$m3u = Join-Path $myDir "shuffle.m3u"
-$xmplay = Join-Path (Split-Path -Parent $myDir) "bin\xmplay.exe"
+if (-not $Output) {
+    $outDir = Join-Path (Split-Path -Parent $myDir) "temp"
+    if (-not (Test-Path -LiteralPath $outDir)) {
+        $outDir = $myDir
+    }
+    $Output = Join-Path $outDir "shuffle.m3u"
+}
+if (-not $Player) {
+    $Player = Join-Path $myDir "xmplay.exe"
+}
 
 if ($inputs) {
-    Balanced-Shuffle $inputs | Out-File -Encoding UTF8 $m3u
-    Write-Host -ForegroundColor Green "Created Playlist:" $m3u
-    if ($Play -and (Test-Path $xmplay)) {
-        & $xmplay $m3u
+    Balanced-Shuffle $inputs | Out-File -Encoding UTF8 $Output
+    Write-Host -ForegroundColor Green "Created Playlist:" $Output
+    if ($Play -and (Test-Path $Player)) {
+        & $Player $Output
     }
 }
 else {
