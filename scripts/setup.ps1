@@ -140,17 +140,18 @@ function pkgstatus($msg) {
 
 # check if a file or directory doesn't already exist
 function need {
-    param([string] $File, [string[]] $For, [switch] $Config, [switch] $NoOverwrite)
+    param([string] $File, [string[]] $For, [switch] $Config, [switch] $Always, [switch] $NoOverwrite)
 
     # is the package this check is for being processed at all?
-    if ($For -and -not ($For | where { $Packages -contains $_})) {
+    $requested = (-not $For) -or ($For | where { $Packages -contains $_})
+    if (-not ($Always -or $requested)) {
         return $false
     }
 
     # check whether this file needs to be produced
     $needed = ((-not (Test-Path -LiteralPath $File)) `
-           -or ($Reinstall -and -not $NoOverwrite) `
-           -or ($Config -and $Reconfigure))
+           -or ($Reinstall -and $requested -and -not $NoOverwrite) `
+           -or ($Config -and $requested -and $Reconfigure))
 
     # generate status message
     if ($needed -and $For) {
@@ -332,7 +333,7 @@ $hadCache = Test-Path $cacheDir
 
 ##### 7-zip #####
 
-if (need "7z.exe") {
+if (need "7z.exe" -for 7zip,all -always) {
     # bootstrapping: download the old 9.20 x86 executable first;
     # it's the only one that comes in .zip format and can be extracted
     # by PowerShell itself
