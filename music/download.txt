@@ -30,6 +30,9 @@
 #            and mellow melodies
 # - other  = everything that doesn't fit into the other
 #            categories
+# - banger = tracks that knock your socks off.
+#            not suitable for background music,
+#            but e.g. as "attention grabbers" before compos
 # Admittedly, there's a very thin line between the "calm"
 # and "other" categories. Consequently, there are two "calm"
 # sections in here: The first with tracks that may as well
@@ -51,6 +54,7 @@ https://soundcloud.com/h0ffman/hoffman-parallax-original-by-martin-galway
 2008/buenzli17/mp3_ogg/saga_musix_-_late-night_compo_(buenzli_edit).zip -> saga_musix_-_late-night_compo_(buenzli_edit).ogg
 2018/assembly18/dance_music/dancing_halogens.mp3
 2006/assembly06/music/instrumental/yesterday_s_journey_by_signal.zip -> Yesterday_s_Journey_by_Signal.ogg
+2019/demosplash19/freestyle_music/beyond_the_sunshine.xm
 
 
 [trance]
@@ -64,6 +68,7 @@ https://soundcloud.com/malmen/enfold-original-mix
 2019/evoke19/mp3_ogg/malmen_-_lustrous_radio_edit_.mp3
 2006/tum06/music/mp3_ogg/puryx_-_forever_again_(short_edit).zip -> puryx_-_forever_again_(short_edit).mp3
 2015/evoke15/mp3_ogg/saga_musix_-_cloudsurfing.ogg
+2019/deadline19/streaming_music/wayfinder-carnevale.mp3
 
 
 [other]
@@ -90,6 +95,7 @@ https://archive.scene.org/pub/demos/groups/haujobb/hjb-prototype1-soundtrack.zip
 2016/assembly16/listening_music/gouraud_by_roz_fit_byterapers_rno.flac
 2017/revision17/tracked_music/saga_musix_-_disassembly_final_version.zip -> saga musix - disassembly.it
 2019/assembly19/listening_music/dogfighter.wav
+https://soundcloud.com/gargaj/the-break-goes-on
 
 
 [calm]
@@ -109,6 +115,10 @@ https://soundcloud.com/gargaj/soluslunes-endless-space-gargaj-remix
 2016/solskogen16/music_newschool/t-101_-_escape.zip -> T-101_-_Escape.mp3
 2019/revision19/streaming-music/wright_and_bastard_-_the_fat_dandy_butterfly_slims.zip -> Wright_And_Bastard_-_The_Fat_Dandy_Butterfly_Slims_(MP3).mp3
 http://archive.scene.org/pub/music/disks/va-moleman_2_soundtrack__2012_.zip -> 32_-_ziona_-_positive_injection.mp3
+https://soundcloud.com/h0ffman/hoffman-unreal-2001
+2019/deadline19/tracked_music/bacter_vs_saga_musix_makes_some_sense_final_version.zip -> bacter_vs_saga_musix_-_makes_some_sense.it
+2019/function19/music/streaming-aceman-daisies.zip -> AceMan - Daisies.mp3
+2019/function19/music/teo_ethereal_abduction.zip -> teo_-_ethereal_abduction.mp3
 
 
 [calm]
@@ -118,3 +128,25 @@ http://archive.scene.org/pub/music/disks/va-moleman_2_soundtrack__2012_.zip -> 3
 https://soundcloud.com/gargaj/colorstar-falling-gargaj-remix
 2018/nova18/mixed_genre_streaming_music/hoffman_-_half_of_the_time.mp3
 http://www.welfare.be/music/ley/red-waiting_for_that_special_random_bitch.mp3
+https://soundcloud.com/h0ffman/intrinsic-gravity-extended-mix
+
+
+[banger]
+# Not to the stuff that makes you shake your bum properly.
+2007/tum07/music/streamed/dq_feat._scrapingmicha_-_me_chalice.zip -> dq_feat._scrapingmicha_-_me_chalice.mp3
+2008/evoke08/mp3_ogg/dq_feat._scraping_micha_-_this_year.zip -> dq_feat._scraping_micha_-_this_year.mp3
+https://holon.drastic.net/view/massive/assets/holon_is_massiv_95_coitus_interruptus_nuke_20.mp3
+2017/evoke17/mp3_ogg/wright_and_bastard_-_is_this_what_you_want.zip -> Wright_And_Bastard_-_Is_This_What_You_Want_(MP3).mp3
+2017/demobit17/combined_music/gargaj_-_blackout_in_effect.zip -> gargaj_-_blackout_in_effect.mp3
+https://soundcloud.com/gargaj/commence-collapse
+2012/revision12/streamed_music/glxblt_-_avolition.zip -> glxblt_-_avolition.mp3
+2011/stream11/music/dance/glxblt_-_murdera.mp3
+2013/sundown13/new_school_executable_music/hoffman_and_ferris_sabrewulf.zip -> Hoffman & Ferris - SabreWulf.mp3
+https://soundcloud.com/gargaj/h0ffman-gargaj-double-trouble
+2014/datastorm14/amiga/music_tracked/mod.krunk_d -> hoffman-krunkd.mod
+2013/revision13/tracked_music/pattern_skank.mod
+2014/revision14/music_tracked/hoffman_and_daytripper_professional_tracker.zip -> professionaltracker.mod
+2015/trsac15/music_32kexe/hoffman_vs_ferris_-_reverence.zip -> H0ffman vs Ferris - Reverence.mp3
+2017/solskogen17/newschool_music/logicoma---infinite.mp3
+https://soundcloud.com/yupferris/almost-infinite
+https://conspiracy.hu/files/music/xenophobe_-_function_invitation_soundtrack.mp3

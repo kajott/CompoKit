@@ -18,7 +18,10 @@ A CompoKit installation mainly consists of third-party tools:
 - **Text Editor:** [Notepad++](https://notepad-plus-plus.org/)
 - **PDF Viewer:** [SumatraPDF](https://www.sumatrapdfreader.org/)
 - **Audio/Video Tools:** [FFmpeg](http://ffmpeg.org/), [youtube-dl](https://ytdl-org.github.io/youtube-dl/) *(only installed on demand)*
-- **Background music:** a selection of nice, not too bombastic demoscene music, downloaded from scene.org archives and (where necessary) SoundCloud
+- **Music:**
+  - a selection of nice, not too bombastic demoscene music for use as background music during graphics compos ...
+  - ... and a few proper bangers for grabbing the audience's attention before a compo
+  - downloaded from scene.org archives and (where necessary) SoundCloud
   - see [music/download.txt](music/download.txt) - suggestions or pull requests to extend or improve the list are highly welcome!
 - **Full-screen typer:** [typr](https://github.com/mog/typr)
 - **Manual:** a comprehensive [document](Compo-HOWTO.md) that describes everything a compo organizer has to do
