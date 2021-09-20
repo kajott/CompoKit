@@ -8,7 +8,7 @@ A CompoKit installation mainly consists of third-party tools:
 
 - **File Manager:** [Total Commander](https://www.ghisler.com/index.htm), [7-Zip](https://www.7-zip.org/) and [CKLaunch](src/cklaunch), a custom launcher tailored for running compos
 - **Video Player:** [MPC-HC](https://mpc-hc.org/)
-- **Audio Player:** [XMPlay](https://www.un4seen.com/xmplay.html) with [OpenMPT Plugin](https://lib.openmpt.org/libopenmpt/) and additional plugins for SID, AHX and YM
+- **Audio Player:** [XMPlay](https://www.un4seen.com/xmplay.html) with [OpenMPT Plugin](https://lib.openmpt.org/libopenmpt/) and additional plugins for SID and YM
 - **Image Viewer:** [XnView](https://www.xnview.com/en/), [CompoView](https://www.pouet.net/prod.php?which=56934), [GLISS](http://svn.emphy.de/scripts/trunk/gliss.cpp)
 - **ANSI Viewer:** [ACiDView](https://sourceforge.net/projects/acidview6-win32/) and [Sahli](https://github.com/m0qui/Sahli)
 - **Emulators:**
@@ -24,6 +24,7 @@ A CompoKit installation mainly consists of third-party tools:
   - downloaded from scene.org archives and (where necessary) SoundCloud
   - see [music/download.txt](music/download.txt) - suggestions or pull requests to extend or improve the list are highly welcome!
 - **Full-screen typer:** [typr](https://github.com/mog/typr)
+- **Video Mode Switcher:** [vidmode](src/vidmode), a custom tool to switch between 1080p50 and 1080p60 for the "beamslide" PC
 - **Manual:** a comprehensive [document](Compo-HOWTO.md) that describes everything a compo organizer has to do
 
 The following applications are **not** included for bloat or licensing reasons, but may be required for full functionality:
