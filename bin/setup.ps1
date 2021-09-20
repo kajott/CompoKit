@@ -53,31 +53,34 @@ if (-not $Packages.Count) { $Packages = @("all") }
 $URL_7zip_main = "https://www.7-zip.org/a/7z1900-x64.exe"
 # https://www.7-zip.org/ -> latest stable version, .exe 64-bit x64
 
-$URL_totalcmd = "https://totalcommander.ch/win/tcmd922ax64.exe"
+$URL_totalcmd = "https://totalcommander.ch/win/tcmd1000x64.exe"
 # https://www.ghisler.com/download.htm -> 64-bit only
 
-$URL_npp = "http://download.notepad-plus-plus.org/repository/7.x/7.8/npp.7.8.bin.minimalist.7z"
+$URL_npp = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.1.4/npp.8.1.4.portable.minimalist.7z"
 # http://notepad-plus-plus.org/downloads/ -> latest release -> minimalist 7z
 
-$URL_sumatra = "https://www.sumatrapdfreader.org/dl/SumatraPDF-3.1.2-64.zip"
+$URL_sumatra = "https://kjkpubsf.sfo2.digitaloceanspaces.com/software/sumatrapdf/rel/SumatraPDF-3.3.3-64.zip"
 # https://www.sumatrapdfreader.org/download-free-pdf-viewer.html -> 64-bit builds, portable version
 
-$URL_mpc_hc = "https://binaries.mpc-hc.org/MPC%20HomeCinema%20-%20x64/MPC-HC_v1.7.13_x64/MPC-HC.1.7.13.x64.7z"
+$URL_mpc_hc = "https://github.com/mpc-hc/mpc-hc/releases/download/1.7.13/MPC-HC.1.7.13.x64.7z"
 # https://mpc-hc.org/downloads/ -> for 64-bit Windows, 7z
 
 $URL_xmplay = "http://uk.un4seen.com/files/xmplay38.zip"
 # https://www.un4seen.com/xmplay.html -> small download button (top center)
 
-$URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.4.9+release.bin.win.zip"
+$URL_xmp_sid = "http://support.xmplay.com/files/12/xmp-sidex1.1.zip"
+# https://www.un4seen.com/xmplay.html#plugins -> SIDex input plugin -> download
+
+$URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.5.11+release.bin.win.zip"
 # https://lib.openmpt.org/libopenmpt/download/ -> xmp-openmpt for Windows 7+ (x86 + SSE2)
 
 $URL_dosbox_vanilla = "https://sourceforge.net/projects/dosbox/files/dosbox/0.74-3/DOSBox0.74-3-win32-installer.exe/download"
 # https://sourceforge.net/projects/dosbox/files/dosbox/ -> latest version -> Win32 installer
 
-$URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v0.82.22/dosbox-x-windows-20190930-175141-windows.zip"
-# https://github.com/joncampbell123/dosbox-x/releases -> latest dosbox-x-windows-*-windows.zip
+$URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v0.83.17/dosbox-x-vsbuild-win64-20210831224158.zip"
+# https://github.com/joncampbell123/dosbox-x/releases -> latest dosbox-x-vsbuild-win64-*.zip
 
-$URL_winuae = "http://download.abime.net/winuae/releases/WinUAE4210_x64.zip"
+$URL_winuae = "https://download.abime.net/winuae/releases/WinUAE4400_x64.zip"
 # http://www.winuae.net/download/ -> zip-archive (64 bit)
 
 
@@ -87,8 +90,6 @@ $URL_winuae = "http://download.abime.net/winuae/releases/WinUAE4210_x64.zip"
 $URL_7zip_bootstrap = "https://www.7-zip.org/a/7za920.zip"
 $URL_xmp_flac = "http://uk.un4seen.com/files/xmp-flac.zip"
 $URL_xmp_opus = "http://uk.un4seen.com/files/xmp-opus.zip"
-$URL_xmp_sid = "https://bitbucket.org/ssz/public-files/downloads/xmp-sid.zip"
-$URL_xmp_ahx = "https://bitbucket.org/ssz/public-files/downloads/xmp-ahx.zip"
 $URL_xmp_ym = "https://www.un4seen.com/stuff/xmp-ym.zip"
 $URL_xnview = "https://download.xnview.com/XnView-win-small.zip"
 $URL_compoview = "https://files.scene.org/get:nl-http/resources/graphics/compoview_v1_02b.zip"
@@ -432,7 +433,8 @@ if (need "notepad++.exe" -for notepad++,all) {
 }
 
 if (need "SumatraPDF.exe" -for sumatrapdf,all) {
-    extract (download $URL_sumatra) SumatraPDF.exe
+    extract (download $URL_sumatra)
+    mv SumatraPDF*.exe SumatraPDF.exe
 }
 config "SumatraPDF-settings.txt" -for sumatrapdf,all @"
 UiLanguage = en
@@ -498,11 +500,8 @@ if (need "xmp-flac.dll" -for xmplay,all) {
 if (need "xmp-opus.dll" -for xmplay,all) {
     extract (download $URL_xmp_opus) xmp-opus.dll
 }
-if (need "xmp-sid.dll" -for xmplay,all) {
-    extract (download $URL_xmp_sid) xmp-sid.dll
-}
-if (need "xmp-ahx.dll" -for xmplay,all) {
-    extract (download $URL_xmp_ahx) xmp-ahx.dll
+if (need "xmp-sidex.dll" -for xmplay,all) {
+    extract (download $URL_xmp_sid) xmp-sidex.dll
 }
 if (need "xmp-ym.dll" -for xmplay,all) {
     extract (download $URL_xmp_ym) xmp-ym.dll
