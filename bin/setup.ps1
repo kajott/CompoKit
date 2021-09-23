@@ -62,8 +62,8 @@ $URL_npp = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/down
 $URL_sumatra = "https://kjkpubsf.sfo2.digitaloceanspaces.com/software/sumatrapdf/rel/SumatraPDF-3.3.3-64.zip"
 # https://www.sumatrapdfreader.org/download-free-pdf-viewer.html -> 64-bit builds, portable version
 
-$URL_mpc_hc = "https://github.com/mpc-hc/mpc-hc/releases/download/1.7.13/MPC-HC.1.7.13.x64.7z"
-# https://mpc-hc.org/downloads/ -> for 64-bit Windows, 7z
+$URL_mpc_hc = "https://github.com/clsid2/mpc-hc/releases/download/1.9.16/MPC-HC.1.9.16.x64.zip"
+# https://github.com/clsid2/mpc-hc/releases -> latest x64.zip
 
 $URL_xmplay = "http://uk.un4seen.com/files/xmplay38.zip"
 # https://www.un4seen.com/xmplay.html -> small download button (top center)
@@ -83,6 +83,13 @@ $URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/do
 $URL_winuae = "https://download.abime.net/winuae/releases/WinUAE4400_x64.zip"
 # http://www.winuae.net/download/ -> zip-archive (64 bit)
 
+$URL_capturinha = "https://github.com/kebby/Capturinha/releases/download/v0.3.0/Capturinha.zip"
+# https://github.com/kebby/Capturinha/releases -> latest .zip
+
+$URL_ffmpeg = "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2021-09-23-12-22/ffmpeg-n4.4-154-g79c114e1b2-win64-gpl-shared-4.4.zip"
+# https://github.com/BtbN/FFmpeg-Builds/releases -> latest ffmpeg-n4.4-...-win64-gpl-shared-4.4.zip
+# NOTE: this must match with the version number indicated in Capturinha's release notes above!
+
 
 # these are generic and not likely to change
 # (either because they always point to the latest version,
@@ -97,7 +104,6 @@ $URL_gliss = "https://www.emphy.de/~mfie/foo/gliss.exe"
 $URL_acidview = "https://sourceforge.net/projects/acidview6-win32/files/acidview6-win32/6.10/avw-610.zip/download"
 $URL_sahli = "https://github.com/m0qui/Sahli/archive/master.zip|Sahli-master.zip"
 $URL_typr = "https://github.com/mog/typr/archive/master.zip|typr-master.zip"
-$URL_ffmpeg = "http://keyj.emphy.de/ffmpeg_win32_builds/ffmpeg_win32_build_latest.7z"
 $URL_youtube_dl = "https://yt-dl.org/downloads/latest/youtube-dl.exe"
 $URL_vice = "https://sourceforge.net/projects/vice-emu/files/releases/binaries/windows/WinVICE-3.1-x64.7z/download"
 $URL_a500rom = "https://www.ikod.se/wp-content/uploads/files/Kickstart-v1.3-rev34.5-1987-Commodore-A500-A1000-A2000-CDTV.rom"
@@ -181,7 +187,7 @@ function mv_f($src, $dest) {
         $dest = Join-Path $dest (Split-Path -Leaf $src)
     }
     if (Test-Path -LiteralPath $dest) {
-        rm -LiteralPath $dest -ErrorAction SilentlyContinue > $null
+        rm -LiteralPath $dest -Recurse -ErrorAction SilentlyContinue > $null
     }
     mv -LiteralPath $src $dest > $null
 }
@@ -290,6 +296,11 @@ function collect($fromDir, $items) {
         mv_f $item (Join-Path $targetDir $item)
     }
     cd $targetDir
+}
+
+# move all files from a directory into the current directory
+function collect_all($fromDir) {
+    Get-ChildItem $fromDir | % { mv_f $_.FullName $_.Name }
 }
 
 # create a text file with specific content (if it doesn't exist already)
@@ -447,9 +458,9 @@ DefaultDisplayMode = single page
 ##### MPC-HC #####
 
 if (need "mpc-hc64.exe" -for mpc-hc,all) {
-    collect (subdir_of (extract_temp (download $URL_mpc_hc))) @(
-        "LAVFilters64", "Shaders",
-        "D3DCompiler_43.dll", "d3dx9_43.dll",
+    collect (extract_temp (download $URL_mpc_hc)) @(
+        "LAVFilters64", "Shaders", "Shaders11",
+        "D3DCompiler_47.dll", "D3DX9_43.dll",
         "mpc-hc64.exe"
     )
     remove_temp
@@ -698,8 +709,12 @@ RelativePaths=1
 
 ##### FFmpeg and some other multimedia stuff #####
 
-if (need "ffmpeg.exe" -for ffmpeg) {
-    extract (download $URL_ffmpeg) bin64/ffmpeg.exe bin64/ffprobe.exe bin64/ffplay.exe bin64/lame.exe
+if (need "ffmpeg.exe" -for ffmpeg,capturinha) {
+    collect_all (Join-Path (subdir_of (extract_temp (download $URL_ffmpeg))) bin)
+    remove_temp
+}
+if (need "Capturinha.exe" -for capturinha) {
+    extract (download $URL_capturinha) Capturinha.exe vcruntime140.dll vcruntime140_1.dll
 }
 if (need "youtube-dl.exe" -for youtube-dl,music) {
     mv_f (download $URL_youtube_dl) .

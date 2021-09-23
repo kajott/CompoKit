@@ -7,7 +7,7 @@ CompoKit is an all-inclusive environment with (almost) all tools required for ho
 A CompoKit installation mainly consists of third-party tools:
 
 - **File Manager:** [Total Commander](https://www.ghisler.com/index.htm), [7-Zip](https://www.7-zip.org/) and [CKLaunch](src/cklaunch), a custom launcher tailored for running compos
-- **Video Player:** [MPC-HC](https://mpc-hc.org/)
+- **Video Player:** [MPC-HC](https://github.com/clsid2/mpc-hc)
 - **Audio Player:** [XMPlay](https://www.un4seen.com/xmplay.html) with [OpenMPT Plugin](https://lib.openmpt.org/libopenmpt/) and additional plugins for SID and YM
 - **Image Viewer:** [XnView](https://www.xnview.com/en/), [CompoView](https://www.pouet.net/prod.php?which=56934), [GLISS](http://svn.emphy.de/scripts/trunk/gliss.cpp)
 - **ANSI Viewer:** [ACiDView](https://sourceforge.net/projects/acidview6-win32/) and [Sahli](https://github.com/m0qui/Sahli)
@@ -17,7 +17,7 @@ A CompoKit installation mainly consists of third-party tools:
   - **Amiga:** [WinUAE](http://www.winuae.net/)
 - **Text Editor:** [Notepad++](https://notepad-plus-plus.org/)
 - **PDF Viewer:** [SumatraPDF](https://www.sumatrapdfreader.org/)
-- **Audio/Video Tools:** [FFmpeg](http://ffmpeg.org/), [youtube-dl](https://ytdl-org.github.io/youtube-dl/) *(only installed on demand)*
+- **Audio/Video Tools:** [FFmpeg](http://ffmpeg.org/), [youtube-dl](https://ytdl-org.github.io/youtube-dl/), [Capturinha](https://github.com/kebby/Capturinha) *(only installed on demand)*
 - **Music:**
   - a selection of nice, not too bombastic demoscene music for use as background music during graphics compos ...
   - ... and a few proper bangers for grabbing the audience's attention before a compo
