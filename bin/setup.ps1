@@ -83,6 +83,9 @@ $URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/do
 $URL_winuae = "https://download.abime.net/winuae/releases/WinUAE4400_x64.zip"
 # http://www.winuae.net/download/ -> zip-archive (64 bit)
 
+$URL_tic80 = "https://github.com/nesbox/TIC-80/releases/download/v0.90.1723/tic80-v0.90-win.zip"
+# https://github.com/nesbox/TIC-80/releases -> latest *-win.zip
+
 $URL_capturinha = "https://github.com/kebby/Capturinha/releases/download/v0.3.0/Capturinha.zip"
 # https://github.com/kebby/Capturinha/releases -> latest .zip
 
@@ -705,6 +708,13 @@ ConfigFileFolder=
 PathMode=WinUAE
 RelativePaths=1
 "@
+
+
+##### TIC-80 #####
+
+if (need "tic80.exe" -for tic80,all) {
+    extract (download $URL_tic80) tic80.exe
+}
 
 
 ##### FFmpeg and some other multimedia stuff #####

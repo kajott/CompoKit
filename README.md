@@ -15,6 +15,7 @@ A CompoKit installation mainly consists of third-party tools:
   - **DOS:** [DOSBox](https://www.dosbox.com/) and [DOSBox-X](https://dosbox-x.com/)
   - **C64:** [WinVICE](http://vice-emu.sourceforge.net/)
   - **Amiga:** [WinUAE](http://www.winuae.net/)
+  - **Fantasy Console:** [TIC-80](https://tic80.com)
 - **Text Editor:** [Notepad++](https://notepad-plus-plus.org/)
 - **PDF Viewer:** [SumatraPDF](https://www.sumatrapdfreader.org/)
 - **Audio/Video Tools:** [FFmpeg](http://ffmpeg.org/), [youtube-dl](https://ytdl-org.github.io/youtube-dl/), [Capturinha](https://github.com/kebby/Capturinha) *(only installed on demand)*
