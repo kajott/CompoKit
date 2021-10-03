@@ -183,7 +183,7 @@ if __name__ == "__main__":
         # parse time
         t = re_time.match(row[2])
         if not t:
-            print("WARNING: invalid event {row[:3]}", file=sys.stderr)
+            print(f"WARNING: invalid event {row[:3]}", file=sys.stderr)
             continue
         t = time.mktime((int(t.group('dy')), int(t.group('dm')), int(t.group('dd')),
                          int(t.group('th')), int(t.group('tm')), 0,
