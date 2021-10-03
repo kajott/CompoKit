@@ -25,7 +25,6 @@ A CompoKit installation mainly consists of third-party tools:
   - downloaded from scene.org archives and (where necessary) SoundCloud
   - see [music/download.txt](music/download.txt) - suggestions or pull requests to extend or improve the list are highly welcome!
 - **Full-screen typer:** [typr](https://github.com/mog/typr)
-- **Video Mode Switcher:** [vidmode](src/vidmode), a custom tool to switch between 1080p50 and 1080p60 for the "beamslide" PC
 - **Manual:** a comprehensive [document](Compo-HOWTO.md) that describes everything a compo organizer has to do
 
 The following applications are **not** included for bloat or licensing reasons, but may be required for full functionality:
@@ -45,6 +44,10 @@ The following applications are **not** included for bloat or licensing reasons, 
 - The script `setpath.cmd` can be used to add CompoKit's `bin` directory to the `PATH` in command-line sessions.
 - Contains a script (`play_shuffled.cmd`) to generate shuffled playlists of whole directories and play them back, using the [Balanced Shuffle](https://keyj.emphy.de/balanced-shuffle/) algorithm.
 - Contains a tool to control Lightware and Extron DVI/HDMI crossbar switches ("matrices") with macro support, running on e.g. a Raspberry Pi with a numeric keypad: [dvi_matrix_control](src/dvi_matrix_control)
+- Contains tools (for both Windows and Linux/X11) to quickly switch between 1080p50 and 1080p60 video modes on the "beamslide" PC: [vidmode](src/vidmode)
+- Contains tools to [export](src/pm-export-tools) data from the PartyMeister party management system into various formats:
+  - timetable to the XML format used for the CCC (C3VOC) streaming service
+
 
 ## Installation
 
