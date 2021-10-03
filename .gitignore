@@ -8,6 +8,7 @@ bin/*
 !bin/cklaunch.ini
 !bin/dosbox.conf
 !bin/a500.uae
+bin/python.cmd
 scripts/shuffle.m3u
 music/*
 !music/download.txt

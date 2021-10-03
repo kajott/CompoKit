@@ -93,6 +93,9 @@ $URL_ffmpeg = "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild
 # https://github.com/BtbN/FFmpeg-Builds/releases -> latest ffmpeg-n4.4-...-win64-gpl-shared-4.4.zip
 # NOTE: this must match with the version number indicated in Capturinha's release notes above!
 
+$URL_python = "https://www.python.org/ftp/python/3.9.7/python-3.9.7-embed-amd64.zip"
+# https://python.org/ -> Downloads -> Windows -> Latest Python 3 Release -> Windows embeddable package (64-bit)
+
 
 # these are generic and not likely to change
 # (either because they always point to the latest version,
@@ -729,6 +732,16 @@ if (need "Capturinha.exe" -for capturinha) {
 if (need "youtube-dl.exe" -for youtube-dl,music) {
     mv_f (download $URL_youtube_dl) .
 }
+
+
+##### Python #####
+
+if (need "python/python.exe" -for python) {
+    mv_f (extract_temp (download $URL_python)) python
+}
+config "python.cmd" -for python @"
+@"%~dp0\python\python.exe" %*
+"@
 
 
 ##### Background Music #####

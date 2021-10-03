@@ -25,6 +25,7 @@ A CompoKit installation mainly consists of third-party tools:
   - downloaded from scene.org archives and (where necessary) SoundCloud
   - see [music/download.txt](music/download.txt) - suggestions or pull requests to extend or improve the list are highly welcome!
 - **Full-screen typer:** [typr](https://github.com/mog/typr)
+- **Scripting Language:** [Python](https://www.python.org/) *(only installed on demand)*
 - **Manual:** a comprehensive [document](Compo-HOWTO.md) that describes everything a compo organizer has to do
 
 The following applications are **not** included for bloat or licensing reasons, but may be required for full functionality:
@@ -129,6 +130,9 @@ Some of the tools are pre-configured in non-standard ways:
     - CKLaunch is configured to run `.a500` and `.amiga` files through that, so simply renaming Amiga 500 4k/64k intros from `.exe` (or whatever) to `.a500` makes them runnable
 - TIC-80
   - `.tic` files started via CKLaunch run fullscreen and without the startup animation
+- Python
+  - standard "portable" installation in the subdirectory `bin/python`
+  - wrapper script `python.cmd` in `bin` runs Python from there
 - Chrome: special settings when run through `bin/Chrome.cmd` and `Sahli/_run.cmd` scripts and CKLaunch's default configuration
   - fullscreen mode
   - `--allow-file-acces-from-files`
