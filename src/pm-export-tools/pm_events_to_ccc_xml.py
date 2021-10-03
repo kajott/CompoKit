@@ -223,7 +223,7 @@ if __name__ == "__main__":
 
     # now that we have events, auto-detect the title and acronym
     if not title:
-        title = default_room.capitalize() + " " + str(min(days)[0])
+        title = default_room.strip("0123456789_- ").capitalize() + " " + str(min(days)[0])
         print(f"party title auto-detected as '{title}'")
     if not acronym:
         acronym = canonicalize(title)
