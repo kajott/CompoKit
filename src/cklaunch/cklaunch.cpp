@@ -7,7 +7,7 @@ exec ./cklaunch.exe "$@"
 
 // CompoKit Launcher, a simple directory navigation tool
 //
-// Copyright (C) 2019 Martin J. Fiedler <keyj@emphy.de>
+// Copyright (C) 2019-2021 Martin J. Fiedler <keyj@emphy.de>
 // published under the terms of the MIT license
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -1349,9 +1349,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             PostQuitMessage(0);
             break;
         case WM_KEYDOWN:
+        case WM_SYSKEYDOWN:
             HandleKey(int(wParam));
             break;
         case WM_KEYUP:
+        case WM_SYSKEYUP:
             HandleKey(-int(wParam));
             break;
         case WM_CHAR:
