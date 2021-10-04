@@ -4,9 +4,31 @@ This directory contains tools to export data from the PartyMeister demoparty
 management system into various formats.
 
 
-## Timetable to C3VOC Event Schedule XML file
+## Slide Image Export
 
-The tool `pm_events_to_ccc_xml` exports the timetable ("event" list) from
+The tool `pm_slide_export.py` exports slides in PNG format into a directory structure.
+The main purpose of this is to have a backup of the compo slides in case
+the cloud-based PartyMeister is used and the internet connection dies before
+or during the compo.
+
+Input is a saved copy of PartyMeister's `/backend/slides` HTML page (plain
+HTML, not MHTML!), or a clipboard copy of that page's source code.
+Filtering can be done (e.g. to restrict the export to a single competition),
+and pagination shall be disabled by selecting a sufficiently high number
+of items per page bevore saving or copy-pasting the output.
+
+The slides will be downloaded into a common "base" directory. By default,
+that's a subdirectory called `slides` in the directory where the script resides.
+Inside that base directory, subdirectories are created for each slide category
+(i.e. compo). The file names of the images themselves are derived
+from the slide name, except for competition slides, which are renamed to
+follow the progression of a compo: `00_coming_up` -> `00_now` - > `01` -> `02`
+-> ... -> `99_end`.
+
+
+## Timetable to C3VOC Event Schedule XML File
+
+The tool `pm_events_to_ccc_xml.py` exports the timetable ("event" list) from
 PartyMeister into an XML file for C3VOC livestreams (a "Fahrplan" XML file).
 
 It takes a saved copy of the PartyMeister's `/backend/events` HTML page as
