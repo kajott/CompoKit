@@ -4,6 +4,21 @@ This directory contains tools to export data from the PartyMeister demoparty
 management system into various formats.
 
 
+## Voting Result Export
+
+The tool `pm_result_export.py` exports the voting results into a text file
+that can be used by the ASCII artist to produce the final `results.txt` file.
+
+Input is a saved copy of PartyMeister's `/backend/votes` HTML page in plain
+HTML format (i.e. no MHTML). 
+
+The output will automatically wrap the title and author line to a specified
+width in columns. This can be set with the `-w` option.
+
+Output encoding defaults to UTF-8, but other encodings can be set using
+the `-e` option.
+
+
 ## Slide Image Export
 
 The tool `pm_slide_export.py` exports slides in PNG format into a directory structure.

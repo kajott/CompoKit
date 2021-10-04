@@ -48,6 +48,7 @@ The following applications are **not** included for bloat or licensing reasons, 
 - Contains a tool to control Lightware and Extron DVI/HDMI crossbar switches ("matrices") with macro support, running on e.g. a Raspberry Pi with a numeric keypad: [dvi_matrix_control](src/dvi_matrix_control)
 - Contains tools (for both Windows and Linux/X11) to quickly switch between 1080p50 and 1080p60 video modes on the "beamslide" PC: [vidmode](src/vidmode)
 - Contains tools to [export](src/pm-export-tools) data from the PartyMeister party management system into various formats:
+  - vote results into a text file that's a blueprint for `results.txt`
   - slides to PNG in a useful directory structure
   - timetable to the XML format used for the CCC (C3VOC) streaming service
 
