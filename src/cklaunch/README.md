@@ -50,6 +50,7 @@ With the following fields:
   - Instead of file extensions, the special codes `:ctrl`, `:shift` and `:alt` can be used to specify rules that match when activating a file or directory while a modifier key is pressed down; these rules do **not** match any specific file extension.
 - `'x'` is optional and specifies a single-character "prefix" that is shown in the file list in front of the file names that match the rule.
 - `command` and `args` specify the program to execute and its arguments.
+  - The `command` part can consist of multiple alternatives, separated by a pipe sign ('`|`'). This is useful if there are multiple programs that can work with a certain file type, or where there are multiple directories where a program can be installed. The first match that yields an existing executable file is used.
   - Quoting has to be done properly to allow paths with spaces to work.
   - Dollar signs ('`$`') are replaced by the full path to the file that is to be opened.
   - If the command line doesn't explicitly contain a dollar sign, the file path is automatically added as a last argument.

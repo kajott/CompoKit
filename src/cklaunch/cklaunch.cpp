@@ -554,47 +554,55 @@ int FindInDir(const vector<DirItem>& dir, const string& name) {
 }
 
 // resolve the full absolute path to a helper program (with caching)
-string GetTool(const string& tool_) {
-    // canonicalize tool name (imply .exe suffix if not stated specifically)
-    string tool(tool_);
-    if (FileExt(tool).empty()) {
-        tool.append(".exe");
-    }
+string GetTool(const string& toolList) {
+    size_t startIndex = 0;
+    while (startIndex < toolList.size()) {
+        // extract first tool in the list
+        size_t endIndex = toolList.find('|', startIndex);
+        if (endIndex == string::npos) { endIndex = toolList.size(); }
+        string tool(toolList, startIndex, endIndex);
+        startIndex = endIndex + 1;
 
-    // shortcut: prefer absolute path
-    if (IsAbsolutePath(tool) && FileExists(tool)) { return tool; }
-
-    // load from cache
-    auto it = toolMap.find(tool);
-    if (it != toolMap.end()) { return it->second; }
-
-    // create list of directories to search (if not already done so)
-    static vector<string> searchDirs;
-    if (searchDirs.empty()) {
-        // put this program's directory and initial working directory first in the PATH
-        searchDirs.push_back(execDir);
-        if (startDir != execDir) {
-            searchDirs.push_back(startDir);
+        // canonicalize tool name (imply .exe suffix if not stated specifically)
+        if (FileExt(tool).empty()) {
+            tool.append(".exe");
         }
 
-        // add PATH
-        string path(GetEnv("PATH") + ";");
-        for (const auto& dir : StringSplit(GetEnv("PATH"), ";")) {
-            if (!dir.empty()) {
-                searchDirs.push_back(dir);
+        // shortcut: prefer absolute path
+        if (IsAbsolutePath(tool) && FileExists(tool)) { return tool; }
+
+        // load from cache
+        auto it = toolMap.find(tool);
+        if (it != toolMap.end()) { return it->second; }
+
+        // create list of directories to search (if not already done so)
+        static vector<string> searchDirs;
+        if (searchDirs.empty()) {
+            // put this program's directory and initial working directory first in the PATH
+            searchDirs.push_back(execDir);
+            if (startDir != execDir) {
+                searchDirs.push_back(startDir);
+            }
+
+            // add PATH
+            string path(GetEnv("PATH") + ";");
+            for (const auto& dir : StringSplit(GetEnv("PATH"), ";")) {
+                if (!dir.empty()) {
+                    searchDirs.push_back(dir);
+                }
+            }
+        }
+
+        // search all directories for the file in question    
+        for (const auto& dir : searchDirs) {
+            string path(JoinPath(dir, tool));
+            if (IsFile(path)) {
+                toolMap[tool] = path;
+                return path;
             }
         }
     }
-
-    // search all directories for the file in question    
-    for (const auto& dir : searchDirs) {
-        string path(JoinPath(dir, tool));
-        if (IsFile(path)) {
-            toolMap[tool] = path;
-            return path;
-        }
-    }
-    MessageBox(hWnd, (string("unable to find the required application\r\n'") + tool + "'.").c_str(), "CompoKit Launcher", MB_ICONERROR);
+    MessageBox(hWnd, (string("unable to find the required application\r\n'") + toolList + "'.").c_str(), "CompoKit Launcher", MB_ICONERROR);
     return "";
 }
 
