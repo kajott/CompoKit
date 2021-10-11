@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """
-Generate a template for a results.txt file based on a PartyMeister 3 vote list.
+Generate a template for a results.txt file or a Demozoo-compliant .tsv file
+based on a PartyMeister 3 vote list.
 """
 import argparse
 import textwrap
 import html
 import sys
+import os
 import io
 
 
@@ -24,11 +26,18 @@ if __name__ == "__main__":
                             backend
                         [default: %(default)s]""")
     parser.add_argument("-o", "--outfile", metavar="TXTFILE", default="raw_results.txt",
-                        help="output text file [default: %(default)s]")
+                        help="""
+                            output file;
+                            if ending with .tsv, export will be in Demozoo format
+                        [default: %(default)s]""")
     parser.add_argument("-w", "--width", metavar="COLS", type=int, default=72,
-                        help="number of columns to be used in the output [default: %(default)s]")
+                        help="""
+                            number of columns to be used in the output
+                        [default: %(default)s; ignored in Demozoo mode]""")
     parser.add_argument("-e", "--encoding", metavar="CHARSET", default="utf8",
-                        help="output file encoding [default: %(default)s; other useful values: cp437, cp1252]")
+                        help="""
+                            output file encoding
+                        [default: %(default)s; other useful values: cp437, cp1252]""")
     parser.add_argument("-v", "--verbose", action='count',
                         help="be more verbose")
     args = parser.parse_args()
@@ -41,6 +50,7 @@ if __name__ == "__main__":
     except (IOError, UnicodeError) as e:
         print("FATAL: can not read input file:", e, file=sys.stderr)
         sys.exit(1)
+    tsv = os.path.splitext(args.outfile)[-1].strip('.').lower() in ("tsv", "csv")
 
     # parse the input file (in a *very* hand-wavey way!) and generate output
     out = io.StringIO()
@@ -76,12 +86,15 @@ if __name__ == "__main__":
                 place = last_place
 
             # build the entry
-            prefix = f"{place:02d} {score:4d}  "
-            prefixlen = len(prefix)
-            title = f"{title} by {author}"
-            for line in textwrap.wrap(title, width=args.width-prefixlen):
-                print(prefix + line, file=out)
-                prefix = " " * prefixlen
+            if tsv:
+                print(f"{place}\t{title}\t{author}\t{score}", file=out)
+            else:
+                prefix = f"{place:02d} {score:4d}  "
+                prefixlen = len(prefix)
+                title = f"{title} by {author}"
+                for line in textwrap.wrap(title, width=args.width-prefixlen):
+                    print(prefix + line, file=out)
+                    prefix = " " * prefixlen
         print(file=out)
 
     if not out.getvalue():
@@ -91,7 +104,7 @@ if __name__ == "__main__":
     # write output file
     print("writing", args.outfile)
     try:
-        with open(args.outfile, 'w', encoding=args.encoding) as f:
+        with open(args.outfile, 'w', encoding=args.encoding, errors='replace') as f:
             print(out.getvalue().strip(), file=f)
     except (IOError, UnicodeError) as e:
         print("FATAL: can not write output file:", e, file=sys.stderr)
