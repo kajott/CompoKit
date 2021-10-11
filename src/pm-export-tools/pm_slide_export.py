@@ -79,13 +79,19 @@ if __name__ == "__main__":
 
         # extract and "beautify" file name
         ext = os.path.splitext(url.rsplit('/', 1)[-1])[-1]
-        digits_at_end = re.search(r'(\d+)$', name)
-        if ("coming" in stype) and (("coming" in name) or ("now" in name)):
-            name = "00_" + name
-        if digits_at_end and ("competition" in stype):
-            name = digits_at_end.group(1).rjust(2, '0')
-        if ("end" in name) and ("end" in stype):
-            name = "99_end"
+        pg_slide = re.match(r'competition_(\d+)_(now|bars|winners)', name)
+        if pg_slide:
+            name = pg_slide.group(1).rjust(2, '0') \
+                 + {"now":"a", "bars": "b", "winners": "c"}.get(pg_slide.group(2), "") \
+                 + "_" + pg_slide.group(2)
+        else:
+            digits_at_end = re.search(r'(\d+)$', name)
+            if ("coming" in stype) and (("coming" in name) or ("now" in name)):
+                name = "00_" + name
+            if digits_at_end and ("competition" in stype):
+                name = digits_at_end.group(1).rjust(2, '0')
+            if ("end" in name) and ("end" in stype):
+                name = "99_end"
 
         # download
         outdir = os.path.join(basedir, folder)
