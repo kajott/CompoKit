@@ -10,6 +10,6 @@ bin/*
 !bin/a500.uae
 !bin/vidmode.exe
 bin/python.cmd
-scripts/shuffle.m3u
+jingle/*.wav
 music/*
 !music/download.txt

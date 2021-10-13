@@ -1,0 +1,9 @@
+.vs
+Debug_*
+Release_*
+*.exe
+*.ilk
+*.iobj
+*.ipdb
+*.pdb
+*.user
