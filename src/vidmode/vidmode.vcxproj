@@ -143,7 +143,7 @@
       <Command>copy /b $(TargetPath) $(SolutionDir)..\..\bin\$(ProjectName).exe</Command>
     </PostBuildEvent>
     <PostBuildEvent>
-      <Message>Installing in CompKit binary directory ...</Message>
+      <Message>Installing in CompoKit binary directory ...</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

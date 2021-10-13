@@ -74,7 +74,7 @@ static int MainLoop(HANDLE hKillEvent) {
             return 0;
         } else if (res == (WAIT_OBJECT_0 + 1)) {
             MSG msg;
-            while (GetMessage(&msg, NULL, 0, 0) > 0) {
+            while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
                 if (msg.message == WM_HOTKEY) {
                     SetRefresh((int)msg.wParam);
                 }
