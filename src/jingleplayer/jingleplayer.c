@@ -1,5 +1,8 @@
 #include <windows.h>
 
+// This code is heavily inspired by a video mode switching tool from Blueberry:
+// https://www.pouet.net/topic.php?which=3637&page=84#c570075
+
 #ifndef NDEBUG
     #include <stdio.h>
     #define Dprintf printf
