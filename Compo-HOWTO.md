@@ -16,10 +16,12 @@ The party network should have a dedicated organizer network that's not accessibl
 
 The most important machine is, of course, the compo PC, i.e. a powerful box with a fast CPU and a top-of-the-line GPU. On that PC, create a directory for all the data of the party. Put a CompoKit checkout into a subdirectory of that. It may make sense to download everything (i.e. run `setup.cmd` and `download_music.cmd`) before the party already, as the Internet connection may be too slow to do that in an acceptable amount of time.
 
-Ideally, there are two compo PCs, with identical or slightly different hardware; one nVidia and one AMD GPU may be handy, for example. In this case, I tend to make one of them the "main" or "master" compo PC, i.e. the one where most of the preparations are done and most of the compos are presented from. The other one is the "secondary" or "slave" PC, which is used to play entries that don't work properly on the main compo PC, play background music, run the typer (see below) or prepare compos while the main PC is used for other stuff.
+Ideally, there are two compo PCs, with identical or slightly different hardware; one nVidia and one AMD GPU may be handy, for example. In this case, I tend to make one of them the "main" or "primary" compo PC, i.e. the one where most of the preparations are done and most of the compos are presented from. The other one is the "secondary" PC, which is used to play entries that don't work properly on the main compo PC, play background music, run the typer (see below) or prepare compos while the main PC is used for other stuff.
 
-The party directory should be shared between the PCs; the easiest way to do this is to share the directory on the main PC and mount it on the compo PC. Bonus points for making sure that the paths are identical on both PCs; this way, anything that stores absolute paths (like CKLaunch's state file) will work on both machines. Since the party directory typically isn't the root of a drive, simply mapping a network drive doesn't suffice; instead, something like `mklink /d C:\MyParty \\Compo1\MyParty` is required.
+The party directory should be shared between the PCs; the easiest way to do this is to share the directory on the main PC and mount it on the compo PC. Bonus points for making sure that the paths are identical on both PCs; this way, anything that stores absolute paths (like CKLaunch's state file) will work on both machines. Since the party directory typically isn't the root of a drive, simply mapping a network drive doesn't suffice; instead, something like `mklink /d C:\MyParty \\Compo1\MyParty` is required. On the main PC, the network connection must be set to "Private Network" (otherwise file sharing isn't possible), and the logged-in user needs to have a &ndash; however trivial &ndash; password (otherwise Windows won't allow remote connections).
 (Oh, and while we're at it: don't start CKLaunch on both PCs at the same time &ndash; the two instances will clobber each other's state file where the default file marks are stored!)
+
+Two directories should be added to the anti-virus software's exception list: The compo directory and the web browser's download directory. We don't want any 64k or 4k intros taken into quarantine while preparing compos, just because anti-virus vendors think that every kkrunchy-packed executable is evil.
 
 Another nice touch is a custom party wallpaper that also includes the machine name ("Compo 1" / "Compo 2").
 
@@ -29,13 +31,13 @@ There needs to be a dedicated PC or notebook for displaying the PMS slides. Curr
 
 The keyboard of the slides PC must be accessible at all times from the compo organizer's desk. It can be in the second row though, as we won't type any amount of text on it &ndash; basically we just need the cursor keys and the spacebar.
 
-During 50-Hz-heavy compos (like oldschool executable compos), a nice touch would be if we can temporarily set the slides PC's output to 1080p50, so the main projector (often a DLP-based model) doesn't need to re-sync between the the slides' 60p and the entries' 50p framerate all the time. Hotkeys would be handy for that (like PartyMeister's old and deprecated "Screens" client had), but quickly reconfiguring while an entry plays may work too.
+During 50-Hz-heavy compos (like oldschool executable compos), a nice touch would be if we can temporarily set the slides PC's output to 1080p50, so the main projector (often a DLP-based model) doesn't need to re-sync between the the slides' 60p and the entries' 50p framerate all the time. If the slide client software has something like that built-in, that's perfect; if it doesn't, CompoKit's [vidmode](src/vidmode) tool may prove useful.
 
-We may want to include [Mercury's calibration slide](http://mercury.sexy/calibration01.png) in the main rotation, so people get a feeling of how badly the projector crushes blacks and whites. However, please note that the gamma calibration part of that slide is absolutely useless if the projector applies any kind of scaling or interpolation, e.g. because its native resolution is different from what the party picked as the default, or because it can't do optical keystone correction. In that case, better leave out the slide &ndash; don't confuse the hell out of people who want to calibrate their entries with a broken gamma chart then.
+We may want to include [Mercury's calibration slide](http://mercury.sexy/calibration02.png) in the main rotation, so people get a feeling of how badly the projector crushes blacks and whites. However, please note that the gamma calibration part of that slide is absolutely useless if the projector applies any kind of scaling or interpolation, e.g. because its native resolution is different from what the party picked as the default, or because it can't do optical keystone correction. In that case, better leave out the slide &ndash; don't confuse the hell out of people who want to calibrate their entries with a broken gamma chart then.
 
 ### Typer
 
-Depending on the PMS used, creating new slides can be a more or less unpleasant exercise. To inform the audience about things in a more "ad-hoc" manner, a way to type text-only slides "live" is really useful. A dedicated PC for that would be great, but using the "slave" compo PC (if it exists) is usually fine as well.
+Depending on the PMS used, creating new slides can be more or less cumbersome. To inform the audience about things in a more "ad-hoc" manner, a way to type text-only slides "live" is really useful. A dedicated PC for that would be great, but using the "secondary" compo PC (if it exists) is usually fine as well.
 
 Again, the keyboard should be accessible at all times (at least as long as the typer is in use), and in a way that allows comfortable typing, especially since we're using it more or less "blindly" (i.e. without a cursor).
 
@@ -43,9 +45,9 @@ Again, the keyboard should be accessible at all times (at least as long as the t
 
 In terms of audio, we want to ensure two things: first, while preparing compos, we absolutely need a possibility to listen to the compo PC's output with headphones. Second, at the same time we must make sure that the headphone output is always active *in addition to* the main audio that goes to the mixing desk. Switching between the outputs is unacceptable because we **will** forget to switch to main audio before a compo at some point, inadvertantly playing entries without sound.
 
-There are various ways to fulfill these requirements: A carefully-chosen configuration of the on-board audio codec may work; the mixing console may have a dedicated headphone output for that; or use an external audio interface that has a built-in headphone amplifier, but only two hardware channels. The latter setup is the most comfortable, as we can have good access to the box's volume knob, at the expense of being subject to USB-related issues. (And boy, did we have issues at Deadline! Fortunately, it was just a flaky cable that was easily swapped.)
+There are various ways to fulfill these requirements: A carefully-chosen configuration of the on-board audio codec may work; the mixing console may have a dedicated headphone output for that; or use an external audio interface that has a built-in headphone amplifier, mapped to the same audio channels as the main Cinch / TRS / XLR output. The latter setup is the most comfortable, as we can have good access to the box's volume knob, at the expense of being subject to USB-related issues like flaky cables. If the box doesn't require any fancy drivers and just works with Windows' (and Linux's, for that matter) standard USB audio class drivers, that's a big plus.
 
-If using an external interface, disabling the on-board audio device in the BIOS setup or Device Manager may be a good idea to make sure that no program can use the wrong audio output by accident. Then again, the HDMI output's audio device is always present too and I've never seen a program use this if not explicitly asked to do so ... YMMV.
+If using an external interface, disabling the on-board audio device in the BIOS setup or Device Manager might be a good idea to make sure that no program can use the wrong audio output by accident. But then again, I've never seen this becoming a problem, and even if on-board audio is neutered, the HDMI output's audio devices would still be present (and can't easily be deactivated), so this might be overkill after all. Just make sure that the interface is selected as the system's primary output, and we're set.
 
 ### Control Monitors
 
@@ -71,9 +73,9 @@ The following **outputs** are typically attached to the matrix:
 - main input for video streaming team
 - Control Monitors, lots of them; any output we can spare should go to a monitor :)
 
-So, an 8x8 matrix is generally sufficient (at least for a smaller party; Revision or Assembly may have a different view on this). The vendor and model *should* not matter, but we had some very unpleasant surprises with a LightWare MX8x8DVI-HDCP-Pro at Deadline 2018; the Extron DXP 88 HDMI we got at Deadline 2019 worked without a hitch.
+So, an 8x8 matrix is generally sufficient (at least for a smaller party; Revision or Assembly may have a different view on this). The vendor and model *should* not matter, but we had some very unpleasant surprises with a LightWare MX8x8DVI-HDCP-Pro at Deadline 2018; the Extron DXP 88 HDMI we got at Deadline 2019 and 2021 worked without a hitch.
 
-Operating the matrix directly from the front panel is workable, but cumbersome. During compos, we end up frequently assigning one input to three outputs (both bigscreens and the stream) at the same time, requiring five careful keystrokes each time. Fortunately, there's a better way: use the [dvi_matrix_control](src/dvi_matrix_control) script that's part of the CompoKit repository.
+Operating the matrix directly from the front panel is workable, but cumbersome. During compos, we frequently end up assigning one input to three outputs (both bigscreens and the stream) at the same time, requiring five careful keystrokes each time. Fortunately, there's a better way: use the [dvi_matrix_control](src/dvi_matrix_control) script that's part of the CompoKit repository.
 
 - Attach the matrix to the organizer network via its Ethernet port.
 - Configure the matrix for DHCP or a static IP address.
@@ -87,11 +89,48 @@ Operating the matrix directly from the front panel is workable, but cumbersome. 
 
 From then on, switching all main outputs between inputs is a two-keystroke affair: `1`, `Enter`. A nice side effect is that compo intros, the prizegiving and even some compos can be performed while standing instead of sitting; I like this because of the better overview, easier access to the various keyboards scattered across the desk that need to be operated in parallel, and because it's easier to communicate with the other involved people (specifically, the audio and oldschool compo organizers).
 
-### Force 50p Output from PC
+### Advanced Video &ndash; The Video Mixer
+
+Thanks to the prevalence of YouTube streamers, the industry produced a lot of relatively inexpensive video mixers in recent years. While we can't solely rely on such a device because it doesn't have nearly enough outputs as we'd need, and because there things kinda _have to_ force-convert everything (including oldschool 50 Hz content) to a fixed output framerate of 60 Hz, it still is a useful addition to the video chain for two reasons: First, we can have smooth crossfades between the slides and the compo PC at the beginning and end of each entry; and second, while we generally want to preserve 50 Hz content for the main screen, the streaming team really prefers having a steady 60 Hz stream.
+
+Keep in mind, though, that having a video mixer doesn't make things easier; quite the contrary! It's one more device to work with during compos, and cabling too becomes more involved:
+
+- There should be two, better three matrix outputs going straight into the mixer. One of those is (almost) permanently assigned to the slides PC, one is assigned to the main compo PC most of the time, and the third one would be for a secondary source of compo material, e.g. the retro desk.
+
+- The jingle and VJ inputs can usually go straight into the mixer.
+
+- The main program output of the mixer (which *must* be HDMI, not just a USB webcam output!) goes back into the matrix, in order to be distributed to the bigscreens and stream desk from there.
+
+- If the mixer has a multi-view HDMI output (e.g. Blackmagic ATEM Mini Extreme), it makes a lot of sense to have a dedicated monitor for that. In fact, _not_ having a multi-view preview (like all "smaller" ATEM Mini models) is a little dangerous, as we can't see what's currently routed into the mixer's inputs, and we'll only notice that the wrong input has been assigned in the matrix after fading over to it.
+
+With those connections in place, most of the compos are really easy to do: Just press one button to fade from the slides to the compo PC and vice-versa. It's only when 50 Hz content is involved that things get nasty &ndash; because remember, we want to have the verbatim 50 Hz signal on the bigscreen, but still have it go through the mixer's 60 Hz conversion for the stream!
+
+To go **into** 50 Hz mode:
+- Have the 50 Hz source (e.g. oldschool desk) routed to one of the mixer's inputs. Make sure that it's always the same input, so that matrix controller macros can be used for the things that come next.
+- Fade or cut to the 50 Hz source as usual. The bigscreen will still show the 60 Hz converted signal from the mixer; we'll fix that in a second.
+- As quickly as possible, re-configure the video matrix (e.g. by having an appropriate macro in the matrix controller):
+  - Assign the 50 Hz source to the bigscreens and that one special mixer input we elected in step one.
+  - Assign the mixer's output to the stream desk, and _only_ there.
+- As a result of this, the bigscreens will get 50 Hz content from now on. DLP projectors may show wrong colors for a second; that's fine. If it's known that the entry that is about to be played as a black or white screen at the beginning, it makes sense to wait with the matrix re-configuration step until that screen comes up.
+- While the first entry plays, configure the slides PC to 50 Hz, if possible (otherwise the projector is going to re-sync between 50 Hz and 60 Hz each time we switch from entry to slide or vice-versa; not really bad, but not ideal either).
+
+After that, **in** 50 Hz mode, use the _matrix_ (not the mixer) and its macros to switch inputs: Alternatingly assign the 50 Hz source or the slides PC to the bigscreen and the special mixer input, but *not* the stream output. We're not going to have those smooth cross-fades this way, but that's still way better than having to tolerate jerky scrollers in oldschool demos.
+
+**Leaving** 50 Hz mode is an equally hectic procedure:
+- While the last entry 50 Hz plays, switch the slides PC back to 60 Hz output.
+- At the end of the last entry, use the mixer to fade back to the slides (which should still be assigned to one mixer input).
+- _Immediately_ after that, configure the video matrix back (again with macros, if available): Assign the mixer's output to the stream *and* the bigscreens again.
+
+As can be seen, I really meant it when I said that a video matrix doesn't make life easier! But the creative possibilites are undeniably cool &ndash; Since crossfades can be stopped halfway, we can essentially overlay one source upon another, which is a nice touch in a few scenarios:
+- Announcements from the Typer can be displayed over any other content.
+- While the VJ plays, we can permanently show the music act's name.
+- Music entries that have some kind of visualization (e.g. rasterbars in the oldschool music compo) can be overlaid on the entry's slide.
+
+### Force 50 Hz Output from a PC
 
 The video matrix tells the attached input devices which resolutions and refresh rates it accepts ("EDID"). Typically, there's a simple option to set a single resolution for each input, and 1080p60 is the obvious choice there. We want to output 50p as well though &ndash; specfically, every time an entry is delivered as a video file with a 25 or 50 Hz frame rate. However, Windows only offers to select video modes that are advertised in the EDID. While it's theoretically possible to craft an EDID block that contains both 1080p50 and 1080p60, most video matrices require the user to do this manually, which is quite cumbersome.
 
-An alternative is to simply force a 50p video mode. At least on nVidia GPUs, the driver offers this possibility, with a little manual configuration:
+An alternative is to simply force a 50 Hz video mode. At least on nVidia GPUs, the driver offers this possibility, with a little manual configuration:
 - right-click the desktop, select "NVIDIA Control Panel"
 - navigate to "Display", "Change resolution"
 - click the "Customize ..." button below the resolution list to open the "Customize" window
@@ -117,13 +156,15 @@ An alternative is to simply force a 50p video mode. At least on nVidia GPUs, the
 - click "OK" to close the "Customize" window
 - a new resolution "1920 x 1080" should now pop up in the "Custom" section of the main resolution chooser now, with a 50 Hz refresh rate
 
+To switch between 50 Hz and 60 Hz modes, nVidia Control Panel can be used, or of course [vidmode](src/vidmode).
+
 ### Oldschool
 
-In addition to the main compo desk, there's the oldschool desk where all the C64s, Amigas, game consoles etc. live. To get the video signal of these converted to standard-compliant HDMI, a more or less complex chain of devices like [RetroTINK-2X](http://www.retrotink.com/) or [OSSC](http://junkerhq.net/xrgb/index.php?title=OSSC) and/or professional scalers like an [Extron DSC 301 HD](https://www.extron.com/product/dsc301hd) may be used. I won't go into more details here, as it would fill whole pages alone and I'm not very experienced with that stuff anyway. At Deadline 2018 and 2019, I had the pleasure to work with a very well-prepared oldschool compo team &ndash; whatever happened at their desk with all those devices, I only ever saw an HDMI cable with crystal-clear video and a pair of XLRs with nice audio coming out of it :)
+In addition to the main compo desk, there's the oldschool desk where all the C64s, Amigas, game consoles etc. live. To get the video signal of these converted to standard-compliant HDMI, a more or less complex chain of devices like [RetroTINK-5X](http://www.retrotink.com/) or [OSSC](http://junkerhq.net/xrgb/index.php?title=OSSC) and/or professional scalers like an [Extron DSC 301 HD](https://www.extron.com/product/dsc301hd) may be used. I won't go into more details here, as it would fill whole pages alone and I'm not very experienced with that stuff anyway. At Deadline, I had the pleasure to work with a very well-prepared oldschool compo team &ndash; whatever happened at their desk with all those devices, I only ever saw an HDMI cable with crystal-clear video and a pair of XLRs with nice audio coming out of it :)
 
 ### Video Jingles
 
-A final source of video and audio is the lighting desk. As introductions to major events like compos, the lighting guy typically prepares a choreography of stage lights, synchronized to a video jingle that plays on the bigscreen. While it's theoretically possible to play the jingle from the compo PC and synchronize the jingle video and its light show manually by counting down to three and pushing the appropriate buttons at the same time, this isn't the recommended way of doing things. Instead, have the light controller PC play the jingle video and run an HDMI cable from there into the matrix.
+A final source of video and audio is the lighting desk. As introductions to major events like compos, the lighting guy typically prepares a choreography of stage lights, synchronized to a video jingle that plays on the bigscreen. While it's theoretically possible to play the jingle from the compo PC and synchronize the jingle video and its light show manually by counting down to three and pushing the appropriate buttons at the same time, this isn't the recommended way of doing things. Instead, have the light controller PC play the jingle video and run an HDMI cable from there into the matrix. If the jingles are just audio, CompoKit's [Jingle Player](jingle) tool may be useful.
 
 A nice touch is switching from the "Coming Up" to the "Now" slide in the background while the jingle runs.
 
@@ -139,6 +180,7 @@ My recommendation is to create two subdirectories under the party directory: One
 
 In most cases, the workflow for preparing a single entry is as follows:
 - download the release file from the PMS
+  - Make sure that the latest version is downloaded! PartyMeister, for example, archives _all_ entry uploads, but highlights the most recent one. A slip with the mouse in the wrong moment may cause an older version of an entry to be played, making its creators very unhappy.
 - move the file into the compo's subdirectory of the scene.org mirror directory
 - create a new subdirectory in the compo's subdirectory of the compo work directory and copy (*not* move!) or unpack the entry there
   - Yes, we create a directory even for single-file entries.
@@ -148,6 +190,7 @@ In most cases, the workflow for preparing a single entry is as follows:
 - mark the main file to be run as default in CKLaunch (select it and press Space so a star appears right of the filename)
 - test-run it! (from CKLaunch too &ndash; we don't want any nasty surprises later, just because we used a different method of running the entry during preparation!)
 - watch the entry all the way to the end; sometimes there may be "fake endings" in demos, and we don't want to exit an entry prematurely during the compo
+- for graphics and music compos where entries are delivered in executable format (notably oldschool and executable graphics/music compos), it's OK to use the author's screenshot or MP3/WAV file, if provided; however, it should nevertheless be checked that the executable is actually running and producing the same output
 
 For example, this is a possible directory structure of a hypothetical party with a single entry in a single compo:
 
@@ -168,7 +211,9 @@ For example, this is a possible directory structure of a hypothetical party with
 
 Since the work of preparing entries is done half in CKLaunch and half in a normal file manager, this is a good time to learn that pressing Ctrl+Enter in CKLaunch opens the currently selected file or directory in Explorer, and Shift+Enter opens it in Total Commander. In the other direction, simply dragging an item from a file manager into CKLaunch's window will navigate to that file or directory.
 
-If the party allows remote entries, the Inbox where these entries are sent to needs to be monitored as well, and entries need to be added into the PMS. Having a single organizer (*not* necessarily the compo organizer!) take care of this is **really** useful &ndash; we didn't have one at Deadline 2018, and it was a mess, but we did have one at Deadline 2019, and everything "just worked"!
+While preparing entries for PC demo and intro compos, it may be a good idea to have [Capturinha](https://github.com/kebby/Capturinha) running in the background. (It can be installed in CompoKit by running `setup.cmd capturinha`.) Select the "only record when fullscreen" option and start it; then minimize all windows except CKLaunch before running an entry (important!). When the entry is subsequently run, Capturinha generates a nice video capture in the background as soon as fullscreen mode is entered, and stops capturing when fullscreen mode is left again. This way, we end up with a directory full of high-quality captures of the demos we've shown &ndash; useful for post-party YouTube uploads! Just remember to stop Capturinha again, otherwise it will happily continue to capture *everything* that runs fullscreen &ndash; including video players and browser windows ...
+
+If the party allows remote entries, the Inbox where these entries are sent to needs to be monitored as well, and entries need to be added into the PMS. Having a single organizer (*not* necessarily the compo organizer!) take care of this is **really** useful &ndash; we didn't have one at Deadline 2018, and it was a mess, but we did have one at later Deadlines, and everything "just worked".
 
 If there are not enough entries in a compo, a decision has to be made about with which other compo it shall be merged. In many cases, it's a welcome gesture towards the compo participants to ask them what they would like best: Merge the 64k compo into 4k (producing a "combined intro" compo), or into "demo"? Or maybe move an entry from another, well-staffed compo into a starving one, if there's enough overlap with the target compo's topic?
 
@@ -204,6 +249,8 @@ The total process of running a compo is then as follows (assuming some example v
 - (Compo PC) Cursor Right &rarr; switch to the entry `02`'s directory
 - loop again until arrived at the "End of Compo" slide
 - (PartyMeister) enable voting for the compo
+
+For a setup with a video mixer, instead of switching between inputs `1` and `3`, those are statically assigned to two inputs of the mixer and switching is done using the mixer's auto-fade button after that.
 
 I've seen an entry kill CKLaunch once, for whatever reason. That's unfortunate, but not really a problem: CKLaunch saves its state every time before an item is run, so it can be restarted at any time. Ideally, place a shortcut to CKLaunch on the desktop, directly under the location where the CKLaunch program window is shown.
 
@@ -246,7 +293,7 @@ Some special planning is needed for video compos with regard to frame rate: Whil
 
 Entries that come as single files (such as photos) are simply put into their directory as-is. For entries with work stages, it's recommended to rename the main image so that it's lexicographically *after* all the work stage images, e.g. `zzzzz.png`. This way, showing the image and its work stages always works the same way: Start with the main image, press Home to get to the first image in the folder, then cycle though all images with Space or Page Down until the main image is reached again. Finally, exit the viewer with Esc.
 
-Note that the image viewer in CompoKit, XnView, is *not* configured to zoom into images that are smaller than the screen. This is deliberate, because XnView lacks a "fill screen, integer zoom only" option, only "fill screen with interpolation", which is absolutely not what we want when viewing oldschool graphics. So, there's no other way but to press the + (plus) key an appropriate number of times when the entry comes up.
+Note that the image viewer in CompoKit, XnView, is *not* configured to zoom into images that are smaller than the screen. This is deliberate, because XnView lacks a "fill screen, integer zoom only" option, only "fill screen with interpolation", which is absolutely not what we want when viewing oldschool graphics. So, there's no other way but to press the + (plus) key an appropriate number of times when the entry comes up, or upscale the entry with Nearest Neighbor (non-)interpolation before the compo.
 
 ANSI/ASCII compos require some special treatment. While we theoretically could show them as images (exporting them out of ACiDView if necessary), this would be quite lame. Instead, we use a proper ANSI/ASCII compo tool: Sahli. Unfortunately, it's quite hard to use, so it has its own manual: [Sahli-HOWTO.md](Sahli-HOWTO.md).
 
@@ -286,7 +333,9 @@ After the voting deadline, the results need to be reviewed. Are there any obviou
 
 Depending on the PMS used, the order of the compo in the prizegiving may need to be specified explicitly. Now is a good time to do that!
 
-After the compo results have been finalized, the `results.txt` file can be prepared by the responsible ASCII artist, and a hardcopy can be printed out so the presenters of the prizegiving have a way to read out the winners without having to stare at the bigscreen all the time.
+After the compo results have been finalized, a hardcopy can be printed out so the presenters of the prizegiving have a way to read out the winners without having to stare at the bigscreen all the time. At the same time, the results can be [exported](src/pm-export-tools) in a raw format that an ASCII artist then turns into the final `results.txt` file. Depending on the type or artwork present in `results.txt`, one of three output encodings need to be chosen: If there's no or only minimal artwork, UTF-8 is fine; if the artwork is ASCII and looks best with the Amiga Topaz font, it should be exported as ISO-8859-1; and if the artwork uses DOS block graphics, the encoding to use is codepage 437 ("`cp437`"). If the output isn't UTF-8, some international characters may need to be replaced by the closest-looking equivalent in the target character set.
+
+In addition to the `results.txt` file, there should also be an export in TSV (tab-separated value) format for Demozoo, with columns for rank, title, author and score, in that order, and in UTF-8 encoding. Whoever is going to enter the results into Demozoo, they will be very happy if they don't need to extract the data from a line-wrapped ASCII art opus and can instead just copy/paste everything from that TSV file.
 
 Finally, rehearse the prizegiving at the compo desk before actually holding it. The prizegiving isn't a moment where we want to fuck anything up that could have been detected in advance.
 
@@ -298,4 +347,4 @@ The more interesting aspect is that we may want to show or play the winning entr
 
 Playback of videos, demos and music entries can be started right when the winners are announced: They will take a minute to arrive at the stage and receive their trophies, and in the meantime, the intro of the entry will be over, just in time for a short switch over to the big screen. For the main demo or intro compos, where the winning entry is to be shown in full length, this doesn't apply &ndash; we will show them from start to end, of course, like in the compo the day before. Please coordinate and make notes beforehand which entries to show in full, to avoid any misunderstandings between the compo team and the presenter on stage.
 
-After the prizegiving, there's only one thing left to do: Put the `results.txt` file into the scene.org FTP's `incoming` directory and we can pull the plugs. (Literally, if needed.)
+After the prizegiving, there's only two things left to do: Put the `results.txt` file into the scene.org FTP's `incoming` directory and send the results TSV file to a Demozoo orga, and we can pull the plugs. (Literally, if needed.)
