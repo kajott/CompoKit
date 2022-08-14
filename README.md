@@ -10,7 +10,7 @@ A CompoKit installation mainly consists of third-party tools:
 - **Video Player:** [MPC-HC](https://github.com/clsid2/mpc-hc)
 - **Audio Player:** [XMPlay](https://www.un4seen.com/xmplay.html) with [OpenMPT Plugin](https://lib.openmpt.org/libopenmpt/) and additional plugins for SID and YM
 - **Image Viewer:** [XnView](https://www.xnview.com/en/), [CompoView](https://www.pouet.net/prod.php?which=56934), [GLISS](http://svn.emphy.de/scripts/trunk/gliss.cpp)
-- **ANSI Viewer:** [ACiDView](https://sourceforge.net/projects/acidview6-win32/) and [Sahli](https://github.com/m0qui/Sahli)
+- **ANSI Viewer:** [ACiDView](https://sourceforge.net/projects/acidview6-win32/), [Sahli](https://github.com/m0qui/Sahli) and [AnsiLove](https://github.com/ansilove/ansilove)
 - **Emulators:**
   - **DOS:** [DOSBox](https://www.dosbox.com/) and [DOSBox-X](https://dosbox-x.com/)
   - **C64:** [WinVICE](http://vice-emu.sourceforge.net/)

@@ -86,6 +86,9 @@ $URL_winuae = "https://download.abime.net/winuae/releases/WinUAE4400_x64.zip"
 $URL_tic80 = "https://github.com/nesbox/TIC-80/releases/download/v0.90.1723/tic80-v0.90-win.zip"
 # https://github.com/nesbox/TIC-80/releases -> latest *-win.zip
 
+$URL_ansilove = "https://github.com/kajott/ansilove-nogd/releases/download/v0.1/ansilove.exe"
+# https://github.com/kajott/ansilove-nogd/releases -> latest ansilove.exe
+
 $URL_capturinha = "https://github.com/kebby/Capturinha/releases/download/v0.3.0/Capturinha.zip"
 # https://github.com/kebby/Capturinha/releases -> latest .zip
 
@@ -613,7 +616,7 @@ LosslessBak=0
 "@
 
 
-##### CompoView, GLISS, ACiDview #####
+##### CompoView, GLISS, ACiDview, AnsiLove #####
 
 if (need "compoview_64.exe" -for compoview,all) {
     extract (download $URL_compoview) compoview/compoview_64.exe
@@ -623,6 +626,9 @@ if (need "gliss.exe" -for gliss,all) {
 }
 if (need "ACiDview.exe" -for acidview,all) {
     extract (download $URL_acidview) ACiDview.exe
+}
+if (need "ansilove.exe" -for ansilove,all) {
+    mv_f (download $URL_ansilove) .
 }
 
 
