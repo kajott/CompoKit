@@ -9,7 +9,7 @@ A CompoKit installation mainly consists of third-party tools:
 - **File Manager:** [Total Commander](https://www.ghisler.com/index.htm), [7-Zip](https://www.7-zip.org/) and [CKLaunch](src/cklaunch), a custom launcher tailored for running compos
 - **Video Player:** [MPC-HC](https://github.com/clsid2/mpc-hc)
 - **Audio Player:** [XMPlay](https://www.un4seen.com/xmplay.html) with [OpenMPT Plugin](https://lib.openmpt.org/libopenmpt/) and additional plugins for SID and YM
-- **Image Viewer:** [XnView](https://www.xnview.com/en/), [CompoView](https://www.pouet.net/prod.php?which=56934), [GLISS](http://svn.emphy.de/scripts/trunk/gliss.cpp)
+- **Image Viewer:** [XnView](https://www.xnview.com/en/), [CompoView](https://www.pouet.net/prod.php?which=56934), [PixelView](https://github.com/kajott/PixelView), [GLISS](http://svn.emphy.de/scripts/trunk/gliss.cpp)
 - **ANSI Viewer:** [ACiDView](https://sourceforge.net/projects/acidview6-win32/), [Sahli](https://github.com/m0qui/Sahli) and [AnsiLove](https://github.com/ansilove/ansilove)
 - **Emulators:**
   - **DOS:** [DOSBox](https://www.dosbox.com/) and [DOSBox-X](https://dosbox-x.com/)

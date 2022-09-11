@@ -89,6 +89,9 @@ $URL_tic80 = "https://github.com/nesbox/TIC-80/releases/download/v1.0.2164/tic80
 $URL_ansilove = "https://github.com/kajott/ansilove-nogd/releases/download/v0.1/ansilove.exe"
 # https://github.com/kajott/ansilove-nogd/releases -> latest ansilove.exe
 
+$URL_pixelview = "https://github.com/kajott/PixelView/releases/download/v1.0/pixelview.exe"
+# https://github.com/kajott/PixelView/releases -> latest pixelview.exe
+
 $URL_capturinha = "https://github.com/kebby/Capturinha/releases/download/v0.4.1/Capturinha.zip"
 # https://github.com/kebby/Capturinha/releases -> latest .zip
 
@@ -621,6 +624,9 @@ LosslessBak=0
 
 if (need "compoview_64.exe" -for compoview,all) {
     extract (download $URL_compoview) compoview/compoview_64.exe
+}
+if (need "pixelview.exe" -for pixelview,all) {
+    mv_f (download $URL_pixelview) .
 }
 if (need "gliss.exe" -for gliss,all) {
     mv_f (download $URL_gliss) .
