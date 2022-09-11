@@ -729,17 +729,17 @@ if (need "tic80.exe" -for tic80,all) {
 
 ##### FFmpeg and some other multimedia stuff #####
 
-if (need "ffmpeg.exe" -for ffmpeg,capturinha) {
+if (need "ffmpeg.exe" -for ffmpeg,capturinha,all) {
     collect_all (Join-Path (subdir_of (extract_temp (download $URL_ffmpeg))) bin)
     remove_temp
 }
-if (need "Capturinha.exe" -for capturinha) {
+if (need "Capturinha.exe" -for capturinha,all) {
     extract (download $URL_capturinha) Capturinha.exe vcruntime140.dll vcruntime140_1.dll
 }
 if (need "youtube-dl.exe" -for youtube-dl) {
     mv_f (download $URL_youtube_dl) .
 }
-if (need "yt-dlp.exe" -for yt-dlp,music) {
+if (need "yt-dlp.exe" -for yt-dlp,music,all) {
     mv_f (download $URL_yt_dlp) .
 }
 
