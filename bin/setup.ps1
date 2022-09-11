@@ -50,53 +50,53 @@ if (-not $Packages.Count) { $Packages = @("all") }
 # below every link, there's another (version independent) URL from which
 # the actual download link can be found
 
-$URL_7zip_main = "https://www.7-zip.org/a/7z1900-x64.exe"
+$URL_7zip_main = "https://www.7-zip.org/a/7z2201-x64.exe"
 # https://www.7-zip.org/ -> latest stable version, .exe 64-bit x64
 
-$URL_totalcmd = "https://totalcommander.ch/win/tcmd1000x64.exe"
+$URL_totalcmd = "https://totalcommander.ch/win/tcmd1051x64.exe"
 # https://www.ghisler.com/download.htm -> 64-bit only
 
-$URL_npp = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.1.4/npp.8.1.4.portable.minimalist.7z"
-# http://notepad-plus-plus.org/downloads/ -> latest release -> minimalist 7z
+$URL_npp = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.4.5/npp.8.4.5.portable.minimalist.7z"
+# http://notepad-plus-plus.org/downloads/ -> latest release -> mini-portable / minimalist 7z
 
-$URL_sumatra = "https://kjkpubsf.sfo2.digitaloceanspaces.com/software/sumatrapdf/rel/SumatraPDF-3.3.3-64.zip"
+$URL_sumatra = "https://www.sumatrapdfreader.org/dl/rel/3.4.6/SumatraPDF-3.4.6-64.zip"
 # https://www.sumatrapdfreader.org/download-free-pdf-viewer.html -> 64-bit builds, portable version
 
-$URL_mpc_hc = "https://github.com/clsid2/mpc-hc/releases/download/1.9.16/MPC-HC.1.9.16.x64.zip"
+$URL_mpc_hc = "https://github.com/clsid2/mpc-hc/releases/download/1.9.23/MPC-HC.1.9.23.x64.zip"
 # https://github.com/clsid2/mpc-hc/releases -> latest x64.zip
 
 $URL_xmplay = "http://uk.un4seen.com/files/xmplay38.zip"
 # https://www.un4seen.com/xmplay.html -> small download button (top center)
 
-$URL_xmp_sid = "http://support.xmplay.com/files/12/xmp-sidex1.1.zip"
+$URL_xmp_sid = "http://support.xmplay.com/files/12/xmp-sidex__v2.0_rev3.0%20final.zip"
 # https://www.un4seen.com/xmplay.html#plugins -> SIDex input plugin -> download
 
-$URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.5.11+release.bin.win.zip"
+$URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.6.5+release.bin.windows.zip"
 # https://lib.openmpt.org/libopenmpt/download/ -> xmp-openmpt for Windows 7+ (x86 + SSE2)
 
 $URL_dosbox_vanilla = "https://sourceforge.net/projects/dosbox/files/dosbox/0.74-3/DOSBox0.74-3-win32-installer.exe/download"
 # https://sourceforge.net/projects/dosbox/files/dosbox/ -> latest version -> Win32 installer
 
-$URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v0.83.17/dosbox-x-vsbuild-win64-20210831224158.zip"
+$URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v0.84.3/dosbox-x-vsbuild-win64-20220901232730.zip"
 # https://github.com/joncampbell123/dosbox-x/releases -> latest dosbox-x-vsbuild-win64-*.zip
 
-$URL_winuae = "https://download.abime.net/winuae/releases/WinUAE4400_x64.zip"
+$URL_winuae = "https://download.abime.net/winuae/releases/WinUAE4910_x64.zip"
 # http://www.winuae.net/download/ -> zip-archive (64 bit)
 
-$URL_tic80 = "https://github.com/nesbox/TIC-80/releases/download/v0.90.1723/tic80-v0.90-win.zip"
+$URL_tic80 = "https://github.com/nesbox/TIC-80/releases/download/v1.0.2164/tic80-v1.0-win.zip"
 # https://github.com/nesbox/TIC-80/releases -> latest *-win.zip
 
 $URL_ansilove = "https://github.com/kajott/ansilove-nogd/releases/download/v0.1/ansilove.exe"
 # https://github.com/kajott/ansilove-nogd/releases -> latest ansilove.exe
 
-$URL_capturinha = "https://github.com/kebby/Capturinha/releases/download/v0.3.0/Capturinha.zip"
+$URL_capturinha = "https://github.com/kebby/Capturinha/releases/download/v0.4.1/Capturinha.zip"
 # https://github.com/kebby/Capturinha/releases -> latest .zip
 
-$URL_ffmpeg = "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2021-09-23-12-22/ffmpeg-n4.4-154-g79c114e1b2-win64-gpl-shared-4.4.zip"
+$URL_ffmpeg = "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n4.4-latest-win64-gpl-shared-4.4.zip"
 # https://github.com/BtbN/FFmpeg-Builds/releases -> latest ffmpeg-n4.4-...-win64-gpl-shared-4.4.zip
 # NOTE: this must match with the version number indicated in Capturinha's release notes above!
 
-$URL_python = "https://www.python.org/ftp/python/3.9.7/python-3.9.7-embed-amd64.zip"
+$URL_python = "https://www.python.org/ftp/python/3.10.7/python-3.10.7-embed-amd64.zip"
 # https://python.org/ -> Downloads -> Windows -> Latest Python 3 Release -> Windows embeddable package (64-bit)
 
 
