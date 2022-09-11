@@ -13,3 +13,4 @@ bin/python.cmd
 jingle/*.wav
 music/*
 !music/download.txt
+pico-8
