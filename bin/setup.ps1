@@ -114,6 +114,7 @@ $URL_acidview = "https://sourceforge.net/projects/acidview6-win32/files/acidview
 $URL_sahli = "https://github.com/m0qui/Sahli/archive/master.zip|Sahli-master.zip"
 $URL_typr = "https://github.com/mog/typr/archive/master.zip|typr-master.zip"
 $URL_youtube_dl = "https://yt-dl.org/downloads/latest/youtube-dl.exe"
+$URL_yt_dlp = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe"
 $URL_vice = "https://sourceforge.net/projects/vice-emu/files/releases/binaries/windows/WinVICE-3.1-x64.7z/download"
 $URL_a500rom = "https://www.ikod.se/wp-content/uploads/files/Kickstart-v1.3-rev34.5-1987-Commodore-A500-A1000-A2000-CDTV.rom"
 
@@ -735,8 +736,11 @@ if (need "ffmpeg.exe" -for ffmpeg,capturinha) {
 if (need "Capturinha.exe" -for capturinha) {
     extract (download $URL_capturinha) Capturinha.exe vcruntime140.dll vcruntime140_1.dll
 }
-if (need "youtube-dl.exe" -for youtube-dl,music) {
+if (need "youtube-dl.exe" -for youtube-dl) {
     mv_f (download $URL_youtube_dl) .
+}
+if (need "yt-dlp.exe" -for yt-dlp,music) {
+    mv_f (download $URL_yt_dlp) .
 }
 
 
@@ -804,7 +808,7 @@ if ($Packages -contains "music") {
         if ($ytdl) {
             status ("Downloading: " + $url)
             $downloadFile = Join-Path $cacheDir $downloadFile
-            youtube-dl -f bestaudio -q -o $downloadFile $url
+            yt-dlp -f bestaudio -q -o $downloadFile $url
         } else {
             $downloadFile = download $url
         }

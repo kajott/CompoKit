@@ -18,7 +18,7 @@ A CompoKit installation mainly consists of third-party tools:
   - **Fantasy Console:** [TIC-80](https://tic80.com)
 - **Text Editor:** [Notepad++](https://notepad-plus-plus.org/)
 - **PDF Viewer:** [SumatraPDF](https://www.sumatrapdfreader.org/)
-- **Audio/Video Tools:** [FFmpeg](http://ffmpeg.org/), [youtube-dl](https://ytdl-org.github.io/youtube-dl/), [Capturinha](https://github.com/kebby/Capturinha) *(only installed on demand)*
+- **Audio/Video Tools:** [FFmpeg](http://ffmpeg.org/), [youtube-dl](https://ytdl-org.github.io/youtube-dl/)/[yt-dlp](https://github.com/yt-dlp/yt-dlp), [Capturinha](https://github.com/kebby/Capturinha) *(only installed on demand)*
 - **Music:**
   - a selection of nice, not too bombastic demoscene music for use as background music during graphics compos ...
   - ... and a few proper bangers for grabbing the audience's attention before a compo
