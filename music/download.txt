@@ -69,10 +69,12 @@ https://soundcloud.com/malmen/enfold-original-mix
 2006/tum06/music/mp3_ogg/puryx_-_forever_again_(short_edit).zip -> puryx_-_forever_again_(short_edit).mp3
 2015/evoke15/mp3_ogg/saga_musix_-_cloudsurfing.ogg
 2019/deadline19/streaming_music/wayfinder-carnevale.mp3
+2022/assembly_summer22/dance_music/dj_joge_-_infinite_midnight_assembly_30yo_cut.wav
+2022/assembly_summer22/dance_music/portal.mp3
 
 
 [other]
-# "Generic" stuff here. Not retro, not Trance.
+# "Generic" stuff here. Not retro, not Trance, not too energetic.
 2017/riverwash17/music_streaming/streamingmsx_aceman.zip -> AceMan - ...and yet..mp3
 2015/assembly15/dance_music/runaway_a.i._by_byproduct___scenesat.flac
 2014/thegathering14/music_freestyle/through-time-by-capox.zip -> Through Time - Short Edit.mp3
@@ -123,16 +125,17 @@ https://soundcloud.com/h0ffman/hoffman-unreal-2001
 
 [calm]
 # Now the really calm tracks:
-http://seppjo.de/pouet/rise.zip -> rise.xm
+https://pouet.risky.de/rise.zip -> rise.xm
 http://archive.scene.org/pub/music/disks/va-moleman_2_soundtrack__2012_.zip -> 33_-_echolith_-_diversity.mp3
 https://soundcloud.com/gargaj/colorstar-falling-gargaj-remix
 2018/nova18/mixed_genre_streaming_music/hoffman_-_half_of_the_time.mp3
 http://www.welfare.be/music/ley/red-waiting_for_that_special_random_bitch.mp3
 https://soundcloud.com/h0ffman/intrinsic-gravity-extended-mix
+2022/evoke22/mp3/cosmiq-cygnus-a.mp3
 
 
 [banger]
-# Not to the stuff that makes you shake your bum properly.
+# Now to the stuff that makes you shake your bum properly.
 2001/scene_event01/mmul/se2ksense_tracked_cocioandfinsprit_reflexofloopit.zip -> SE2kSense_Tracked_CocioAndFinsprit_ReflexOfLoopit.xm
 2007/tum07/music/streamed/dq_feat._scrapingmicha_-_me_chalice.zip -> dq_feat._scrapingmicha_-_me_chalice.mp3
 2008/evoke08/mp3_ogg/dq_feat._scraping_micha_-_this_year.zip -> dq_feat._scraping_micha_-_this_year.mp3
