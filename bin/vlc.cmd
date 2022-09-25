@@ -1,0 +1,1 @@
+@start "" "%~dp0\vlc\vlc.exe" --config="%~dp0\vlc\vlcrc" %*

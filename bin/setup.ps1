@@ -65,6 +65,12 @@ $URL_sumatra = "https://www.sumatrapdfreader.org/dl/rel/3.4.6/SumatraPDF-3.4.6-6
 $URL_mpc_hc = "https://github.com/clsid2/mpc-hc/releases/download/1.9.23/MPC-HC.1.9.23.x64.zip"
 # https://github.com/clsid2/mpc-hc/releases -> latest x64.zip
 
+$URL_vlc = "https://mirror.netcologne.de/videolan.org/vlc/last/win64/vlc-3.0.17.4-win64.7z"
+# https://mirror.netcologne.de/videolan.org/vlc/last/win64/ -> latest *-win64.7z
+
+$URL_mpv = "https://sourceforge.net/projects/mpv-player-windows/files/64bit/mpv-x86_64-20220925-git-56e24d5.7z/download"
+# https://sourceforge.net/projects/mpv-player-windows/files/64bit/ -> latest .7z
+
 $URL_xmplay = "http://uk.un4seen.com/files/xmplay38.zip"
 # https://www.un4seen.com/xmplay.html -> small download button (top center)
 
@@ -502,6 +508,41 @@ SynchronizeNearest=0
 CommandMod0=816 1 51 "" 5 0 0 0
 "@
 # cf. https://www.pouet.net/topic.php?which=11591&page=18#c553418
+
+
+##### VLC #####
+
+if (need "vlc\vlc.exe" -for vlc) {
+    $tmpdir = (extract_temp (download $URL_vlc))
+    $vlcver = Get-ChildItem -LiteralPath $tmpdir -Filter "vlc-*" -Name
+    mv_f (Join-Path $tmpdir $vlcver) vlc
+    remove_temp
+}
+config "vlc\vlcrc" -for vlc @"
+[core]
+fullscreen=1
+osd=0
+video-title-show=0
+playlist-cork=0
+#start-paused=1  #buggy: doesn't autostart
+[qt]
+qt-system-tray=0
+#qt-fs-controller=0
+qt-updates-notif=0
+qt-privacy-ask=0
+"@
+
+
+##### MPV #####
+
+if (need "mpv.exe" -for mpv) {
+    extract (download $URL_mpv) mpv.exe
+    mkdir_s portable_config
+}
+config "portable_config\mpv.conf" -for mpv @"
+fullscreen=yes
+pause=yes
+"@
 
 
 ##### XMPlay #####
