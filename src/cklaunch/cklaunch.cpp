@@ -7,7 +7,7 @@ exec ./cklaunch.exe "$@"
 
 // CompoKit Launcher, a simple directory navigation tool
 //
-// Copyright (C) 2019-2021 Martin J. Fiedler <keyj@emphy.de>
+// Copyright (C) 2019-2022 Martin J. Fiedler <keyj@emphy.de>
 // published under the terms of the MIT license
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -77,7 +77,7 @@ struct DirItem {
     string name;     // original name of the file
     string display;  // display name: directory name enclosed in [brackets]
     string sortKey;  // lower-case copy, used for sorting and searching
-    FileType* fileType;
+    string ext;      // file name extension, used for file type lookup
     inline bool operator<(const DirItem& other) {
         if (isDir && !other.isDir) { return true; }
         if (!isDir && other.isDir) { return false; }
@@ -98,12 +98,11 @@ struct DirItem {
         }
         if (isDir_) { display[s + 1] = ']'; }
         isDir = isDir_;
-        fileType = nullptr;
-        if (!isDir_ && (dot < s)) {
-            auto it = fileTypeMap.find(sortKey.substr(dot + 1));
+        if (dot < s) { ext = sortKey.substr(dot + 1); } else  { ext.clear(); }
+        if (!isDir_ && !ext.empty()) {
+            auto it = fileTypeMap.find(ext);
             if (it != fileTypeMap.end()) {
-                fileType = it->second;
-                display[0] = fileType->prefix;
+                display[0] = it->second->prefix;
             }
         }
     }
@@ -855,7 +854,7 @@ void LoadConfig() {
     fileTypes.clear();
 
     // parse the file
-    string line, section;
+    string line, section, prevKey;
     bool actionSection;
     while (!(line = ReadLine(f)).empty()) {
         StringStrip(line);
@@ -915,9 +914,17 @@ void LoadConfig() {
             // construct the file type object and set associations
             auto* t = new FileType(prefix, cmd, value);
             fileTypes.push_back(t);
+            string mod;
+            if ((key[0] == '^') && (key[1] == ':')) {
+                // "^:mod" line -> recall extension list from last line, but add modifier
+                mod = key.substr(1);
+                key = prevKey;
+            } else {
+                prevKey = key;
+            }
             for (const auto& ext : StringSplit(key, ", \t;|")) {
                 if (!ext.empty()) {
-                    fileTypeMap[ext] = t;
+                    fileTypeMap[ext + mod] = t;
                 }
             }
             continue;
@@ -1094,20 +1101,32 @@ void EnterItem() {
 
     // check for a Ctrl/Shift/Alt modifier override
     string mod;
+    if (GetKeyState(VK_MENU)    & 0x8000) { mod.append(":alt"); }
     if (GetKeyState(VK_CONTROL) & 0x8000) { mod.append(":ctrl"); }
     if (GetKeyState(VK_SHIFT)   & 0x8000) { mod.append(":shift"); }
-    if (GetKeyState(VK_MENU)    & 0x8000) { mod.append(":alt"); }
 
-    // select file type based on modifier or extension
+    // select file type based on modifier or extension, with priority:
+    // 1. "ext:mod" - fully-qualified extension with modifier
+    // 2. ":mod" - modifier only
+    // 3. "ext" - extension only
     FileType *ft = nullptr;
-    if (!mod.empty()) {
+    if (!mod.empty() && !item.isDir && !item.ext.empty()) {
+        auto it = fileTypeMap.find(item.ext + mod);
+        if (it != fileTypeMap.end()) {
+            ft = it->second;
+        }
+    }
+    if (!ft && !mod.empty()) {
         auto it = fileTypeMap.find(mod);
         if (it != fileTypeMap.end()) {
             ft = it->second;
         }
     }
     if (!ft && !item.isDir) {
-        ft = item.fileType;
+        auto it = fileTypeMap.find(item.ext);
+        if (it != fileTypeMap.end()) {
+            ft = it->second;
+        }
     }
     if (ft && ft->cmd.empty()) {
         ft = nullptr;  // filetype has empty command line -> ignore it

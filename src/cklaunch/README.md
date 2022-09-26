@@ -47,8 +47,11 @@ This section configures "rules" which programs to call for specific file types, 
 
 With the following fields:
 - `ext` specifies one or more file extensions, lowercase without preceding dot, separated by spaces or commas, for which the rule shall match.
-  - Instead of file extensions, the special codes `:ctrl`, `:shift` and `:alt` can be used to specify rules that match when activating a file or directory while a modifier key is pressed down; these rules do **not** match any specific file extension.
-- `'x'` is optional and specifies a single-character "prefix" that is shown in the file list in front of the file names that match the rule.
+  - If the "modifier codes" `:alt`, `:ctrl` or `:shift` are appended to an extension, the rule only matches if the specified modifier keys are pressed down while double-clicking the file or pressing Enter on it.
+  - Multiple modifier codes can be combined, but must be specified in the exact order as listed above. For example, `:alt:shift` will work as intended, but `:shift:alt` won't.
+  - If the line consists only of a caret ('`^`'), followed by a modifier code (or combination thereof), the rule will apply to the same list of extensions as the last rule, except that the specified modifier keys need to be pressed down to activate it.
+  - If the extension list contains _only_ a modifier code, the rule matches for any file or directory that's activated while the specified modifier keys are pressed down and there's no other modifier-specific rule for the current file's type.
+- `'x'` is optional and specifies a single-character "prefix" that is shown in the file list in front of the file names that match the rule. This is ignored for rules containing modifiers.
 - `command` and `args` specify the program to execute and its arguments.
   - The `command` part can consist of multiple alternatives, separated by a pipe sign ('`|`'). This is useful if there are multiple programs that can work with a certain file type, or where there are multiple directories where a program can be installed. The first match that yields an existing executable file is used.
   - Quoting has to be done properly to allow paths with spaces to work.
@@ -72,6 +75,12 @@ The following rule marks music files with a '`>`' prefix and plays them back wit
     mp3 wav ogg = '>' xmplay
 
 Note that the `.exe` suffix of `xmplay.exe` isn't needed, and neither is the `"$"` argument at the end. If there is an `xmplay.exe` file in the same directory as `cklaunch.exe`, it is preferred over a system-wide installation.
+
+This set rules makes a few common video file formats playable with any of three players, depending on which modifier keys are held down while activating them:
+
+    mp4 mov mkv = '>' mpc-hc
+    ^:alt = mpv
+    ^:alt:shift = vlc
 
 The following rule makes it possible to navigate to any file or folder in Explorer by pressing Ctrl+Enter on it:
 
