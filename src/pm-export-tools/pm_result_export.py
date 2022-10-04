@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Generate a template for a results.txt file or a Demozoo-compliant .tsv file
-based on a PartyMeister 3 vote list.
+Generate a template for a results.txt file, a Demozoo-compliant .tsv file,
+or an HTML document based on a PartyMeister 3 vote list.
 """
 import argparse
 import textwrap
-import html
+import html as mod_html
 import sys
 import os
 import io
@@ -14,7 +14,10 @@ import io
 def get_first_tag_text(x):
     x = x.split('>', 1)[-1]     # skip until after start tag
     x = x.split('<', 1)[0]      # cut off at end tag
-    return html.unescape(x).strip()
+    return mod_html.unescape(x).strip()
+
+def H(x):
+    return x.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
 
 
 if __name__ == "__main__":
@@ -25,10 +28,11 @@ if __name__ == "__main__":
                             (no MTHML!) from the vote list in PartyMeister's
                             backend
                         [default: %(default)s]""")
-    parser.add_argument("-o", "--outfile", metavar="TXTFILE", default="raw_results.txt",
+    parser.add_argument("-o", "--outfile", metavar="FILE", default="raw_results.txt",
                         help="""
                             output file;
-                            if ending with .tsv, export will be in Demozoo format
+                            if ending with .tsv, export will be in Demozoo format;
+                            if ending with .html, export will be in HTML format
                         [default: %(default)s]""")
     parser.add_argument("-w", "--width", metavar="COLS", type=int, default=72,
                         help="""
@@ -38,8 +42,8 @@ if __name__ == "__main__":
                         help="""
                             output file encoding
                         [default: %(default)s; other useful values: cp437, cp1252]""")
-    parser.add_argument("-v", "--verbose", action='count',
-                        help="be more verbose")
+    parser.add_argument("-n", "--max-place", metavar="N", type=int,
+                        help="only export first N places")
     args = parser.parse_args()
 
     # open input file
@@ -50,15 +54,37 @@ if __name__ == "__main__":
     except (IOError, UnicodeError) as e:
         print("FATAL: can not read input file:", e, file=sys.stderr)
         sys.exit(1)
-    tsv = os.path.splitext(args.outfile)[-1].strip('.').lower() in ("tsv", "csv")
+    ext = os.path.splitext(args.outfile)[-1].strip('.').lower()
+    tsv = (ext in ("tsv", "csv"))
+    html = (ext in ("htm", "html"))
 
     # parse the input file (in a *very* hand-wavey way!) and generate output
     out = io.StringIO()
+    if html:
+        print('''<!DOCTYPE html>
+<head>
+<meta charset="XXXCHARSETXXX">
+<title>Votesheet Export</title>
+<style type="text/css">
+body { font-family: "Segoe UI", Roboto, Helvetica, sans-serif, Arial; }
+h3 { margin: 1em 0 0 0; padding: 0; border-bottom: solid 0.75pt black; }
+td { padding: 0.1em 0.5em 0.1em 0; vertical-align: top; }
+tr, td { break-before: avoid; break-inside: avoid; }
+.head, .head td { break-before: auto; }
+.r { text-align: right; }
+</style>
+</head><body>
+<table>''', file=out)
     doc = doc.split('</main>', 1)[0]
+    valid = False
     for compo in doc.split('<h3')[1:]:
         if not("row" in compo):
             continue  # not a valid compo -- may be the "deadline at X o'clock" header
-        print("---", get_first_tag_text(compo), file=out)
+        title = get_first_tag_text(compo)
+        if html:
+            print('<tr class="head"><td colspan="4"><h3>', H(title), "</h3></td></tr>", file=out)
+        else:
+            print("---", title, file=out)
 
         count = 0
         last_place = 0
@@ -84,9 +110,16 @@ if __name__ == "__main__":
                     last_place = count
                     last_score = score
                 place = last_place
+            if args.max_place and (place > args.max_place):
+                break
 
             # build the entry
-            if tsv:
+            if html:
+                print('<tr><td class="r">', '#' + str(place), '</td>', file=out)
+                print('<td class="r">', score, '</td>', file=out)
+                print('<td>', H(title), '</td>', file=out)
+                print('<td>', H(author), '</td></tr>', file=out)
+            elif tsv:
                 print(f"{place}\t{title}\t{author}\t{score}", file=out)
             else:
                 prefix = f"{place:02d} {score:4d}  "
@@ -96,16 +129,23 @@ if __name__ == "__main__":
                     print(prefix + line, file=out)
                     prefix = " " * prefixlen
         print(file=out)
+        valid = True
 
-    if not out.getvalue():
+    if not valid:
         print(f"FATAL: no valid compos found", file=sys.stderr)
         sys.exit(1)
+
+    if html:
+        print('</table></body></html>', file=out)
+    out = out.getvalue().strip()
+    if html:
+        out = out.replace("XXXCHARSETXXX", args.encoding)
 
     # write output file
     print("writing", args.outfile)
     try:
         with open(args.outfile, 'w', encoding=args.encoding, errors='replace') as f:
-            print(out.getvalue().strip(), file=f)
+            print(out, file=f)
     except (IOError, UnicodeError) as e:
         print("FATAL: can not write output file:", e, file=sys.stderr)
         sys.exit(1)
