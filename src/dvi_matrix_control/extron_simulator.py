@@ -69,6 +69,25 @@ class ConnectionHandler(SocketServer.BaseRequestHandler):
                     response = "Qik\r\n"
                     continue
 
+                # handle EDID upload command
+                edid = buf.find("EDID")
+                pos = buf.find("\x1bI")
+                if (pos >= 0) and (edid > pos):
+                    cmd = "EDID upload"
+                    response = "EdidI" + buf[pos+2 : edid] + "\r\n"
+                    bytes_left = 256
+                    while bytes_left > 0:
+                        bytes_left -= len(self.request.recv(bytes_left))
+                    continue
+
+                # handle EDID assign command
+                edid = buf.find("*EDID")
+                pos = buf.find("\x1bA")
+                if (pos >= 0) and (edid > pos):
+                    cmd = "EDID assign"
+                    response = "EdidA0*" + buf[pos+2 : edid] + "\r\n"
+                    continue
+
                 # handle ordinary end-of-line
                 if buf.strip():
                     print("unrecognized command:", repr(buf))

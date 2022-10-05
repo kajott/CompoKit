@@ -4,7 +4,7 @@
 
 Supported matrix models / protocols:
 - Lightware MX series (LW1 protocol) *(untested)*
-- Extron DXP series (SIS protocol) *(tested with [DXP 88 HDMI](https://www.extron.com/product/dxphdmi))*
+- Extron DXP series (SIS protocol) *(tested with [DXP 88 DVI Pro](https://www.extron.com/product/dxpdvipro) and [DXP 88 HDMI](https://www.extron.com/product/dxphdmi))*
 
 Connections to the matrices can be established via TCP/IP *(tested)* or serial port *(untested, requires [PySerial](https://pythonhosted.org/pyserial/) package)*.
 
@@ -71,3 +71,20 @@ in the example above will tie input 1 to outputs 2, 3 and 8.
 ### Saving settings
 
 Whenever a connect or "store macro" command is executed, the configuration file `dvi_matrix_control.conf` is re-written with the new connection and macro settings. This file is also automatically reloaded every time the program starts up. Together, this means that quitting and restarting the program doesn't lose any configuration and macro information.
+
+
+## EDID Control
+
+There's also a second script, `extron_set_edit.py`, that can be used to configure EDID information on Extron switches specifically. The script generally sets the same EDID for all inputs, i.e. it acts as some kind of a global switch for the desired video mode (if the sources respect the EDID information, that is).
+
+EDIDs can either be chosen from a pre-defined list, like this:
+
+    ./extron_set_edid.py 1080p50
+
+(Run `./extron_set_edid.py -h` to see the list of supported modes.)
+
+Alternatively, a custom EDID file (a 256-byte binary file containing the raw EDID data) can be loaded into the matrix:
+
+    ./extron_set_edid.py -f custom_edid.bin
+
+In both cases, the IP address and port to connect to will be read from `dvi_matrix_control.conf` if that file exists and contains a connection line for an Extron switch ("`//2,`*`xxx`*").
