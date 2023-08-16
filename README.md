@@ -12,7 +12,7 @@ A CompoKit installation mainly consists of third-party tools:
 - **Image Viewer:** [XnView](https://www.xnview.com/en/), [CompoView](https://www.pouet.net/prod.php?which=56934), [PixelView](https://github.com/kajott/PixelView), [GLISS](http://svn.emphy.de/scripts/trunk/gliss.cpp)
 - **ANSI Viewer:** [ACiDView](https://sourceforge.net/projects/acidview6-win32/), [Sahli](https://github.com/m0qui/Sahli) and [AnsiLove](https://github.com/ansilove/ansilove)
 - **Emulators:**
-  - **DOS:** [DOSBox](https://www.dosbox.com/) and [DOSBox-X](https://dosbox-x.com/)
+  - **DOS:** [DOSBox](https://www.dosbox.com/), [DOSBox Staging](https://dosbox-staging.github.io) and [DOSBox-X](https://dosbox-x.com/)
   - **C64:** [WinVICE](http://vice-emu.sourceforge.net/)
   - **Amiga:** [WinUAE](http://www.winuae.net/)
   - **Fantasy Console:** [TIC-80](https://tic80.com), [MicroW8](https://exoticorn.github.io/microw8/)
@@ -107,10 +107,10 @@ Some of the tools are pre-configured in non-standard ways:
 - SumatraPDF
   - English language (regardless of system locale)
   - page layout set to "single page, don't save for every document"
-- DOSBox
-  - provided config file `dosbox.conf` sets fullscreen with correct aspect ratio, maximum speed (`core=dynamic`, `cycles=max`), 48000 Hz sample rate from all audio sources (including GUS and Covox), and UART mode for the MPU-401 MIDI interface
-  - CKLaunch is configured to interpret `.dosbox` files as DOSBox configuration files and runs them with the `dosbox -conf` option
-    - This can be used to provide an entry-specific DOSBox configuration: Rename the `.conf` file to `.dosbox` and make sure the entry is auto-started:
+- DOSBox / DOSBox Staging
+  - provided config files `dosbox.conf` and `dosbox-staging.conf` set fullscreen with correct aspect ratio, maximum speed (`core=dynamic`, `cycles=max`), 48000 Hz sample rate from all audio sources (including GUS and Covox), and UART mode for the MPU-401 MIDI interface
+  - CKLaunch is configured to interpret `.dosbox` and `.dosbox-staging` files as DOSBox(/-Staging) configuration files and runs them with the `dosbox(-staging) -conf` option
+    - This can be used to provide an entry-specific DOSBox configuration: Rename the `.conf` file to `.dosbox` or `.dosbox-staging` and make sure the entry is auto-started:
       ```
       [autoexec]
       mount C: .

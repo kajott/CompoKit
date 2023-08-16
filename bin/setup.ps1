@@ -83,6 +83,9 @@ $URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.6.5
 $URL_dosbox_vanilla = "https://sourceforge.net/projects/dosbox/files/dosbox/0.74-3/DOSBox0.74-3-win32-installer.exe/download"
 # https://sourceforge.net/projects/dosbox/files/dosbox/ -> latest version -> Win32 installer
 
+$URL_dosbox_staging = "https://github.com/dosbox-staging/dosbox-staging/releases/download/v0.80.1/dosbox-staging-windows-x86_64-v0.80.1.zip"
+# https://github.com/dosbox-staging/dosbox-staging/releases -> latest *-windows-x86_64-*.zip
+
 $URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v0.84.3/dosbox-x-vsbuild-win64-20220901232730.zip"
 # https://github.com/joncampbell123/dosbox-x/releases -> latest dosbox-x-vsbuild-win64-*.zip
 
@@ -724,6 +727,12 @@ cd $binDir
 
 if (need "dosbox.exe" -for dosbox,all) {
     extract (download $URL_dosbox_vanilla) DOSBox.exe SDL.dll SDL_net.dll
+}
+if (need "dosbox-staging.exe" -for dosbox-staging,all) {
+    $tmpdir = (extract_temp (download $URL_dosbox_staging))
+    $dbsver = Get-ChildItem -LiteralPath $tmpdir -Filter "dosbox-staging-*" -Name
+    mv_f (Join-Path $tmpdir $dbsver) dosbox-staging
+    remove_temp
 }
 if (need "dosbox-x.exe" -for dosbox-x,all) {
     extract (download $URL_dosbox_x) bin/x64/Release/dosbox-x.exe
