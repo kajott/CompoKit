@@ -4,5 +4,5 @@ if not exist %chrome% set chrome="%ProgramFiles(x86)%\Google\Chrome\Application\
 start "" %chrome% ^
 --user-data-dir="%TEMP%\compokit_chrome_profile" ^
 --allow-file-access-from-files ^
---start-fullscreen ^
+--start-fullscreen --kiosk ^
 "%~f1"

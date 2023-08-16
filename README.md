@@ -30,7 +30,7 @@ A CompoKit installation mainly consists of third-party tools:
 
 The following applications are **not** included for bloat or licensing reasons, but may be required for full functionality:
 - Google Chrome (for WebGL demos and Sahli)
-  - must be installed system-wide (in `C:\Program Files (x86)\Google\Chrome`)
+  - must be installed system-wide (in `C:\Program Files\Google\Chrome` or `C:\Program Files (x86)\Google\Chrome`)
 - Pico-8 (to show `.p8` cartridges)
   - just unpack `pico8.exe` and the data files into a directory called `pico-8` next to (not inside of!) the `bin` directory
 

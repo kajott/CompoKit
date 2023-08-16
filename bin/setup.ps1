@@ -689,7 +689,14 @@ if (need "Sahli" -for sahli,all) {
     remove_temp
 }
 config "Sahli/_run.cmd" -for sahli,all @"
-@"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --user-data-dir="%TEMP%\compokit_chrome_profile" --allow-file-access-from-files --start-fullscreen "file://%~dp0/index.html"
+@echo off
+set chrome="%ProgramW6432%\Google\Chrome\Application\chrome.exe"
+if not exist %chrome% set chrome="%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe"
+start "" %chrome% ^
+--user-data-dir="%TEMP%\compokit_chrome_profile" ^
+--allow-file-access-from-files ^
+--start-fullscreen --kiosk ^
+"file://%~dp0/index.html"
 "@
 
 if (need "typr" -for typr,all) {
@@ -697,7 +704,14 @@ if (need "typr" -for typr,all) {
     remove_temp
 }
 config "typr/_run.cmd" -for typr,all @"
-@"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" --user-data-dir="%TEMP%\compokit_chrome_profile" --allow-file-access-from-files --start-fullscreen "file://%~dp0/index.html"
+@echo off
+set chrome="%ProgramW6432%\Google\Chrome\Application\chrome.exe"
+if not exist %chrome% set chrome="%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe"
+start "" %chrome% ^
+--user-data-dir="%TEMP%\compokit_chrome_profile" ^
+--allow-file-access-from-files ^
+--start-fullscreen --kiosk ^
+"file://%~dp0/index.html"
 "@
 
 cd $binDir
