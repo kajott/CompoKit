@@ -92,6 +92,9 @@ $URL_winuae = "https://download.abime.net/winuae/releases/WinUAE4910_x64.zip"
 $URL_tic80 = "https://github.com/nesbox/TIC-80/releases/download/v1.0.2164/tic80-v1.0-win.zip"
 # https://github.com/nesbox/TIC-80/releases -> latest *-win.zip
 
+$URL_microw8 = "https://github.com/exoticorn/microw8/releases/download/v0.2.2/microw8-0.2.2-windows.zip"
+# https://github.com/exoticorn/microw8/releases -> latest *-windows.zip
+
 $URL_ansilove = "https://github.com/kajott/ansilove-nogd/releases/download/v0.1/ansilove.exe"
 # https://github.com/kajott/ansilove-nogd/releases -> latest ansilove.exe
 
@@ -781,10 +784,14 @@ RelativePaths=1
 "@
 
 
-##### TIC-80 #####
+##### TIC-80, MicroW8 #####
 
 if (need "tic80.exe" -for tic80,all) {
     extract (download $URL_tic80) tic80.exe
+}
+
+if (need "uw8.exe" -for microw8,all) {
+    extract (download $URL_microw8) microw8-windows/uw8.exe
 }
 
 
