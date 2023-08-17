@@ -86,7 +86,7 @@ $URL_dosbox_vanilla = "https://sourceforge.net/projects/dosbox/files/dosbox/0.74
 $URL_dosbox_staging = "https://github.com/dosbox-staging/dosbox-staging/releases/download/v0.80.1/dosbox-staging-windows-x86_64-v0.80.1.zip"
 # https://github.com/dosbox-staging/dosbox-staging/releases -> latest *-windows-x86_64-*.zip
 
-$URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v0.84.3/dosbox-x-vsbuild-win64-20220901232730.zip"
+$URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v2023.05.01/dosbox-x-vsbuild-win64-20230501152329.zip"
 # https://github.com/joncampbell123/dosbox-x/releases -> latest dosbox-x-vsbuild-win64-*.zip
 
 $URL_winuae = "https://download.abime.net/winuae/releases/WinUAE4910_x64.zip"
@@ -728,7 +728,7 @@ cd $binDir
 if (need "dosbox.exe" -for dosbox,all) {
     extract (download $URL_dosbox_vanilla) DOSBox.exe SDL.dll SDL_net.dll
 }
-if (need "dosbox-staging.exe" -for dosbox-staging,all) {
+if (need "dosbox-staging/dosbox.exe" -for dosbox-staging,all) {
     $tmpdir = (extract_temp (download $URL_dosbox_staging))
     $dbsver = Get-ChildItem -LiteralPath $tmpdir -Filter "dosbox-staging-*" -Name
     mv_f (Join-Path $tmpdir $dbsver) dosbox-staging
