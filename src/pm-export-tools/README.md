@@ -4,6 +4,16 @@ This directory contains tools to export data from the PartyMeister demoparty
 management system into various formats.
 
 
+## Entry File Download
+
+The tool `pm_entry_download.py` downloads the released files for all entries
+and nicely sorts them into a directory structure with one subdirectory per
+compo, suitable for almost direct upload to scene.org.
+
+Input is a saved copy of PartyMeister's `/backend/entries` HTML page in plain
+HTML format (i.e. no MHTML).
+
+
 ## Voting Result Export
 
 The tool `pm_result_export.py` exports the voting results into a text file
