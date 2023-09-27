@@ -92,6 +92,9 @@ $URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/do
 $URL_winuae = "https://download.abime.net/winuae/releases/WinUAE5000_x64.zip"
 # http://www.winuae.net/download/ -> zip-archive (64 bit)
 
+$URL_speccy = "https://fms.komkon.org/Speccy/Speccy59-Windows-bin.zip"
+# https://fms.komkon.org/Speccy/#Downloads -> "Speccy Windows"
+
 $URL_tic80 = "https://github.com/nesbox/TIC-80/releases/download/v1.1.2736/tic80-v1.1-win.zip"
 # https://github.com/nesbox/TIC-80/releases -> latest *-win.zip
 
@@ -791,6 +794,13 @@ ConfigFileFolder=
 PathMode=WinUAE
 RelativePaths=1
 "@
+
+
+##### Speccy #####
+
+if (need "speccy.exe" -for speccy,all) {
+    extract (download $URL_speccy) speccy.exe zxs128.rom
+}
 
 
 ##### TIC-80, MicroW8 #####

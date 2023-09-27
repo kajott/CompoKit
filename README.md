@@ -14,6 +14,7 @@ A CompoKit installation mainly consists of third-party tools:
 - **Emulators:**
   - **DOS:** [DOSBox](https://www.dosbox.com/), [DOSBox Staging](https://dosbox-staging.github.io) and [DOSBox-X](https://dosbox-x.com/)
   - **C64:** [WinVICE](http://vice-emu.sourceforge.net/)
+  - **ZX Spectrum:** [Speccy](https://fms.komkon.org/Speccy/)
   - **Amiga:** [WinUAE](http://www.winuae.net/)
   - **Fantasy Console:** [TIC-80](https://tic80.com), [MicroW8](https://exoticorn.github.io/microw8/)
 - **Text Editor:** [Notepad++](https://notepad-plus-plus.org/)
