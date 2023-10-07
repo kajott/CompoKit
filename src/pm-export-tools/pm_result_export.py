@@ -36,14 +36,23 @@ if __name__ == "__main__":
                         [default: %(default)s]""")
     parser.add_argument("-w", "--width", metavar="COLS", type=int, default=72,
                         help="""
-                            number of columns to be used in the output
-                        [default: %(default)s; ignored in Demozoo mode]""")
+                            number of columns to be used in text output
+                        [default: %(default)s; not including --prefix/--suffix]""")
+    parser.add_argument("-p", "--pad", action='store_true',
+                        help="""pad to specified width with spaces
+                                [text output only]""")
+    parser.add_argument("--prefix", metavar="STR", default="",
+                        help="text output line prefix")
+    parser.add_argument("--suffix", metavar="STR", default="",
+                        help="text output line suffix")
     parser.add_argument("-e", "--encoding", metavar="CHARSET", default="utf8",
                         help="""
                             output file encoding
                         [default: %(default)s; other useful values: cp437, cp1252]""")
     parser.add_argument("-n", "--max-place", metavar="N", type=int,
                         help="only export first N places")
+    parser.add_argument("-f", "--no-flags", action='store_true',
+                        help="omit remote entry flag")
     args = parser.parse_args()
 
     # open input file
@@ -82,7 +91,7 @@ tr, td { break-before: avoid; break-inside: avoid; }
             continue  # not a valid compo -- may be the "deadline at X o'clock" header
         title = get_first_tag_text(compo)
         if html:
-            print('<tr class="head"><td colspan="4"><h3>', H(title), "</h3></td></tr>", file=out)
+            print('<tr class="head"><td colspan="5"><h3>', H(title), "</h3></td></tr>", file=out)
         else:
             print("---", title, file=out)
 
@@ -91,11 +100,13 @@ tr, td { break-before: avoid; break-inside: avoid; }
         last_score = 0
         for entry in compo.split('<div class="row')[1:]:
             row = list(map(get_first_tag_text, entry.split('<div class="col')[1:]))
-            if (len(row) == 4) and row[0].startswith('#') and row[0][1:].isdigit() and row[1].isdigit():
-                # new four-colunm format with explicit placing
+            rawflags = ""
+            if (len(row) in (4,5)) and row[0].startswith('#') and row[0][1:].isdigit() and row[1].isdigit():
+                # new four/five-colunm format with explicit placing and optional remote flag
                 place = int(row[0][1:])
                 score = int(row[1])
-                title, author = row[2:]
+                title, author = row[2:4]
+                if len(row) > 4: rawflags = row[4]
             elif (len(row) == 3) and row[0].isdigit():
                 # old three-column format with only scores
                 place = 0
@@ -104,6 +115,7 @@ tr, td { break-before: avoid; break-inside: avoid; }
             else:
                 print(f"WARNING: unrecognized entry format {row}", file=sys.stderr)
                 continue
+
             count += 1
             if not place:  # auto-generate placement number based on score
                 if score != last_score:
@@ -113,20 +125,30 @@ tr, td { break-before: avoid; break-inside: avoid; }
             if args.max_place and (place > args.max_place):
                 break
 
+            # resolve flags
+            flags = []
+            if not args.no_flags:
+                if "remote" in rawflags.lower(): flags += ["REMOTE"]
+            flags_str = ", ".join(flags)
+
             # build the entry
             if html:
                 print('<tr><td class="r">', '#' + str(place), '</td>', file=out)
                 print('<td class="r">', score, '</td>', file=out)
                 print('<td>', H(title), '</td>', file=out)
-                print('<td>', H(author), '</td></tr>', file=out)
+                print('<td>', H(author), '</td>', file=out)
+                print('<td>', H(flags_str), '</td></tr>', file=out)
             elif tsv:
                 print(f"{place}\t{title}\t{author}\t{score}", file=out)
             else:
                 prefix = f"{place:02d} {score:4d}  "
                 prefixlen = len(prefix)
                 title = f"{title} by {author}"
+                if flags_str: title = f"{title} [{flags_str}]"
                 for line in textwrap.wrap(title, width=args.width-prefixlen):
-                    print(prefix + line, file=out)
+                    line = prefix + line
+                    if args.pad: line = line.ljust(args.width)
+                    print(args.prefix + line + args.suffix, file=out)
                     prefix = " " * prefixlen
         print(file=out)
         valid = True
