@@ -30,8 +30,8 @@ A CompoKit installation mainly consists of third-party tools:
 - **Manual:** a comprehensive [document](Compo-HOWTO.md) that describes everything a compo organizer has to do
 
 The following applications are **not** included for bloat or licensing reasons, but may be required for full functionality:
-- Google Chrome (for WebGL demos and Sahli)
-  - must be installed system-wide (in `C:\Program Files\Google\Chrome` or `C:\Program Files (x86)\Google\Chrome`)
+- Google Chrome or Microsoft Edge (for WebGL demos and Sahli)
+  - must be installed system-wide (in `C:\Program Files\Google\Chrome`, `C:\Program Files (x86)\Google\Chrome`, `C:\Program Files\Microsoft\Edge` or `C:\Program Files (x86)\Microsoft\Edge`)
 - Pico-8 (to show `.p8` cartridges)
   - just unpack `pico8.exe` and the data files into a directory called `pico-8` next to (not inside of!) the `bin` directory
 
@@ -101,10 +101,10 @@ Some of the tools are pre-configured in non-standard ways:
   - toggle fullscreen with Enter key
   - Cursor Up/Down keys change frames/pages in multi-page documents (pages in TIFF, layers in PSD, ...)
 - Sahli
-  - a little script `_run.cmd` is put into the Sahli directory that launches Sahli in Chrome
+  - a little script `_run.cmd` is put into the Sahli directory that launches Sahli in Chrome/Edge
   - a [manual](Sahli-HOWTO.md) is provided
 - typr
-  - a `_run.cmd` script is put into the typr directory that launches typr in Chrome
+  - a `_run.cmd` script is put into the typr directory that launches typr in Chrome/Edge
 - SumatraPDF
   - English language (regardless of system locale)
   - page layout set to "single page, don't save for every document"
@@ -138,12 +138,12 @@ Some of the tools are pre-configured in non-standard ways:
 - Python
   - standard "portable" installation in the subdirectory `bin/python`
   - wrapper script `python.cmd` in `bin` runs Python from there
-- Chrome: special settings when run through `bin/Chrome.cmd` and `Sahli/_run.cmd` scripts and CKLaunch's default configuration
+- Chrome/Edge: special settings when run through `bin/Chrome.cmd` and `Sahli/_run.cmd` scripts and CKLaunch's default configuration
   - fullscreen mode
   - `--allow-file-acces-from-files`
   - uses private profile directory (`%TEMP%\cklaunch_chrome_profile`)
     - clean "freshly installed" profile, no user misconfiguration possible
-    - forces new instance if Chrome is already running with the default profile
+    - forces new instance if Chrome/Edge is already running with the default profile
 - Firefox: special settings when run through `bin/Firefox.cmd` script
   - uses private profile directory (`%TEMP%\cklaunch_firefox_profile`)
     - clean "freshly installed" profile, no user misconfiguration possible
