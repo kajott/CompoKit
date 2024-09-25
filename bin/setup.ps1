@@ -50,71 +50,71 @@ if (-not $Packages.Count) { $Packages = @("all") }
 # below every link, there's another (version independent) URL from which
 # the actual download link can be found
 
-$URL_7zip_main = "https://www.7-zip.org/a/7z2301-x64.exe"
+$URL_7zip_main = "https://www.7-zip.org/a/7z2408-x64.exe"
 # https://www.7-zip.org/ -> latest stable version, .exe 64-bit x64
 
-$URL_totalcmd = "https://totalcommander.ch/1101/tcmd1101x64.exe"
+$URL_totalcmd = "https://totalcommander.ch/1103/tcmd1103x64.exe"
 # https://www.ghisler.com/download.htm -> 64-bit only
 
-$URL_npp = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.5.7/npp.8.5.7.portable.minimalist.x64.7z"
+$URL_npp = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.7/npp.8.7.portable.minimalist.x64.7z"
 # http://notepad-plus-plus.org/downloads/ -> latest release -> mini-portable / minimalist 7z
 
-$URL_sumatra = "https://www.sumatrapdfreader.org/dl/rel/3.4.6/SumatraPDF-3.4.6-64.zip"
+$URL_sumatra = "https://www.sumatrapdfreader.org/dl/rel/3.5.2/SumatraPDF-3.5.2-64.zip"
 # https://www.sumatrapdfreader.org/download-free-pdf-viewer.html -> 64-bit builds, portable version
 
-$URL_mpc_hc = "https://github.com/clsid2/mpc-hc/releases/download/2.0.0/MPC-HC.2.0.0.x64.zip"
+$URL_mpc_hc = "https://github.com/clsid2/mpc-hc/releases/download/2.3.5/MPC-HC.2.3.5.x64.zip"
 # https://github.com/clsid2/mpc-hc/releases -> latest x64.zip
 
-$URL_vlc = "https://mirror.netcologne.de/videolan.org/vlc/last/win64/vlc-3.0.18-win64.7z"
+$URL_vlc = "https://mirror.netcologne.de/videolan.org/vlc/last/win64/vlc-3.0.21-win64.7z"
 # https://mirror.netcologne.de/videolan.org/vlc/last/win64/ -> latest *-win64.7z
 
-$URL_mpv = "https://sourceforge.net/projects/mpv-player-windows/files/64bit/mpv-x86_64-20230924-git-140d018.7z/download"
+$URL_mpv = "https://sourceforge.net/projects/mpv-player-windows/files/64bit/mpv-x86_64-20240922-git-71f2220.7z/download"
 # https://sourceforge.net/projects/mpv-player-windows/files/64bit/ -> latest .7z
 
-$URL_xmplay = "http://uk.un4seen.com/files/xmplay38.zip"
+$URL_xmplay = "https://www.un4seen.com/files/xmplay38.zip"
 # https://www.un4seen.com/xmplay.html -> small download button (top center)
 
-$URL_xmp_sid = "https://support.xmplay.com/files/12/xmp-sidevo.4.4.zip"
+$URL_xmp_sid = "https://support.xmplay.com/files/12/xmp-sidevo.4.8.zip"
 # https://www.un4seen.com/xmplay.html#plugins -> SIDevo input plugin -> download
 
-$URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.7.3+release.bin.windows.zip"
+$URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.7.10+release.bin.windows.zip"
 # https://lib.openmpt.org/libopenmpt/download/ -> xmp-openmpt for Windows 7+ (x86 + SSE2)
 
 $URL_dosbox_vanilla = "https://sourceforge.net/projects/dosbox/files/dosbox/0.74-3/DOSBox0.74-3-win32-installer.exe/download"
 # https://sourceforge.net/projects/dosbox/files/dosbox/ -> latest version -> Win32 installer
 
-$URL_dosbox_staging = "https://github.com/dosbox-staging/dosbox-staging/releases/download/v0.80.1/dosbox-staging-windows-x86_64-v0.80.1.zip"
+$URL_dosbox_staging = "https://github.com/dosbox-staging/dosbox-staging/releases/download/v0.81.2/dosbox-staging-windows-v0.81.2.zip"
 # https://github.com/dosbox-staging/dosbox-staging/releases -> latest *-windows-x86_64-*.zip
 
-$URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v2023.05.01/dosbox-x-vsbuild-win64-20230501152329.zip"
+$URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v2024.07.01/dosbox-x-vsbuild-win64-20240702034526.zip"
 # https://github.com/joncampbell123/dosbox-x/releases -> latest dosbox-x-vsbuild-win64-*.zip
 
-$URL_winuae = "https://download.abime.net/winuae/releases/WinUAE5000_x64.zip"
+$URL_winuae = "https://download.abime.net/winuae/releases/WinUAE5300_x64.zip"
 # http://www.winuae.net/download/ -> zip-archive (64 bit)
 
 $URL_speccy = "https://fms.komkon.org/Speccy/Speccy59-Windows-bin.zip"
 # https://fms.komkon.org/Speccy/#Downloads -> "Speccy Windows"
 
-$URL_tic80 = "https://github.com/nesbox/TIC-80/releases/download/v1.1.2736/tic80-v1.1-win.zip"
+$URL_tic80 = "https://github.com/nesbox/TIC-80/releases/download/v1.1.2837/tic80-v1.1-win.zip"
 # https://github.com/nesbox/TIC-80/releases -> latest *-win.zip
 
-$URL_microw8 = "https://github.com/exoticorn/microw8/releases/download/v0.2.2/microw8-0.2.2-windows.zip"
+$URL_microw8 = "https://github.com/exoticorn/microw8/releases/download/v0.3.0/microw8-0.3.0-windows.zip"
 # https://github.com/exoticorn/microw8/releases -> latest *-windows.zip
 
 $URL_ansilove = "https://github.com/kajott/ansilove-nogd/releases/download/v0.1/ansilove.exe"
 # https://github.com/kajott/ansilove-nogd/releases -> latest ansilove.exe
 
-$URL_pixelview = "https://github.com/kajott/PixelView/releases/download/v1.0/pixelview.exe"
+$URL_pixelview = "https://github.com/kajott/PixelView/releases/download/v2.0/pixelview.exe"
 # https://github.com/kajott/PixelView/releases -> latest pixelview.exe
 
 $URL_capturinha = "https://github.com/kebby/Capturinha/releases/download/v0.4.1/Capturinha.zip"
 # https://github.com/kebby/Capturinha/releases -> latest .zip
 
-$URL_ffmpeg = "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n4.4-latest-win64-gpl-shared-4.4.zip"
-# https://github.com/BtbN/FFmpeg-Builds/releases -> latest ffmpeg-n4.4-...-win64-gpl-shared-4.4.zip
+$URL_ffmpeg = "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2024-03-31-17-28/ffmpeg-n4.4.4-94-g5d07afd482-win64-gpl-shared-4.4.zip"
+# https://github.com/BtbN/FFmpeg-Builds/releases -> latest ffmpeg-n4.4*-win64-gpl-shared-4.4.zip
 # NOTE: this must match with the version number indicated in Capturinha's release notes above!
 
-$URL_python = "https://www.python.org/ftp/python/3.11.5/python-3.11.5-embed-amd64.zip"
+$URL_python = "https://www.python.org/ftp/python/3.12.6/python-3.12.6-embed-amd64.zip"
 # https://python.org/ -> Downloads -> Windows -> Latest Python 3 Release -> Windows embeddable package (64-bit)
 
 
