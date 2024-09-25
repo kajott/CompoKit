@@ -80,6 +80,9 @@ $URL_xmp_sid = "https://support.xmplay.com/files/12/xmp-sidevo.4.8.zip"
 $URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.7.10+release.bin.windows.zip"
 # https://lib.openmpt.org/libopenmpt/download/ -> xmp-openmpt for Windows 7+ (x86 + SSE2)
 
+$URL_trackmeister = "https://github.com/kajott/TrackMeister/releases/download/v1.3.0/TrackMeister_win32_x86-64_v1.3.0.zip"
+# https://github.com/kajott/TrackMeister/releases -> latest win32_x86-64 .zip
+
 $URL_dosbox_vanilla = "https://sourceforge.net/projects/dosbox/files/dosbox/0.74-3/DOSBox0.74-3-win32-installer.exe/download"
 # https://sourceforge.net/projects/dosbox/files/dosbox/ -> latest version -> Win32 installer
 
@@ -609,6 +612,26 @@ if (need -config "xmplay.set" -for xmplay,all) {
     }
     $data | Set-Content -Path "xmplay.set" -Encoding Byte
 }
+
+
+##### TrackMeister #####
+
+if (need "tm.exe" -for trackmeister,tm,all) {
+    extract (download $URL_trackmeister) tm.exe
+}
+config "tm.ini" -for trackmeister,tm,all @"
+[TrackMeister]
+fullscreen = true
+autoplay = false
+fade out after loop = true
+
+[*.mod]
+stereo separation = 20
+volume ramping = 0
+[mod.*]
+stereo separation = 20
+volume ramping = 0
+"@
 
 
 ##### XnView #####
