@@ -110,6 +110,9 @@ $URL_ansilove = "https://github.com/kajott/ansilove-nogd/releases/download/v0.1/
 $URL_pixelview = "https://github.com/kajott/PixelView/releases/download/v2.0/pixelview.exe"
 # https://github.com/kajott/PixelView/releases -> latest pixelview.exe
 
+$URL_foxotron = "https://github.com/Gargaj/Foxotron/releases/download/2024-09-23/Foxotron_2024-09-23.zip"
+# https://github.com/Gargaj/Foxotron/releases -> latest .zip
+
 $URL_capturinha = "https://github.com/kebby/Capturinha/releases/download/v0.4.1/Capturinha.zip"
 # https://github.com/kebby/Capturinha/releases -> latest .zip
 
@@ -838,6 +841,13 @@ if (need "tic80.exe" -for tic80,all) {
 
 if (need "uw8.exe" -for microw8,all) {
     extract (download $URL_microw8) microw8-windows/uw8.exe
+}
+
+
+##### Foxotron #####
+
+if (need "Foxotron/Foxotron_W64.exe" -for foxotron,all) {
+    mv_f (extract_temp (download $URL_foxotron)) Foxotron
 }
 
 
