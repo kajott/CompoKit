@@ -87,6 +87,10 @@ if __name__ == "__main__":
         print("ERROR: didn't find all required columns (compo/URLs/mtime/status)", file=sys.stderr)
         sys.exit(1)
 
+    # enable console codes on win32
+    if sys.platform == "win32":
+        os.system("")
+
     # step 2: list the entries themselves
     for attrs, tr in re.findall(r'<tr([^>]*)>(.*?)</tr>', html.split("</tbody", 1)[0], flags=re.I+re.S):
         row = [td for attrs, td in re.findall(r'<td([^>]*)>(.*?)</td>', tr, flags=re.I+re.S)]
@@ -134,11 +138,11 @@ if __name__ == "__main__":
             except EnvironmentError:
                 e_mtime = 0
             if abs(mtime - e_mtime) <= 2:
-                print("[no update]")
+                print("\x1b[2m[no update]\x1b[0m")
             elif args.dry_run:
-                print("[new]")
+                print("\x1b[32m[new]\x1b[0m")
             else:
-                print("[downloading..", end='')
+                print("\x1b[32m[downloading..", end='')
                 sys.stdout.flush()
                 try:
                     outdir = os.path.dirname(target)
@@ -158,13 +162,13 @@ if __name__ == "__main__":
                     elif size < 1000000:    size = f"{size/1000:.1f}k"
                     elif size < 1000000000: size = f"{size/1000000:.1f}M"
                     else:                   size = f"{size/1000000000:.1f}G"
-                    print(f" {size} OK]")
+                    print(f" {size} OK]\x1b[0m")
                 except EnvironmentError as e:
-                    print(" FAILED]")
+                    print("\x1b[31;1m - FAILED]\x1b[0m")
                     print(f"ERROR: could not download '{url}' => '{target}':", e, file=sys.stderr)
                     rm_f(target)
                 except KeyboardInterrupt:
-                    print("^C")
+                    print("\x1b[0m^C")
                     print("Aborted by user.")
                     rm_f(target)
                     sys.exit(1)
@@ -173,14 +177,14 @@ if __name__ == "__main__":
         for f in old_files:
             if os.path.exists(f):
                 if args.dry_run:
-                    print(f, "[old]")
+                    print(f, "\x1b[33m[old]\x1b[0m")
                     continue
                 if args.yes:
                     answer = "Y"
                 else:
                     answer = "X"
                     while not(answer in ("Y", "N")):
-                        print(f, "[old] delete? (y/n)", end= ' ')
+                        print(f, "\x1b[33m[old]\x1b[0m delete? (y/n)", end= ' ')
                         sys.stdout.flush()
                         try:
                             answer = input().strip().upper()[:1]
@@ -189,10 +193,10 @@ if __name__ == "__main__":
                             print("Aborted by user.")
                             sys.exit(1)
                 if answer == "Y":
-                    print(f, "[old - deleting]")
+                    print(f, "\x1b[33m[old - deleting]\x1b[0m")
                     try:
                         os.unlink(f)
                     except EnvironmentError as e:
                         print(f"WARNING: could not delete '{f}':", e, file=sys.stderr)
                 else:
-                    print(f, "[old - keeping]")
+                    print(f, "\x1b[33m[old - keeping]\x1b[0m")
