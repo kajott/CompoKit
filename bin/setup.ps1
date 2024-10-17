@@ -107,7 +107,7 @@ $URL_microw8 = "https://github.com/exoticorn/microw8/releases/download/v0.3.0/mi
 $URL_ansilove = "https://github.com/kajott/ansilove-nogd/releases/download/v0.1/ansilove.exe"
 # https://github.com/kajott/ansilove-nogd/releases -> latest ansilove.exe
 
-$URL_pixelview = "https://github.com/kajott/PixelView/releases/download/v2.0/pixelview.exe"
+$URL_pixelview = "https://github.com/kajott/PixelView/releases/download/v2.1/pixelview.exe"
 # https://github.com/kajott/PixelView/releases -> latest pixelview.exe
 
 $URL_foxotron = "https://github.com/Gargaj/Foxotron/releases/download/2024-09-23/Foxotron_2024-09-23.zip"
