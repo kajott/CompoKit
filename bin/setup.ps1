@@ -56,6 +56,9 @@ $URL_7zip_main = "https://www.7-zip.org/a/7z2408-x64.exe"
 $URL_totalcmd = "https://totalcommander.ch/1103/tcmd1103x64.exe"
 # https://www.ghisler.com/download.htm -> 64-bit only
 
+$URL_winscp = "https://winscp.net/download/files/2025061518442a260b4a95a786517c732c8752356979/WinSCP-6.5.1-Portable.zip"
+# https://winscp.net/eng/downloads.php -> latest of the portable executables -> direct download
+
 $URL_npp = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.7/npp.8.7.portable.minimalist.x64.7z"
 # http://notepad-plus-plus.org/downloads/ -> latest release -> mini-portable / minimalist 7z
 
@@ -469,7 +472,11 @@ pasvmode=1
 "@
 
 
-##### Notepad++, SumatraPDF #####
+##### WinSCP, Notepad++, SumatraPDF #####
+
+if (need "WinSCP.exe" -for winscp) {
+    extract (download $URL_winscp) WinSCP.exe
+}
 
 if (need "notepad++.exe" -for notepad++,all) {
     extract (download $URL_npp) notepad++.exe SciLexer.dll doLocalConf.xml langs.model.xml stylers.model.xml
