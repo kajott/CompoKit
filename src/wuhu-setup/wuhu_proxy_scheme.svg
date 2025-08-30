@@ -326,7 +326,7 @@
    <text transform="matrix(.91566 0 0 .91566 743.28 598.53)" xml:space="preserve"><tspan x="0" y="0" fill="#000000" font-family="Arial" font-size="10px"> (port 1337)</tspan></text>
    <text transform="matrix(.91566 0 0 .91566 714.58 611.35)" xml:space="preserve"><tspan x="0" y="0" fill="#006600" font-family="Arial" font-size="10px">- (default) → admin site</tspan></text>
    <text transform="matrix(.91566 0 0 .91566 714.58 624.17)" xml:space="preserve"><tspan x="0" y="0" fill="#000000" font-family="Arial" font-size="8px">(used as a fallback to access</tspan></text>
-   <text transform="matrix(.91566 0 0 .91566 714.58 637.9)" xml:space="preserve"><tspan x="0" y="0" fill="#000000" font-family="Arial" font-size="8px">the orga interface even if</tspan></text>
+   <text transform="matrix(.91566 0 0 .91566 714.58 637.9)" xml:space="preserve"><tspan x="0" y="0" fill="#000000" font-family="Arial" font-size="8px">the admin interface even if</tspan></text>
    <text transform="matrix(.91566 0 0 .91566 714.58 650.72)" xml:space="preserve"><tspan x="0" y="0" fill="#000000" font-family="Arial" font-size="8px">DNS doesn't cooperate)</tspan></text>
   </g>
   <path transform="matrix(1.7314 0 0 1.7314 -103.83 -62.37)" d="m750 467.82h120v21h-120z" clip-path="url(#v)" fill="#ffe6cc" stroke="#d79b00" stroke-miterlimit="10"/>
@@ -441,7 +441,7 @@
    <text transform="matrix(.91566 0 0 .91566 349.08 666.29)" xml:space="preserve"><tspan x="0" y="0" fill="#000000" font-family="Arial" font-size="10px">to </tspan></text>
    <text transform="matrix(.91566 0 0 .91566 359.27 666.29)" xml:space="preserve"><tspan x="0" y="0" dx="0 0 0 0 0 0 0 0 0 0 0 0 -0.7421875" fill="#4c0099" font-family="Arial" font-size="10px">wuhu.myparty.com</tspan></text>
    <text transform="matrix(.91566 0 0 .91566 347.05 677.27)" xml:space="preserve"><tspan x="0" y="0" fill="#000000" font-family="Arial" font-size="10px">and </tspan></text>
-   <text transform="matrix(.91566 0 0 .91566 364.87 677.27)" xml:space="preserve"><tspan x="0" y="0" dx="0 0 0 0 0 0 0 0 0 0 0 0 -0.7421869" fill="#006600" font-family="Arial" font-size="10px">orga.myparty.com</tspan></text>
+   <text transform="matrix(.91566 0 0 .91566 364.87 677.27)" xml:space="preserve"><tspan x="0" y="0" dx="0 0 0 0 0 0 0 0 0 0 0 0 -0.7421869" fill="#006600" font-family="Arial" font-size="10px">admin.myparty.com</tspan></text>
    <text transform="matrix(.91566 0 0 .91566 330.51 688.26)" xml:space="preserve"><tspan x="0" y="0" dx="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -0.180664 0 0 0 0 0 0 0 0 0 -0.55175751" fill="#000000" font-family="Arial" font-size="10px">go directly to the Wuhu server,</tspan></text>
    <text transform="matrix(.91566 0 0 .91566 331.27 699.25)" xml:space="preserve"><tspan x="0" y="0" dx="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -0.74218631" fill="#000000" font-family="Arial" font-size="10px">not through the Internet proxy.</tspan></text>
   </g>
