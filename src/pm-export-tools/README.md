@@ -1,10 +1,10 @@
-# PartyMeister export tools
+# PartyMeister / Wuhu export tools
 
-This directory contains tools to export data from the PartyMeister demoparty
-management system into various formats.
+This directory contains tools to export data from the PartyMeister and/or Wuhu
+demoparty management systems into various formats.
 
 
-## Entry File Download
+## Entry File Download (PartyMeister)
 
 The tool `pm_entry_download.py` downloads the released files for all entries
 and nicely sorts them into a directory structure with one subdirectory per
@@ -14,13 +14,20 @@ Input is a saved copy of PartyMeister's `/backend/entries` HTML page in plain
 HTML format (i.e. no MHTML).
 
 
-## Voting Result Export
+## Entry File Download (Wuhu)
+
+The tool `wuhu_entry_download.py` does exactly the same, but for Wuhu.
+It requires a valid login to the admin backend of the Wuhu installation.
+
+
+## Voting Result Export (PartyMeister + Wuhu)
 
 The tool `pm_result_export.py` exports the voting results into a text file
-that can be used by the ASCII artist to produce the final `results.txt` file.
+that can be used by the ASCII artist to produce the final `results.txt` file,
+or HTML for a handout for the presenters of the prizegiving ceremony.
 
 Input is a saved copy of PartyMeister's `/backend/votes` HTML page in plain
-HTML format (i.e. no MHTML). 
+HTML format (i.e. no MHTML), or Wuhu's JSON result export (`/results.php?export=json`).
 
 The output will automatically wrap the title and author line to a specified
 width in columns. This can be set with the `-w` option.
@@ -29,7 +36,7 @@ Output encoding defaults to UTF-8, but other encodings can be set using
 the `-e` option.
 
 
-## Slide Image Export
+## Slide Image Export (PartyMeister)
 
 The tool `pm_slide_export.py` exports slides in PNG format into a directory structure.
 The main purpose of this is to have a backup of the compo slides in case
@@ -51,7 +58,7 @@ follow the progression of a compo: `00_coming_up` -> `00_now` - > `01` -> `02`
 -> ... -> `99_end`.
 
 
-## Timetable to C3VOC Event Schedule XML File
+## Timetable to C3VOC Event Schedule XML File (PartyMeister)
 
 The tool `pm_events_to_ccc_xml.py` exports the timetable ("event" list) from
 PartyMeister into an XML file for C3VOC livestreams (a "Fahrplan" XML file).
