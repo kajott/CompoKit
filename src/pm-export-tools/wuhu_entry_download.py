@@ -148,7 +148,7 @@ if __name__ == "__main__":
         dirname = item.get('compodir')
         filename = os.path.basename(item.get('filepath', "")) or item.get('filename')
         eid = item.get('id')
-        if dirname and filename and eid:
+        if dirname and filename and eid and (item.get('status') != 'disqualified'):
             if not(dirname in subdirs):
                 subdirs[dirname] = {}
             subdirs[dirname][filename] = (f"/compos_entry_edit.php?download={eid}", item.get('filemtime'))
