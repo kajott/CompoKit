@@ -107,6 +107,9 @@ $URL_tic80 = "https://github.com/nesbox/TIC-80/releases/download/v1.1.2837/tic80
 $URL_microw8 = "https://github.com/exoticorn/microw8/releases/download/v0.3.0/microw8-0.3.0-windows.zip"
 # https://github.com/exoticorn/microw8/releases -> latest *-windows.zip
 
+$URL_png2prg = "https://github.com/staD020/png2prg/releases/download/v1.12/png2prg-1.12.zip"
+# https://github.com/staD020/png2prg/releases -> latest png2prg-*.zip
+
 $URL_ansilove = "https://github.com/kajott/ansilove-nogd/releases/download/v0.1/ansilove.exe"
 # https://github.com/kajott/ansilove-nogd/releases -> latest ansilove.exe
 
@@ -703,7 +706,7 @@ LosslessBak=0
 "@
 
 
-##### CompoView, GLISS, ACiDview, AnsiLove #####
+##### CompoView, PixelView, GLISS, ACiDview, AnsiLove, png2prg #####
 
 if (need "compoview_64.exe" -for compoview,all) {
     extract (download $URL_compoview) compoview/compoview_64.exe
@@ -719,6 +722,10 @@ if (need "ACiDview.exe" -for acidview,all) {
 }
 if (need "ansilove.exe" -for ansilove,all) {
     mv_f (download $URL_ansilove) .
+}
+if (need "png2prg.exe" -for png2prg, all) {
+    mv_f (Join-Path (subdir_of (extract_temp (download $URL_png2prg))) png2prg_win_amd64.exe) png2prg.exe
+    remove_temp
 }
 
 
@@ -864,6 +871,7 @@ if (need "uw8.exe" -for microw8,all) {
 
 if (need "Foxotron/Foxotron_W64.exe" -for foxotron,all) {
     mv_f (extract_temp (download $URL_foxotron)) Foxotron
+    remove_temp
 }
 
 
