@@ -50,52 +50,52 @@ if (-not $Packages.Count) { $Packages = @("all") }
 # below every link, there's another (version independent) URL from which
 # the actual download link can be found
 
-$URL_7zip_main = "https://www.7-zip.org/a/7z2408-x64.exe"
+$URL_7zip_main = "https://www.7-zip.org/a/7z2501-x64.exe"
 # https://www.7-zip.org/ -> latest stable version, .exe 64-bit x64
 
-$URL_totalcmd = "https://totalcommander.ch/1103/tcmd1103x64.exe"
+$URL_totalcmd = "https://totalcommander.ch/1156/new/tcmd1156x64.exe"
 # https://www.ghisler.com/download.htm -> 64-bit only
 
-$URL_winscp = "https://winscp.net/download/files/2025061518442a260b4a95a786517c732c8752356979/WinSCP-6.5.1-Portable.zip"
-# https://winscp.net/eng/downloads.php -> latest of the portable executables -> direct download
+$URL_winscp = "https://sourceforge.net/projects/winscp/files/WinSCP/6.5.3/WinSCP-6.5.3-Portable.zip/download"
+# https://winscp.net/eng/downloads.php -> latest of the portable executables -> alternative download
 
-$URL_npp = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.7/npp.8.7.portable.minimalist.x64.7z"
+$URL_npp = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.8.5/npp.8.8.5.portable.minimalist.x64.7z"
 # http://notepad-plus-plus.org/downloads/ -> latest release -> mini-portable / minimalist 7z
 
 $URL_sumatra = "https://www.sumatrapdfreader.org/dl/rel/3.5.2/SumatraPDF-3.5.2-64.zip"
 # https://www.sumatrapdfreader.org/download-free-pdf-viewer.html -> 64-bit builds, portable version
 
-$URL_mpc_hc = "https://github.com/clsid2/mpc-hc/releases/download/2.3.5/MPC-HC.2.3.5.x64.zip"
+$URL_mpc_hc = "https://github.com/clsid2/mpc-hc/releases/download/2.5.3/MPC-HC.2.5.3.10.x64.zip"
 # https://github.com/clsid2/mpc-hc/releases -> latest x64.zip
 
 $URL_vlc = "https://mirror.netcologne.de/videolan.org/vlc/last/win64/vlc-3.0.21-win64.7z"
 # https://mirror.netcologne.de/videolan.org/vlc/last/win64/ -> latest *-win64.7z
 
-$URL_mpv = "https://sourceforge.net/projects/mpv-player-windows/files/64bit/mpv-x86_64-20240922-git-71f2220.7z/download"
+$URL_mpv = "https://sourceforge.net/projects/mpv-player-windows/files/64bit/mpv-x86_64-20250921-git-f147b13.7z/download"
 # https://sourceforge.net/projects/mpv-player-windows/files/64bit/ -> latest .7z
 
-$URL_xmplay = "https://www.un4seen.com/files/xmplay38.zip"
+$URL_xmplay = "https://www.un4seen.com/files/xmplay40.zip"
 # https://www.un4seen.com/xmplay.html -> small download button (top center)
 
-$URL_xmp_sid = "https://support.xmplay.com/files/12/xmp-sidevo.4.8.zip"
+$URL_xmp_sid = "https://support.xmplay.com/files/12/xmp-sidevo.4.9.1.zip"
 # https://www.un4seen.com/xmplay.html#plugins -> SIDevo input plugin -> download
 
-$URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.7.10+release.bin.windows.zip"
+$URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.8.3+release.bin.windows.zip"
 # https://lib.openmpt.org/libopenmpt/download/ -> xmp-openmpt for Windows 7+ (x86 + SSE2)
 
-$URL_trackmeister = "https://github.com/kajott/TrackMeister/releases/download/v1.3.0/TrackMeister_win32_x86-64_v1.3.0.zip"
+$URL_trackmeister = "https://github.com/kajott/TrackMeister/releases/download/v1.4.2/TrackMeister_win32_x86-64_v1.4.2.zip"
 # https://github.com/kajott/TrackMeister/releases -> latest win32_x86-64 .zip
 
 $URL_dosbox_vanilla = "https://sourceforge.net/projects/dosbox/files/dosbox/0.74-3/DOSBox0.74-3-win32-installer.exe/download"
 # https://sourceforge.net/projects/dosbox/files/dosbox/ -> latest version -> Win32 installer
 
-$URL_dosbox_staging = "https://github.com/dosbox-staging/dosbox-staging/releases/download/v0.81.2/dosbox-staging-windows-v0.81.2.zip"
+$URL_dosbox_staging = "https://github.com/dosbox-staging/dosbox-staging/releases/download/v0.82.2/dosbox-staging-windows-x64-v0.82.2.zip"
 # https://github.com/dosbox-staging/dosbox-staging/releases -> latest *-windows-x86_64-*.zip
 
-$URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v2024.07.01/dosbox-x-vsbuild-win64-20240702034526.zip"
-# https://github.com/joncampbell123/dosbox-x/releases -> latest dosbox-x-vsbuild-win64-*.zip
+$URL_dosbox_x = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v2025.05.03/dosbox-x-vsbuild-win64-20250503164337.zip"
+# https://github.com/joncampbell123/dosbox-x/releases -> latest dosbox-x-vsbuild-win64-*.zip (click "show all assets" first)
 
-$URL_winuae = "https://download.abime.net/winuae/releases/WinUAE5300_x64.zip"
+$URL_winuae = "https://download.abime.net/winuae/releases/WinUAE6010_x64.zip"
 # http://www.winuae.net/download/ -> zip-archive (64 bit)
 
 $URL_speccy = "https://fms.komkon.org/Speccy/Speccy59-Windows-bin.zip"
@@ -104,7 +104,7 @@ $URL_speccy = "https://fms.komkon.org/Speccy/Speccy59-Windows-bin.zip"
 $URL_tic80 = "https://github.com/nesbox/TIC-80/releases/download/v1.1.2837/tic80-v1.1-win.zip"
 # https://github.com/nesbox/TIC-80/releases -> latest *-win.zip
 
-$URL_microw8 = "https://github.com/exoticorn/microw8/releases/download/v0.3.0/microw8-0.3.0-windows.zip"
+$URL_microw8 = "https://github.com/exoticorn/microw8/releases/download/v0.4.1/microw8-0.4.1-windows.zip"
 # https://github.com/exoticorn/microw8/releases -> latest *-windows.zip
 
 $URL_png2prg = "https://github.com/staD020/png2prg/releases/download/v1.12/png2prg-1.12.zip"
@@ -119,14 +119,14 @@ $URL_pixelview = "https://github.com/kajott/PixelView/releases/download/v2.1/pix
 $URL_foxotron = "https://github.com/Gargaj/Foxotron/releases/download/2024-09-23/Foxotron_2024-09-23.zip"
 # https://github.com/Gargaj/Foxotron/releases -> latest .zip
 
-$URL_capturinha = "https://github.com/kebby/Capturinha/releases/download/v0.4.1/Capturinha.zip"
+$URL_capturinha = "https://github.com/kebby/Capturinha/releases/download/v0.5.1/Capturinha.zip"
 # https://github.com/kebby/Capturinha/releases -> latest .zip
 
-$URL_ffmpeg = "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2024-03-31-17-28/ffmpeg-n4.4.4-94-g5d07afd482-win64-gpl-shared-4.4.zip"
-# https://github.com/BtbN/FFmpeg-Builds/releases -> latest ffmpeg-n4.4*-win64-gpl-shared-4.4.zip
+$URL_ffmpeg = "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-win64-gpl-shared-7.1.zip"
+# https://github.com/BtbN/FFmpeg-Builds/releases -> latest ffmpeg-n7.1*-win64-gpl-shared-7.1.zip
 # NOTE: this must match with the version number indicated in Capturinha's release notes above!
 
-$URL_python = "https://www.python.org/ftp/python/3.12.6/python-3.12.6-embed-amd64.zip"
+$URL_python = "https://www.python.org/ftp/python/3.13.7/python-3.13.7-embed-amd64.zip"
 # https://python.org/ -> Downloads -> Windows -> Latest Python 3 Release -> Windows embeddable package (64-bit)
 
 
@@ -477,7 +477,7 @@ pasvmode=1
 
 ##### WinSCP, Notepad++, SumatraPDF #####
 
-if (need "WinSCP.exe" -for winscp) {
+if (need "WinSCP.exe" -for winscp,all) {
     extract (download $URL_winscp) WinSCP.exe
 }
 
@@ -537,13 +537,13 @@ CommandMod0=816 1 51 "" 5 0 0 0
 
 ##### VLC #####
 
-if (need "vlc\vlc.exe" -for vlc) {
+if (need "vlc\vlc.exe" -for vlc,all) {
     $tmpdir = (extract_temp (download $URL_vlc))
     $vlcver = Get-ChildItem -LiteralPath $tmpdir -Filter "vlc-*" -Name
     mv_f (Join-Path $tmpdir $vlcver) vlc
     remove_temp
 }
-config "vlc\vlcrc" -for vlc @"
+config "vlc\vlcrc" -for vlc,all @"
 [core]
 fullscreen=1
 osd=0
@@ -560,11 +560,11 @@ qt-privacy-ask=0
 
 ##### MPV #####
 
-if (need "mpv.exe" -for mpv) {
+if (need "mpv.exe" -for mpv,all) {
     extract (download $URL_mpv) mpv.exe
     mkdir_s portable_config
 }
-config "portable_config\mpv.conf" -for mpv @"
+config "portable_config\mpv.conf" -for mpv,all @"
 fullscreen=yes
 pause=yes
 "@
@@ -572,14 +572,8 @@ pause=yes
 
 ##### XMPlay #####
 
-if (need "xmplay.exe" -for xmplay,all -NoOverwrite) {
-    extract (download $URL_xmplay) xmplay.exe xmp-zip.dll xmp-wma.dll
-}
-if (need "xmp-wma.dll" -for xmplay,all) {
-    # These DLLs are normally included in the XMPlay download archive,
-    # but as long as we're shipping an unreleased custom build of xmplay.exe,
-    # we need to extract them from the archive to be feature-complete.
-    extract (download $URL_xmplay) xmp-zip.dll xmp-wma.dll
+if (need "xmplay.exe" -for xmplay,all) {
+    extract (download $URL_xmplay) xmplay.exe
 }
 if (need "xmp-openmpt.dll" -for xmplay,all) {
     extract (download $URL_libopenmpt) XMPlay/openmpt-mpg123.dll XMPlay/xmp-openmpt.dll
@@ -723,7 +717,7 @@ if (need "ACiDview.exe" -for acidview,all) {
 if (need "ansilove.exe" -for ansilove,all) {
     mv_f (download $URL_ansilove) .
 }
-if (need "png2prg.exe" -for png2prg, all) {
+if (need "png2prg.exe" -for png2prg,all) {
     mv_f (Join-Path (subdir_of (extract_temp (download $URL_png2prg))) png2prg_win_amd64.exe) png2prg.exe
     remove_temp
 }
@@ -894,10 +888,10 @@ if (need "yt-dlp.exe" -for yt-dlp,music,all) {
 
 ##### Python #####
 
-if (need "python/python.exe" -for python) {
+if (need "python/python.exe" -for python,all) {
     mv_f (extract_temp (download $URL_python)) python
 }
-config "python.cmd" -for python @"
+config "python.cmd" -for python,all @"
 @"%~dp0\python\python.exe" %*
 "@
 
