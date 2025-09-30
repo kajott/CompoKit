@@ -9,7 +9,9 @@
 //   following values:
 //     - announcementSlide
 //     - countdownSlide
-//     - rotationSlide
+//     - rotationSlide-text
+//     - rotationSlide-image
+//     - rotationSlide-video
 //     - compoDisplaySlide-intro
 //     - compoDisplaySlide-entry
 //     - compoDisplaySlide-outro
