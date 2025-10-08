@@ -1375,6 +1375,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             SaveState();
             PostQuitMessage(0);
             break;
+        case WM_SETFOCUS:
+            Reload();
+            break;
         case WM_KEYDOWN:
         case WM_SYSKEYDOWN:
             HandleKey(int(wParam));
