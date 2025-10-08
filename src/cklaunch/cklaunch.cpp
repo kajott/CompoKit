@@ -1317,7 +1317,7 @@ void RenameItem() {
     if (!IsRenameable()) { return; }
     hEdit = CreateWindow(
             "EDIT", nullptr,
-            WS_CHILD | WS_VISIBLE,
+            WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL,
             0, (selectIndex - scrollOffset + 1) * lineHeight,
             winWidth, lineHeight,
             hWnd, nullptr, nullptr, nullptr);
