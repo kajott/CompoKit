@@ -7,7 +7,7 @@ exec ./cklaunch.exe "$@"
 
 // CompoKit Launcher, a simple directory navigation tool
 //
-// Copyright (C) 2019-2022 Martin J. Fiedler <keyj@emphy.de>
+// Copyright (C) 2019-2025 Martin J. Fiedler <keyj@emphy.de>
 // published under the terms of the MIT license
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -74,6 +74,7 @@ unordered_map<string, FileType*> fileTypeMap;
 
 struct DirItem {
     bool isDir;
+    bool isMarked;
     string name;     // original name of the file
     string display;  // display name: directory name enclosed in [brackets]
     string sortKey;  // lower-case copy, used for sorting and searching
@@ -83,7 +84,7 @@ struct DirItem {
         if (!isDir && other.isDir) { return false; }
         return (sortKey < other.sortKey);
     }
-    void set(const char* name_, bool isDir_=false) {
+    void set(const char* name_, bool isDir_=false, bool isMarked_=false) {
         size_t s = strlen(name_), dot = s;
         name.resize(s);
         display.resize(s + (isDir_ ? 2 : 1));
@@ -98,6 +99,7 @@ struct DirItem {
         }
         if (isDir_) { display[s + 1] = ']'; }
         isDir = isDir_;
+        isMarked = isMarked_ && !isDir_;
         if (dot < s) { ext = sortKey.substr(dot + 1); } else  { ext.clear(); }
         if (!isDir_ && !ext.empty()) {
             auto it = fileTypeMap.find(ext);
@@ -106,9 +108,9 @@ struct DirItem {
             }
         }
     }
-    void   set    (const string& name_, bool isDir_=false) { set(name_.c_str(), isDir_); }
-    inline DirItem(const char* name_,   bool isDir_=false) { set(name_,         isDir_); }
-    inline DirItem(const string& name_, bool isDir_=false) { set(name_.c_str(), isDir_); }
+    void   set    (const string& name_, bool isDir_=false, bool isMarked_=false) { set(name_.c_str(), isDir_, isMarked_); }
+    inline DirItem(const char* name_,   bool isDir_=false, bool isMarked_=false) { set(name_,         isDir_, isMarked_); }
+    inline DirItem(const string& name_, bool isDir_=false, bool isMarked_=false) { set(name_.c_str(), isDir_, isMarked_); }
 };
 
 
@@ -149,10 +151,12 @@ COLORREF cBackground       = RGB(255, 255, 255);
 COLORREF cPrefix           = RGB(128, 128, 128);
 COLORREF cText             = RGB(  0,   0,   0);
 COLORREF cSubdir           = RGB(  0,   0, 128);
+COLORREF cMarked           = RGB(  0, 128,   0);
 COLORREF cSelectBackground = RGB(  0, 120, 215);
 COLORREF cSelectPrefix     = RGB(192, 192, 192);
 COLORREF cSelectText       = RGB(255, 255, 255);
 COLORREF cSelectSubdir     = RGB(255, 255, 192);
+COLORREF cSelectMarked     = RGB(128, 255, 192);
 COLORREF cDirBackground    = RGB(192, 192, 192);
 COLORREF cDirText          = RGB(  0,   0,   0);
 COLORREF cScrollbar        = RGB(  0, 120, 215);
@@ -513,7 +517,24 @@ bool LoadDir(vector<DirItem>& dir, const string& path) {
     }
     else {
         // normal directory -> list directory contents
-        
+
+        // get size limit
+        int num = 0, spaces = 0;
+        DWORD sizeLimit = 0u;
+        for (char c : path) {
+            if ((c >= '0') && (c <= '9')) {
+                num = num * 10 + c - '0';
+            } else if ((c == ' ') || (c == '_') || (c == '-')) {
+                spaces += 1;
+            } else {
+                if (num && (spaces <= 1)) {
+                    if (((c == 'b') || (c == 'B')) && (num >= 8)) { sizeLimit = DWORD(num); }
+                    if  ((c == 'k') || (c == 'K')) { sizeLimit = DWORD(num << 10); }
+                }
+                num = spaces = 0;
+            }
+        }
+
         // open the directory
         string search(JoinPath(path, "*"));
         WIN32_FIND_DATA fd;
@@ -527,7 +548,8 @@ bool LoadDir(vector<DirItem>& dir, const string& path) {
         do {
             if ((fd.cFileName[0] != '.') && !(fd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN)) {
                 dir.push_back(DirItem(fd.cFileName,
-                    !!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)));
+                    !!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY),
+                    !fd.nFileSizeHigh && (fd.nFileSizeLow <= sizeLimit)));
             }
         } while (FindNextFile(hFind, &fd));
         FindClose(hFind);
@@ -722,11 +744,11 @@ void Redraw(int x0, int y0, int x1, int y1) {
             // select colors
             if (entryIndex == selectIndex) {
                 bg = cSelectBackground;
-                fg = item.isDir ? cSelectSubdir : cSelectText;
+                fg = item.isDir ? cSelectSubdir : item.isMarked ? cSelectMarked : cSelectText;
                 fgPrefix = cSelectPrefix;
             } else {
                 bg = cBackground;
-                fg = item.isDir ? cSubdir : cText;
+                fg = item.isDir ? cSubdir : item.isMarked ? cMarked : cText;
                 fgPrefix = cPrefix;
             }
 
@@ -940,10 +962,12 @@ void LoadConfig() {
         else if (key == "colors.prefix")           { ParseColor(cPrefix,           value); }
         else if (key == "colors.text")             { ParseColor(cText,             value); }
         else if (key == "colors.subdir")           { ParseColor(cSubdir,           value); }
+        else if (key == "colors.marked")           { ParseColor(cMarked,           value); }
         else if (key == "colors.selectbackground") { ParseColor(cSelectBackground, value); }
         else if (key == "colors.selectprefix")     { ParseColor(cSelectPrefix,     value); }
         else if (key == "colors.selecttext")       { ParseColor(cSelectText,       value); }
         else if (key == "colors.selectsubdir")     { ParseColor(cSelectSubdir,     value); }
+        else if (key == "colors.selectmarked")     { ParseColor(cSelectMarked,     value); }
         else if (key == "colors.dirbackground")    { ParseColor(cDirBackground,    value); }
         else if (key == "colors.dirtext")          { ParseColor(cDirText,          value); }
         else if (key == "colors.scrollbar")        { ParseColor(cScrollbar,        value); }
