@@ -10,6 +10,7 @@ import json
 import sys
 import os
 import io
+import unicodedata
 
 ###############################################################################
 
@@ -20,6 +21,27 @@ def get_first_tag_text(x):
 
 def H(x):
     return x.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+
+###############################################################################
+
+def smart_encode(s: str, charset: str) -> bytes:
+    res = []
+    lineno = 1
+    for i, c in enumerate(s):
+        if c == '\n': lineno += 1
+        try:
+            b = c.encode(charset)
+        except UnicodeEncodeError:
+            try:
+                b = ''.join(_ for _ in unicodedata.normalize('NFKD', c) if unicodedata.category(_) != 'Mn').encode(charset)
+            except UnicodeEncodeError:
+                b = b'?'
+            d = b.decode(charset)
+            prefix = ("..." + s[max(0,i-30):i]).rsplit("\n", 1)[-1].rsplit("  ", 1)[-1].rsplit("by ", 1)[-1]
+            suffix = (s[i+1:i+31] + "...").split("\n", 1)[0].split("  ", 1)[0].split(" by", 1)[0]
+            print(f"NOTE: replacing '{c}' by '{d}' at \"{prefix}\x1b[7m{c}\x1b[0m{suffix}\" (line {lineno})")
+        res.append(b)
+    return b''.join(res)
 
 ###############################################################################
 
@@ -125,6 +147,8 @@ if __name__ == "__main__":
     parser.add_argument("-r", "--reverse", action='store_true',
                         help="output compos in reverse order")
     args = parser.parse_args()
+    if sys.platform == 'win32':
+        os.system('')  # enable ANSI escape codes
 
     # open input file
     print("reading input from", args.infile)
@@ -220,15 +244,16 @@ tr, td { break-before: avoid; break-inside: avoid; }
 
     if html:
         print('</table></body></html>', file=out)
-    out = out.getvalue().strip()
+    out = out.getvalue().strip() + "\n"
     if html:
         out = out.replace("XXXCHARSETXXX", args.encoding)
+    out = smart_encode(out, args.encoding)
 
     # write output file
     print("writing", args.outfile)
     try:
-        with open(args.outfile, 'w', encoding=args.encoding, errors='replace') as f:
-            print(out, file=f)
+        with open(args.outfile, 'wb') as f:
+            f.write(out)
     except (IOError, UnicodeError) as e:
         print("FATAL: can not write output file:", e, file=sys.stderr)
         sys.exit(1)
