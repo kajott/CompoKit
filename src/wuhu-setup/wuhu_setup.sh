@@ -66,12 +66,13 @@ else
 fi
 
 check_start "distribution version"
-if [ $(lsb_release -cs 2>/dev/null) == "bookworm" ] ; then
+distro="$(lsb_release -cs 2>/dev/null)"
+if [ "$distro" == "bookworm" -o "$distro" == "trixie" ] ; then
     check_ok "$(lsb_release -ds 2>/dev/null)"
 else
     check_fail "$(lsb_release -ds 2>/dev/null)"
     show_error WARNING "unsupported distribution version"
-    echo "This script is meant for Debian GNU/Linux 12 (bookworm)."
+    echo "This script is meant for Debian GNU/Linux 12 (bookworm) or 13 (trixie)."
     echo "It *may* work on other distributions or versions, but this isn't guaranteed."
     wait_for_user
 fi
@@ -483,7 +484,17 @@ fi
 
 apache_needs_restart=""
 
-for cfgfile in /etc/php/8.2/*/php.ini ; do
+check_start "PHP module enable status"
+if [ -e /etc/apache2/mods-enabled/php$PHP_VERSION.load ] ; then
+    check_ok
+else
+    check_fail
+    confirm "enable php$PHP_VERSION module"
+    run_cmd sudo a2enmod php$PHP_VERSION
+    apache_needs_restart="yes"
+fi
+
+for cfgfile in /etc/php/$PHP_VERSION/*/php.ini ; do
     changes=""
     TZ=$(cat /etc/timezone)
     [ -z "$TZ" ] && TZ="UTC"
