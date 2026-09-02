@@ -407,7 +407,7 @@ else
     run_cmd rmdir $WUHU_DIR/tmp
 fi
 
-need_writable_subdirs="entries_private entries_public screenshots www_admin/slides www_admin/plugins/backup"
+need_writable_subdirs="entries_private entries_public screenshots www_admin/slides www_admin/slides/default www_admin/plugins/backup"
 
 dirs=""
 for subdir in $need_writable_subdirs ; do
