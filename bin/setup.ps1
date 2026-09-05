@@ -86,6 +86,12 @@ $URL_libopenmpt = "https://lib.openmpt.org/files/libopenmpt/bin/libopenmpt-0.8.9
 $URL_trackmeister = "https://github.com/kajott/TrackMeister/releases/download/v1.4.4/TrackMeister_win32_x86-64_v1.4.4.zip"
 # https://github.com/kajott/TrackMeister/releases -> latest win32_x86-64 .zip
 
+$URL_nukedsc55 = "https://github.com/nukeykt/Nuked-SC55/releases/download/0.3.1/nuked-sc55-0.3.1.zip"
+# https://github.com/nukeykt/Nuked-SC55/releases -> latest .zip
+
+$URL_loopMIDI = "https://www.tobias-erichsen.de/wp-content/uploads/2020/01/loopMIDISetup_1_0_16_27.zip"
+# https://www.tobias-erichsen.de/software/loopmidi.html -> download
+
 $URL_dosbox_vanilla = "https://sourceforge.net/projects/dosbox/files/dosbox/0.74-3/DOSBox0.74-3-win32-installer.exe/download"
 # https://sourceforge.net/projects/dosbox/files/dosbox/ -> latest version -> Win32 installer
 
@@ -639,6 +645,18 @@ volume ramping = 0
 stereo separation = 20
 volume ramping = 0
 "@
+
+
+##### Nuked-SC55 + loopMIDI #####
+
+if (need "NukedSC55\nuked-sc55.exe" -for nukedsc55,all) {
+    mv_f (extract_temp (download $URL_nukedsc55)) NukedSC55
+    remove_temp
+}
+
+if (need "loopMIDISetup.exe" -for loopmidi,all) {
+    extract (download $URL_loopmidi) loopMIDISetup.exe
+}
 
 
 ##### XnView #####

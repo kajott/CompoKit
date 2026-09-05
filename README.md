@@ -114,7 +114,7 @@ Some of the tools are pre-configured in non-standard ways:
 - SumatraPDF
   - English language (regardless of system locale)
   - page layout set to "single page, don't save for every document"
-- DOSBox / DOSBox Staging
+- DOSBox / DOSBox-X / DOSBox Staging
   - provided config files `dosbox.conf` and `dosbox-staging.conf` set fullscreen with correct aspect ratio, maximum speed (`core=dynamic`, `cycles=max`), 48000 Hz sample rate from all audio sources (including GUS and Covox), and UART mode for the MPU-401 MIDI interface
   - CKLaunch is configured to interpret `.dosbox` and `.dosbox-staging` files as DOSBox(/-Staging) configuration files and runs them with the `dosbox(-staging) -conf` option
     - This can be used to provide an entry-specific DOSBox configuration: Rename the `.conf` file to `.dosbox` or `.dosbox-staging` and make sure the entry is auto-started:
@@ -124,6 +124,12 @@ Some of the tools are pre-configured in non-standard ways:
       C:
       whatever.com
       ```
+  - DOSBox can be made to work with SC-55 emulation. The required components are installed by CompoKit, but some manual work is required to make it happen:
+    - a set of SC-55 ROM files need to be put into `CompoKit\bin\NukedSC55`
+    - loopMIDI must be installed system-wide using `CompoKit\bin\loopMIDISetup.exe`
+    - loopMIDI and Nuked-SC55 must be started manually, in that exact order, before DOSBox
+    - DOSBox-X requires no further configuration: it uses loopMIDI if it's available and the default synthesizer if it's not
+    - vanilla DOSBox requires a custom configuration with the statement `midiconfig=1` (or probably another number - use the command `mixer /listmidi` inside DOSBox to look that up)
 - WinVICE (C64, VIC-20, Plus/4 only)
   - version 3.1 is used, because it's the last non-bloated pure Win32 version
   - scanlines disabled, brightness adjusted to compensate
