@@ -28,7 +28,7 @@ A CompoKit installation mainly consists of third-party tools:
   - downloaded from scene.org archives and (where necessary) SoundCloud
   - see [music/download.txt](music/download.txt) - suggestions or pull requests to extend or improve the list are highly welcome!
 - **Full-screen typer:** [typr](https://github.com/mog/typr)
-- **Scripting Language:** [Python](https://www.python.org/) *(only installed on demand)*
+- **Scripting Language:** [Python](https://www.python.org/)
 - **Manual:** a comprehensive [document](Compo-HOWTO.md) that describes everything a compo organizer has to do
 
 The following applications are **not** included for bloat or licensing reasons, but may be required for full functionality:
