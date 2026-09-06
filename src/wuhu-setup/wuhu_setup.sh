@@ -90,6 +90,7 @@ else
         source "$cfgfile"
     fi
     cfg_ok="OK"
+    [ -z "$WUHU_USER"    ] && cfg_ok=""
     [ -z "$WUHU_DIR"     ] && cfg_ok=""
     [ -z "$WUHU_REPO"    ] && cfg_ok=""
     [ -z "$PARTY_ADDR"   ] && cfg_ok=""
@@ -128,6 +129,12 @@ The script can be re-run at any time to repair the installation (e.g. if \
 packages have been uninstalled, important configuration files have been changed, \
 or file permissions have been set incorrectly." 16 70
     if [ $? != 0 ] ; then echo "Aborted by user." ; exit 3 ; fi
+
+    WUHU_USER="$(whiptail --backtitle "Wuhu Setup" --title "Wuhu User" --inputbox "\n\
+Please enter the name or UID of the user that is going doing the \
+administration of this Wuhu server:" 10 70 \
+"${WUHU_USER:-$USER}" 3>&1 1>&2 2>&3)"
+    if [ $? != 0 -o -z "$WUHU_USER" ] ; then echo "Aborted by user." ; exit 3 ; fi
 
     WUHU_DIR="$(whiptail --backtitle "Wuhu Setup" --title "Installation Directory" --inputbox "\n\
 Please enter the full path to the directory where Wuhu and its working data \
@@ -239,6 +246,7 @@ Please enter the port number under which the Wuhu server's SSH server be accessi
     echo "Installation wizard finished, saving configuration ..."
     cat >"$cfgfile" <<EOF
 # wuhu_setup configuration file
+WUHU_USER=$WUHU_USER
 WUHU_DIR=$WUHU_DIR
 WUHU_REPO=$WUHU_REPO
 PARTY_ADDR=$PARTY_ADDR
@@ -378,12 +386,12 @@ else
 fi
 
 check_start "$WUHU_DIR ownership"
-if [ "$(stat -c '%u:%G' $WUHU_DIR)" == "1000:www-data" ] ; then
+if [ "$(stat -c '%u:%G' $WUHU_DIR)" == "$WUHU_USER:www-data" -o "$(stat -c '%U:%G' $WUHU_DIR)" == "$WUHU_USER:www-data" ] ; then
     check_ok
 else
     check_fail
-    confirm "change owner of $WUHU_DIR to $USER:www-data"
-    run_cmd sudo chown -R 1000:www-data $WUHU_DIR
+    confirm "change owner of $WUHU_DIR to $WUHU_USER:www-data"
+    run_cmd sudo chown -R $WUHU_USER:www-data $WUHU_DIR
 fi
 
 check_start "$WUHU_DIR permissions"
