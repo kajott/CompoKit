@@ -303,37 +303,15 @@ else
     packages="$packages php$PHP_VERSION libapache2-mod-php$PHP_VERSION"
 fi
 
-check_start "PHP GD module installation"
-if [ -f /usr/lib/php/*/gd.so ] ; then
-    check_ok
-else
-    check_fail "not installed"
-    packages="$packages php$PHP_VERSION-gd"
-fi
-
-check_start "PHP mbstring module installation"
-if [ -f /usr/lib/php/*/mbstring.so ] ; then
-    check_ok
-else
-    check_fail "not installed"
-    packages="$packages php$PHP_VERSION-mbstring"
-fi
-
-check_start "PHP curl module installation"
-if [ -f /usr/lib/php/*/curl.so ] ; then
-    check_ok
-else
-    check_fail "not installed"
-    packages="$packages php$PHP_VERSION-curl"
-fi
-
-check_start "PHP MySQL module installation"
-if [ -f /usr/lib/php/*/mysqli.so ] ; then
-    check_ok
-else
-    check_fail "not installed"
-    packages="$packages php$PHP_VERSION-mysql"
-fi
+for mod in gd mbstring intl curl mysqli ; do
+    check_start "PHP $mod module installation"
+    if [ -f /usr/lib/php/*/$mod.so ] ; then
+        check_ok
+    else
+        check_fail "not installed"
+        packages="$packages php$PHP_VERSION-$mod"
+    fi
+done
 
 check_start "MariaDB/MySQL installation"
 if [ -x /usr/sbin/mariadbd ] ; then
