@@ -6,8 +6,22 @@
 #ifndef NDEBUG
     #include <stdio.h>
     #define Dprintf printf
+    static void ShowCDSError(const char* what, LONG res) {
+        switch (res) {
+            case DISP_CHANGE_SUCCESSFUL:   Dprintf("%s successful.\n", what); break;
+            case DISP_CHANGE_BADDUALVIEW:  Dprintf("%s failed because of multi-monitor setup.\n", what); break;
+            case DISP_CHANGE_BADFLAGS:     Dprintf("%s failed: invalid flags.\n", what); break;
+            case DISP_CHANGE_BADMODE:      Dprintf("%s failed: invalid mode.\n", what); break;
+            case DISP_CHANGE_BADPARAM:     Dprintf("%s failed: invalid parameter.\n", what); break;
+            case DISP_CHANGE_FAILED:       Dprintf("%s failed: rejected by driver.\n", what); break;
+            case DISP_CHANGE_NOTUPDATED:   Dprintf("%s succeeded, but could not update system settings.\n", what); break;
+            case DISP_CHANGE_RESTART:      Dprintf("%s failed: restart required.\n", what); break;
+            default:                       Dprintf("%s failed for unknown reason (code %d).\n", what, (int)res); break;
+        }
+    }
 #else
     #define Dprintf(...) do{}while(0)
+    #define ShowCDSError(...) do{}while(0)
 #endif
 
 static void ShowInfo(void) {
@@ -29,14 +43,17 @@ static void SetRefresh(int rate) {
     modes[1].dmSize = sizeof(current);  modes[1].dmDriverExtra = 0;
     current.dmSize  = sizeof(current);  current.dmDriverExtra  = 0;
 
-    if (!EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &current)) {
+    if (!EnumDisplaySettingsEx(NULL, ENUM_CURRENT_SETTINGS, &current, 0)) {
         Dprintf("Failed to get current video mode.\n");
         return;
     }
     Dprintf("current mode: %dx%d, %d bpp, %d Hz\n", current.dmPelsWidth, current.dmPelsHeight, current.dmBitsPerPel, current.dmDisplayFrequency);
 
+    LONG res = ChangeDisplaySettingsEx(NULL, &current, NULL, CDS_ENABLE_UNSAFE_MODES, NULL);
+    ShowCDSError("Enabling unsafe modes", res);
+
     int i = 0;
-    while (EnumDisplaySettings(NULL, i, iter)) {
+    while (EnumDisplaySettingsEx(NULL, i, iter, EDS_RAWMODE)) {
         if ((iter->dmPelsWidth  == current.dmPelsWidth)
         &&  (iter->dmPelsHeight == current.dmPelsHeight)
         &&  (iter->dmBitsPerPel == current.dmBitsPerPel)
@@ -52,18 +69,15 @@ static void SetRefresh(int rate) {
         return;
     }
     Dprintf("%d modes checked, best match: %dx%d, %d bpp, %d Hz\n", i, best->dmPelsWidth, best->dmPelsHeight, best->dmBitsPerPel, best->dmDisplayFrequency);
-    LONG res = ChangeDisplaySettings(best, CDS_UPDATEREGISTRY);
-    switch (res) {
-        case DISP_CHANGE_SUCCESSFUL:   Dprintf("Mode switch successful.\n"); break;
-        case DISP_CHANGE_BADDUALVIEW:  Dprintf("Mode switch failed because of multi-monitor setup.\n"); break;
-        case DISP_CHANGE_BADFLAGS:     Dprintf("Mode switch failed: invalid flags.\n"); break;
-        case DISP_CHANGE_BADMODE:      Dprintf("Mode switch failed: invalid mode.\n"); break;
-        case DISP_CHANGE_BADPARAM:     Dprintf("Mode switch failed: invalid parameter.\n"); break;
-        case DISP_CHANGE_FAILED:       Dprintf("Mode switch failed: rejected by driver.\n"); break;
-        case DISP_CHANGE_NOTUPDATED:   Dprintf("Mode switch succeeded, but could not update system settings.\n"); break;
-        case DISP_CHANGE_RESTART:      Dprintf("Mode switch failed: restart required.\n"); break;
-        default:                       Dprintf("Mode switch failed for unknown reason.\n"); break;
+
+    res = ChangeDisplaySettingsEx(NULL, best, NULL, CDS_UPDATEREGISTRY | CDS_ENABLE_UNSAFE_MODES, NULL);
+    if (res != DISP_CHANGE_SUCCESSFUL) {
+        ShowCDSError("Mode switch in unsafe mode", res);
+        Dprintf("retrying without unsafe mode ...\n");
+        res = ChangeDisplaySettingsEx(NULL, best, NULL, CDS_UPDATEREGISTRY, NULL);
     }
+    ShowCDSError("Mode switch", res);
+    Dprintf("\n");
 }
 
 static int MainLoop(HANDLE hKillEvent) {
