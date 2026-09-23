@@ -153,6 +153,7 @@ $URL_youtube_dl = "https://yt-dl.org/downloads/latest/youtube-dl.exe"
 $URL_yt_dlp = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe"
 $URL_vice = "https://sourceforge.net/projects/vice-emu/files/releases/binaries/windows/WinVICE-3.1-x64.7z/download"
 $URL_a500rom = "https://www.ikod.se/wp-content/uploads/files/Kickstart-v1.3-rev34.5-1987-Commodore-A500-A1000-A2000-CDTV.rom"
+$URL_sc55roms = "https://archive.org/download/nuked-sc-55-clap-rom-files/Nuked-SC55-CLAP-ROM-files.zip"
 
 
 # list of file extensions which are recognized as playable music files
@@ -649,9 +650,17 @@ volume ramping = 0
 
 ##### Nuked-SC55 + loopMIDI #####
 
+if (need "soundcanvas-roms\SC-55-v1.21\sc55_rom1.bin" -for nukedsc55,dosbox-staging,all) {
+    mv_f (Join-Path (subdir_of (extract_temp (download $URL_sc55roms))) Nuked-SC55-Resources\ROMs) soundcanvas-roms
+    remove_temp
+}
+
 if (need "NukedSC55\nuked-sc55.exe" -for nukedsc55,all) {
     mv_f (extract_temp (download $URL_nukedsc55)) NukedSC55
     remove_temp
+}
+if (need "NukedSC55\sc55_rom1.bin" -for nukedsc55,all) {
+    Copy-Item -Path "soundcanvas-roms\SC-55-v1.21\*" -Destination "NukedSC55"
 }
 
 if (need "loopMIDISetup.exe" -for loopmidi,all) {
