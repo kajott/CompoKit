@@ -520,22 +520,19 @@ config "mpc-hc64.ini" -for mpc-hc,all @"
 [Settings]
 AfterPlayback=0
 AllowMultipleInstances=0
+DSVidRen=13
+DX9Resizer=4
 ExitFullscreenAtTheEnd=0
+KeepHistory=0
 LaunchFullScreen=1
-Loop=0
-LoopMode=1
+LogoID2=206
 LoopNum=0
-MenuLang=0
+LoopMode=1
+RememberPlaylistItems=0
+ShowFPSInStatusbar=1
 ShowOSD=0
 TrayIcon=0
 UpdaterAutoCheck=0
-LogoExt=0
-LogoID2=206
-DSVidRen=13
-DX9Resizer=4
-SynchronizeClock=1
-SynchronizeDisplay=0
-SynchronizeNearest=0
 [Commands2]
 CommandMod0=816 1 51 "" 5 0 0 0
 "@
@@ -574,6 +571,7 @@ if (need "mpv.exe" -for mpv,all) {
 config "portable_config\mpv.conf" -for mpv,all @"
 fullscreen=yes
 pause=yes
+script-opts-append=osc-idlescreen=no
 "@
 
 
