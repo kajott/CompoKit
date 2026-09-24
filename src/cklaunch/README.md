@@ -59,6 +59,7 @@ With the following fields:
   - If the command line doesn't explicitly contain a dollar sign, the file path is automatically added as a last argument.
   - Ampersands ('`&`') are replaced by the path of the directory where the viewer program has been found. This can be useful if e.g. config files need to be specified with full paths.
   - Question marks ('`?`') are replaced by the path of the directory where `cklaunch.exe` resides. (In a CompoKit context, that's usually the CompoKit `bin` directory.)
+    - This directory name is also made available to the called application via the `COMPOKIT_BIN_DIR` environment variable.
   - If not specified, the `.exe` suffix is implied for `command`.
   - If a matching `command.exe` exists in the directory of `cklaunch.exe`, this is used; otherwise, the `PATH` environment variable is searched.
   - Environment variables are expanded, e.g. "`%OS%`" becomes "`Windows_NT`".

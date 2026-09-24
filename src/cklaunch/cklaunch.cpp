@@ -1517,6 +1517,7 @@ int APIENTRY WinMain(HINSTANCE hInst_, HINSTANCE hPrevInstance, LPSTR lpCmdLine,
     initDir = startDir;
     LoadConfig();
     LoadState();
+    SetEnvironmentVariable("COMPOKIT_BIN_DIR", execDir.c_str());
 
     // window class creation
     WNDCLASS wc;
