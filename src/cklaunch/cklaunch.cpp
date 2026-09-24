@@ -124,6 +124,7 @@ struct DirItem {
 #define WIDEST_PREFIX       "@"
 #define STATE_FILE          "cklaunch.state"
 #define CONFIG_FILE         "cklaunch.ini"
+#define DEFAULT_FILE        ".cklaunch_default"
 #define QUICKSEARCH_TIMEOUT 1000
 #define SCROLLBAR_WIDTH     4
 
@@ -365,6 +366,34 @@ string ReadLine(FILE* f) {
     return res;
 }
 
+// read a text file into a string (stripping whitespace at both ends)
+string LoadFile(const string& filename) {
+    string data;
+    FILE *f = fopen(filename.c_str(), "r");
+    if (!f) { return data; }
+    fseek(f, 0, SEEK_END);
+    size_t size = size_t(ftell(f));
+    fseek(f, 0, SEEK_SET);
+    data.resize(size);
+    data.resize(fread(&data[0], 1, size, f));
+    fclose(f);
+    StringStrip(data);
+    return data;
+}
+
+// save a text file into a string (with a final newline)
+bool SaveFile(const string& filename, const string& data) {
+    FILE *f = fopen(filename.c_str(), "w");
+    if (!f) { return false; }
+    bool ok = (fwrite(data.data(), 1, data.size(), f) == data.size());
+    if (ok) {
+        char eol = '\n';
+        fwrite(&eol, 1, 1, f);
+    }
+    fclose(f);
+    return ok;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // PATH MANIPULATION AND FILE SYSTEM ACCESS                                  //
@@ -499,6 +528,17 @@ inline bool IsDir(const string& path) {
 // check whether a path specifies an existing file
 inline bool IsFile(const string& path) {
     return (CheckPath(path) == ptFile);
+}
+
+// check whether a file exists in a directory or any of its parents
+bool FileExistsInTree(const string& dir, const string& filename) {
+    string check(dir);
+    for (;;) {
+        if (FileExists(JoinPath(check, filename))) { return true; }
+        auto slash = GetLastSeparatorIndex(check);
+        if ((slash < 1) || (slash == string::npos)) { return false; }
+        check.resize(slash);
+    }
 }
 
 // load a the contents of a directory into a list of DirItems
@@ -1076,9 +1116,11 @@ bool EnterDir(const string& path, const string& select="", bool forceReload=fals
     scrollOffset = 0;
     
     // load the default index
-    defaultIndex = -1;
-    auto it = defaults.find(StrToLower(currDir));
-    defaultIndex = (it != defaults.end()) ? FindInDir(items, it->second) : -1;
+    defaultIndex = FindInDir(items, LoadFile(JoinPath(dirToLoad, DEFAULT_FILE)));
+    if (defaultIndex < 0) {
+        auto it = defaults.find(StrToLower(currDir));
+        defaultIndex = (it != defaults.end()) ? FindInDir(items, it->second) : -1;
+    }
     
     // pre-select the appropriate item
     if ((pt == ptDir) && !select.empty()) {
@@ -1225,11 +1267,19 @@ void SetDefaultIndex(int index) {
     string key(StrToLower(currDir));
     if (IsValidIndex(index) && (items[index].name != "..")) {
         defaultIndex = index;
-        defaults[key] = items[index].sortKey;
+        if (FileExistsInTree(currDir, DEFAULT_FILE)
+        &&  SaveFile(JoinPath(currDir, DEFAULT_FILE), items[index].name)) {
+            // index saved in file -> not needed in dictionary
+            defaults.erase(key);
+        }
+        else {  // save index in dictionary
+            defaults[key] = items[index].sortKey;
+        }
     }
-    else {
+    else {  // reset index
         defaultIndex = -1;
         defaults.erase(key);
+        DeleteFile(JoinPath(currDir, DEFAULT_FILE).c_str());
     }
     SaveState(true);
     Invalidate();

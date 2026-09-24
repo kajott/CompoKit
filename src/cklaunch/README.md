@@ -121,12 +121,22 @@ This section configures the colors of the user interface. Colors are specified a
 
 ----------------------
 
+## State Storage
+
+CKLaunch maintains a state file, `cklaunch.state`, located right next to the configuration file. In this file, the last opened directory, last selected file and the window position is stored, so the program starts up exactly where it was left the last time. The state file is also written before any external program is run, so even a crash should not be able to disrupt this mechanism.
+
+Normally, the state file also stores the default file markings for all directories in a central location. This behavior can be changed by putting a file named `.cklaunch_default` into any parent directory of where CKLaunch is operated. If such a file is present (regardless of content; if may also be empty), the Launcher will **not** store default file markings in its state file, but in a separate `.cklaunch_default` file for each directory that has a default marking. (For example, placing an empty `C:\Compo\.cklaunch_default` file causes CKLaunch to use these sidecar files for the entirety of `C:\Compo`'s subdirectories.)
+
+The standard behavior of storing the default file markings centrally is nice and convenient and doesn't litter `.cklaunch_default` files all around. These files, however, have the benefit of being independent of their absolute paths and the specific CompoKit installation; for example, a readily prepared directory can be copied onto another machine, and the default file markings will survive. That's why both mechanisms are provided and can be chosen from.
+
+----------------------
+
 ## Caveats
 
 - Unicode support is a little sketchy because the author was too lazy:
   - No Unicode support at all on Windows versions before 10 1903.
   - UTF-8 strings may be visible with some fonts (e.g. Fixedsys).
-  - Case-insensitive sorting, quick search, and sibling directory navigation only works for Latin characters without diacritics.
+  - Case-insensitive sorting, quick search, and sibling directory navigation only works properly for Latin characters without diacritics.
 
 - The `command` of an `[Actions]` rule must be either fully quoted (i.e. enclosed in double quotes) or not quoted at all; partial quoting (like `"C:\Program Files"\foo\bar`) is **not** supported.
 
