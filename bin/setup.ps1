@@ -140,6 +140,7 @@ $URL_python = "https://www.python.org/ftp/python/3.14.7/python-3.14.7-embed-amd6
 # (either because they always point to the latest version,
 # or because the software hasn't been changed in years)
 $URL_7zip_bootstrap = "https://www.7-zip.org/a/7za920.zip"
+$URL_tcmd_sftp = "https://www.totalcommander.ch/win/fs/sftpplug.zip"
 $URL_xmp_flac = "http://uk.un4seen.com/files/xmp-flac.zip"
 $URL_xmp_opus = "http://uk.un4seen.com/files/xmp-opus.zip"
 $URL_xmp_ym = "https://www.un4seen.com/stuff/xmp-ym.zip"
@@ -441,6 +442,12 @@ if (need "totalcmd64.exe" -for totalcmd,all) {
         mv $f $f.ToLower() -ErrorAction SilentlyContinue > $null
     }
 }
+if (need "sftpplug.wfx64" -for totalcmd,all) {
+    $tmpdir = extract_temp (download $URL_tcmd_sftp)
+    mv_f (Join-Path $tmpdir sftpplug.wfx64) .
+    mv_f (Join-Path $tmpdir 64\libssh2.dll) .
+    remove_temp
+}
 config "wincmd.ini" -for totalcmd,all @"
 [Configuration]
 UseIniInProgramDir=7
@@ -475,6 +482,8 @@ CursorColor=10526880
 CursorText=16777215
 [right]
 path=$baseDir
+[FileSystemPlugins]
+Secure FTP=$binDir\sftpplug.wfx64
 "@
 config "wcx_ftp.ini" -for totalcmd,all @"
 [default]
