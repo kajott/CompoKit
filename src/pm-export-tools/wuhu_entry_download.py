@@ -253,13 +253,13 @@ if __name__ == "__main__":
                         print("Aborted by user.", file=sys.stderr)
                         sys.exit(3)
             if answer == "Y":
-                print(f, "\x1b[33m[old - deleting]\x1b[0m")
+                print(short_path, "\x1b[33m[old - deleting]\x1b[0m")
                 try:
                     os.unlink(os.path.join(dirpath, filename))
                 except EnvironmentError as e:
                     print(f"WARNING: could not delete '{short_path}':", e, file=sys.stderr)
             else:
-                print(f, "\x1b[33m[old - keeping]\x1b[0m")
+                print(short_path, "\x1b[33m[old - keeping]\x1b[0m")
 
     # print a summary
     if total_dl:
