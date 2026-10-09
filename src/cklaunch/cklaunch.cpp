@@ -82,6 +82,8 @@ struct DirItem {
     inline bool operator<(const DirItem& other) {
         if (isDir && !other.isDir) { return true; }
         if (!isDir && other.isDir) { return false; }
+        if (sortKey == "..") { return true; }
+        if (other.sortKey == "..") { return false; }
         return (sortKey < other.sortKey);
     }
     void set(const char* name_, bool isDir_=false, bool isMarked_=false) {
@@ -100,7 +102,7 @@ struct DirItem {
         if (isDir_) { display[s + 1] = ']'; }
         isDir = isDir_;
         isMarked = isMarked_ && !isDir_;
-        if (dot < s) { ext = sortKey.substr(dot + 1); } else  { ext.clear(); }
+        if (dot < s) { ext = sortKey.substr(dot + 1); } else { ext.clear(); }
         if (!isDir_ && !ext.empty()) {
             auto it = fileTypeMap.find(ext);
             if (it != fileTypeMap.end()) {
@@ -851,7 +853,10 @@ void GoTo(int targetIndex) {
     selectIndex = targetIndex;
     if (selectIndex >= int(items.size())) { selectIndex = int(items.size()) - 1; }
     if (selectIndex < 0) { selectIndex = 0; }
-    int scrollMin = selectIndex - GetVisibleLines() + 1;
+    int scrollMin = selectIndex       - GetVisibleLines() + 1;
+    int scrollMax = int(items.size()) - GetVisibleLines();
+    if (scrollMax < 0) { scrollMax = 0; }
+    if (scrollOffset > scrollMax)   { scrollOffset = scrollMax; }
     if (scrollOffset < scrollMin)   { scrollOffset = scrollMin; }
     if (scrollOffset > selectIndex) { scrollOffset = selectIndex; }
     if (oldScroll != scrollOffset) {
@@ -1443,7 +1448,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             CancelEdit(false);
             winWidth = LOWORD(lParam);
             winHeight = HIWORD(lParam);
-            GoTo(selectIndex);
+            if ((winWidth > 0) && (winHeight > 0)) {
+                GoTo(selectIndex);
+            }
             break;
         case WM_DESTROY:
             SaveState();
