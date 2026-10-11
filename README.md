@@ -7,7 +7,7 @@ CompoKit is an all-inclusive environment with (almost) all tools required for ho
 A CompoKit installation mainly consists of third-party tools:
 
 - **File Manager:** [Total Commander](https://www.ghisler.com/index.htm), [7-Zip](https://www.7-zip.org/) and [CKLaunch](src/cklaunch), a custom launcher tailored for running compos
-- **Video Player:** [MPC-HC](https://github.com/clsid2/mpc-hc)
+- **Video Player:** [MPC-HC](https://github.com/clsid2/mpc-hc), [mpv](https://mpv.io), [VLC](https://www.videolan.org)
 - **Audio Player:** [XMPlay](https://www.un4seen.com/xmplay.html) with [OpenMPT Plugin](https://lib.openmpt.org/libopenmpt/) and additional plugins for SID and YM, [TrackMeister](https://github.com/kajott/TrackMeister)
 - **Image Viewer:** [XnView](https://www.xnview.com/en/), [CompoView](https://www.pouet.net/prod.php?which=56934), [PixelView](https://github.com/kajott/PixelView), [GLISS](http://svn.emphy.de/scripts/trunk/gliss.cpp)
 - **3D Model Viewer:** [Foxotron](https://github.com/Gargaj/Foxotron)
@@ -47,14 +47,14 @@ The following applications are **not** included for bloat or licensing reasons, 
   - This script, `setup.ps1` (and its batch wrapper, `setup.cmd`) works like a small package manager, including "`-reconfigure`" and "`-reinstall`" options.
 - The script `setpath.cmd` can be used to add CompoKit's `bin` directory to the `PATH` in command-line sessions.
 - The script `shell.cmd` starts a command-line session with CompoKit's `bin` directory in the `PATH`.
+- The script `winsetup.cmd` configures a few important settings in Windows (disable spontaneous restarts, Explorer fine tuning, etc.)
 - Contains a script (`play_shuffled.cmd`) to generate shuffled playlists of whole directories and play them back, using the [Balanced Shuffle](https://keyj.emphy.de/balanced-shuffle/) algorithm.
 - Contains a tool to play jingles: [jingleplayer](jingle)
 - Contains a tool to control Lightware and Extron DVI/HDMI crossbar switches ("matrices") with macro support, running on e.g. a Raspberry Pi with a numeric keypad: [dvi_matrix_control](src/dvi_matrix_control)
 - Contains tools (for both Windows and Linux/X11) to quickly switch between 1080p50 and 1080p60 video modes on the "beamslide" PC: [vidmode](src/vidmode)
-- Contains tools to [export](src/pm-export-tools) data from the PartyMeister party management system into various formats:
+- Contains tools to [export](src/pm-export-tools) data from the PartyMeister and Wuhu party management systems into various formats:
+  - all entry's release files into a directory structure that's suitable for releasing on scene.org
   - vote results into a text file that's a blueprint for `results.txt`
-  - slides to PNG in a useful directory structure
-  - timetable to the XML format used for the CCC (C3VOC) streaming service
 
 
 ## Installation
@@ -75,18 +75,18 @@ Some of the tools are pre-configured in non-standard ways:
 - Total Commander
   - medium-contrast "dark" color scheme with Segoe UI font
   - search files in the current directory by simply typing letters (no Ctrl or Alt required)
-  - F2 key renames files
+  - <kbd>F2</kbd> key renames files
   - Passive FTP by default
   - single-instance mode
 - MPC-HC
   - starts in fullscreen mode
   - starts paused (press Space to start playback)
   - doesn't leave fullscreen mode when playback is complete
-  - Q key quits (instead of Alt+X)
+  - <kbd>Q</kbd> key quits (instead of <kbd>Alt</kbd>+<kbd>X</kbd>)
   - uses the Sync Renderer to minimize framedrops and judder
   - *no* Direct3D exclusive fullscreen mode (questionable if it would have any benefits on Windows 10; may become extremely problematic when codec errors occur)
 - XMPlay
-  - starts paused (press P to start playback)
+  - starts paused (press <kbd>P</kbd> to start playback)
   - OpenMPT plugin is used by default for MOD, S3M, XM and IT formats
     - MOD files use 20% stereo separation and Amiga low-pass filter instead of interpolation
     - S3M, XM, IT use 100% stereo separation and 8-tap interpolation
@@ -103,9 +103,9 @@ Some of the tools are pre-configured in non-standard ways:
   - shows only image files in browser, nothing else
   - all toolbars except menu and status bar disabled
   - no image info overlays on thumbnails or in fullscreen mode
-  - starts in fullscreen mode, exit with Esc
-  - toggle fullscreen with Enter key
-  - Cursor Up/Down keys change frames/pages in multi-page documents (pages in TIFF, layers in PSD, ...)
+  - starts in fullscreen mode, exit with <kbd>Esc</kbd>
+  - toggle fullscreen with <kbd>Enter</kbd> key
+  - Cursor <kbd>Up</kbd>/<kbd>Down</kbd> keys change frames/pages in multi-page documents (pages in TIFF, layers in PSD, ...)
 - Sahli
   - a little script `_run.cmd` is put into the Sahli directory that launches Sahli in Chrome/Edge
   - a [manual](Sahli-HOWTO.md) is provided
@@ -116,8 +116,8 @@ Some of the tools are pre-configured in non-standard ways:
   - page layout set to "single page, don't save for every document"
 - DOSBox / DOSBox-X / DOSBox Staging
   - provided config files `dosbox.conf` and `dosbox-staging.conf` set fullscreen with correct aspect ratio, maximum speed (`core=dynamic`, `cycles=max`), 48000 Hz sample rate from all audio sources (including GUS and Covox), and UART mode for the MPU-401 MIDI interface
-  - CKLaunch is configured to interpret `.dosbox` and `.dosbox-staging` files as DOSBox(/-Staging) configuration files and runs them with the `dosbox(-staging) -conf` option
-    - This can be used to provide an entry-specific DOSBox configuration: Rename the `.conf` file to `.dosbox` or `.dosbox-staging` and make sure the entry is auto-started:
+  - CKLaunch is configured to interpret `.dosbox`, `.dosbox-x` and `.dosbox-staging` files as DOSBox(/-X/-Staging) configuration files and runs them with the `dosbox(-x/-staging) -conf` option
+    - This can be used to provide an entry-specific DOSBox configuration: Rename the `.conf` file to `.dosbox`, `.dosbox-x` or `.dosbox-staging` and make sure the entry is auto-started:
       ```
       [autoexec]
       mount C: .
@@ -125,15 +125,15 @@ Some of the tools are pre-configured in non-standard ways:
       whatever.com
       ```
   - DOSBox can be made to work with SC-55 emulation. The required components are installed by CompoKit, but some manual work is required to make it happen:
-    - a set of SC-55 ROM files need to be put into `CompoKit\bin\NukedSC55`
     - loopMIDI must be installed system-wide using `CompoKit\bin\loopMIDISetup.exe`
     - loopMIDI and Nuked-SC55 must be started manually, in that exact order, before DOSBox
     - DOSBox-X requires no further configuration: it uses loopMIDI if it's available and the default synthesizer if it's not
     - vanilla DOSBox requires a custom configuration with the statement `midiconfig=1` (or probably another number - use the command `mixer /listmidi` inside DOSBox to look that up)
+    - DOSBox-Staging requires none of this; SC-55 MIDI is configured as the default there, and loopMIDI or NukedSC55 don't need to be started explicitly either
 - WinVICE (C64, VIC-20, Plus/4 only)
   - version 3.1 is used, because it's the last non-bloated pure Win32 version
   - scanlines disabled, brightness adjusted to compensate
-  - fullscreen mode set to 1080p50 (make sure that mode exists before using Alt+D!)
+  - fullscreen mode set to 1080p50 (make sure that mode exists before using <kbd>Alt</kbd>+<kbd>D</kbd>!)
   - no confirmation on exit
 - WinUAE
   - installed in "portable mode"
@@ -142,7 +142,7 @@ Some of the tools are pre-configured in non-standard ways:
     - all settings for maximum Amiga 500 compatibility (with 512k slow RAM expansion)
     - 20% stereo separation
     - launch in fullscreen mode with aspect ratio correction, no GUI
-    - exit with Ctrl+F11 enabled
+    - exit with <kbd>Ctrl</kbd>+<kbd>F11</kbd> enabled
   - wrapper script `runa500.cmd` provided to run a single Amiga executable ("onefiler") by preparing a `dh0:` directory with a suitable `startup-sequence` and running it
     - CKLaunch is configured to run `.a500` and `.amiga` files through that, so simply renaming Amiga 500 4k/64k intros from `.exe` (or whatever) to `.a500` makes them runnable
 - TIC-80
